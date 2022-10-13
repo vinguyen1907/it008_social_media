@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:it008_social_media/screens/home/home_page.dart';
 import 'package:it008_social_media/services/router.dart';
 
 void main() {
