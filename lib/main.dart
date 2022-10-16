@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:it008_social_media/screens/home/home_page.dart';
+import 'package:it008_social_media/screens/profile/profile_page.dart';
 import 'package:it008_social_media/services/router.dart';
 
 void main() {
@@ -17,11 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Scaffold(
-        body: Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      home: ProfilePage(),
       onGenerateRoute: appRouter.onGenerateRoute,
     );
   }
