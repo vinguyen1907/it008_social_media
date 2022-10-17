@@ -1,6 +1,6 @@
 {
-    "name": "it008_social_media",
-    "short_name": "it008_social_media",
+    "name": "sm",
+    "short_name": "sm",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
