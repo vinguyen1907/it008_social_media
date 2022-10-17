@@ -3,6 +3,16 @@ class AppAssets {
   static const iconPath = 'assets/icons';
 
   // icons
+  // static const icActiveHome = '$iconPath/ic_active_home.svg';
+  // static const icActiveAdd = '$iconPath/ic_active_add.svg';
+  // static const icActiveChat = '$iconPath/ic_active_chat.svg';
+  // static const icActiveProfile = '$iconPath/ic_active_profile.svg';
+  static const icNotification = '$iconPath/notification.svg';
+  static const icPlus = '$iconPath/plus.svg';
+  static const icMagnifier = '$iconPath/magnifier.svg';
+  static const icHeart = '$iconPath/heart.svg';
+  static const icComment = '$iconPath/comment.svg';
+
   // example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';
 }

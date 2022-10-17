@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/screens/home_screen/home_screen.dart';
 
-class BottomBarMainPage extends StatefulWidget {
-  BottomBarMainPage();
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<BottomBarMainPage> createState() => _BottomBarMainPageState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _BottomBarMainPageState extends State<BottomBarMainPage> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = [
-    Scaffold(),
+  final List<Widget> _widgetOptions = [
+    const HomeScreen(),
     Scaffold(),
     Scaffold(),
     Scaffold(),

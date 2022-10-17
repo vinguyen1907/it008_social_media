@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:it008_social_media/screens/home/home_page.dart';
+import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/services/router.dart';
 
 void main() {
@@ -17,11 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Scaffold(
-        body: Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: const MainScreen(),
       onGenerateRoute: appRouter.onGenerateRoute,
     );
   }
