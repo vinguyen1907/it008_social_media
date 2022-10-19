@@ -27,7 +27,7 @@ class StoryItem extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-            onTap: onTap(),
+            onTap: () => onTap(),
             child: SizedBox(
               height: size.height / 8 + 12.5,
               child: Stack(

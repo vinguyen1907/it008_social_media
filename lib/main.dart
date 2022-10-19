@@ -5,8 +5,8 @@ import 'package:it008_social_media/services/router.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.leanBack); // hide status bar on Android devices
+  // SystemChrome.setEnabledSystemUIMode(
+  //     SystemUiMode.leanBack); // hide status bar on Android devices
   runApp(MyApp(appRouter: AppRouter()));
 }
 
