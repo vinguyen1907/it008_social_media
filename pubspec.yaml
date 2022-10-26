@@ -1,4 +1,4 @@
-name: sm
+name: it008_social_media
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -33,8 +33,8 @@ dependencies:
     sdk: flutter
   animated_splash_screen:  
   font_awesome_flutter: ^9.0.0
-    
-
+  flutter_svg: ^1.1.5
+  image_picker: ^0.8.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -57,17 +57,12 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/images/SPLASH.png
-    - assets/images/ONBOARDING01.png
-    - assets/images/ONBOARDING02.png
-    - assets/images/ONBOARDING03.png
-    - assets/images/google.png
-    - assets/images/WELCOME.png
-    - assets/images/WELCOMESU.png
+    - assets/images/
+    - assets/icons/
   fonts:
-    - family: Sniglet
-      fonts:
-      - asset: assets/fonts/Sniglet-Regular.ttf
+#    - family: Sniglet
+#      fonts:
+#      - asset: assets/fonts/Sniglet-Regular.ttf
     - family: Poppins
       fonts:
       - asset: assets/fonts/Poppins-Regular.ttf
