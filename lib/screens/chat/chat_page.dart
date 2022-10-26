@@ -6,6 +6,7 @@ import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/chat/chat_room_page.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
+import 'package:it008_social_media/screens/profile/profile_page.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -48,6 +49,8 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: 34,
                 child: TextFormField(
+                  onEditingComplete: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage())),
                   style: AppStyles.searchText,
                   decoration: InputDecoration(
                     hintText: 'Type something...',
@@ -132,7 +135,9 @@ class _ChatPageState extends State<ChatPage> {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => ChatRoomPage()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChatRoomPage()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

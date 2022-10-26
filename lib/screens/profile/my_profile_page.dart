@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
+import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
 import 'package:it008_social_media/screens/profile/widget/my_discription_label.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/edit_profile_button.dart';
@@ -27,7 +28,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
             elevation: 0,
             backgroundColor: Colors.transparent,
             leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 color: AppColors.primaryTextColor,
@@ -45,7 +48,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
               children: [
                 UserInformationWidget(),
                 MyDescriptionLabel(),
-                EditProfileButton(onTap: () {}),
+                EditProfileButton(onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditProfilePage()));
+                }),
                 FollowWidget(),
                 PostLabel(),
                 PostWidget(),

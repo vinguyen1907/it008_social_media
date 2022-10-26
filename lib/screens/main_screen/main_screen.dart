@@ -22,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     AddPostPage(),
     ChatPage(),
-    EditProfilePage(),
+    MyProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -45,23 +45,47 @@ class _MainScreenState extends State<MainScreen> {
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/home.svg",color: AppColors.primaryTextColor,),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_home.svg',color: AppColors.primaryTextColor,),
+            icon: SvgPicture.asset(
+              "assets/icons/home.svg",
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_home.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/ic_add.svg',color: AppColors.primaryTextColor,),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_add.svg',color: AppColors.primaryTextColor,),
+            icon: SvgPicture.asset(
+              'assets/icons/ic_add.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_add.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/ic_chat.svg',color: AppColors.primaryTextColor,),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_chat.svg',color: AppColors.primaryTextColor,),
+            icon: SvgPicture.asset(
+              'assets/icons/ic_chat.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_chat.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/personal.svg',color: AppColors.primaryTextColor,),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_profile.svg',color: AppColors.primaryTextColor,),
+            icon: SvgPicture.asset(
+              'assets/icons/personal.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_profile.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
         ],

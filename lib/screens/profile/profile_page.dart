@@ -27,7 +27,9 @@ class _ProfilePageState extends State<ProfilePage> {
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             icon: Icon(
               Icons.arrow_back_ios_new,
               color: AppColors.primaryTextColor,
@@ -36,8 +38,8 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           title: Text(
             "Profile",
-            style: AppStyles.postUserName
-                .copyWith(fontSize: 18, height: 27 / 18),
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
           ),
         ),
         body: SingleChildScrollView(
@@ -45,7 +47,9 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              UserInformationWidget(icon: Icon(Icons.more_vert),),
+              UserInformationWidget(
+                icon: Icon(Icons.more_vert),
+              ),
               DescriptionWidget(),
               FollowWidget(),
               FollowerWidget(),
