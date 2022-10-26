@@ -6,4 +6,10 @@ class AppColors {
   static const Color primaryTextColor = Color(0xFF000000);
   static const Color primaryHertButtonColor = Color(0xFFEC1C24);
   static const Color primaryStatusColor = Color(0xFF21B014);
+  static const Color lightGreyColor = Color(0xFFF4F4F4);
+  static const Color mediumGreyColor = Color(0xFFF3F3F3);
+  static const Color opacityGreyColor = Color(0xFFE5E5E5);
+  static const Color tetFieldColor = Color(0xFFF2F2F2);
+  static const Color timeMessageColor = Color(0xFFB3B9C9);
+
 }
