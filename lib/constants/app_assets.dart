@@ -19,7 +19,10 @@ class AppAssets {
   static const icSwitchCamera = '$iconPath/switch_camera.png';
   static const icCircle = '$iconPath/circle.svg';
   static const icArrowUp = '$iconPath/arrow_up.svg';
-
-  // example
+  static const icLogout = '$iconPath/ic_logout.svg';
+  static const icCamera = '$iconPath/ic_camera.svg';
+  static const icAddPost = '$iconPath/ic_add_post.svg';
+  static const icCheck = '$iconPath/ic_check.svg';
+// example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';
 }

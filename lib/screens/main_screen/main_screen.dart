@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/constants/app_colors.dart';
+import 'package:it008_social_media/screens/add_post/add_post_page.dart';
+import 'package:it008_social_media/screens/chat/chat_page.dart';
+import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
 import 'package:it008_social_media/screens/home_screen/home_screen.dart';
+import 'package:it008_social_media/screens/profile/profile_page.dart';
+
+import '../profile/my_profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,10 +19,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
-    const HomeScreen(),
-    Scaffold(),
-    Scaffold(),
-    Scaffold(),
+    HomeScreen(),
+    AddPostPage(),
+    ChatPage(),
+    MyProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -38,23 +45,47 @@ class _MainScreenState extends State<MainScreen> {
         showUnselectedLabels: false,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/icons/home.svg"),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_home.svg'),
+            icon: SvgPicture.asset(
+              "assets/icons/home.svg",
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_home.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/ic_add.svg'),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_add.svg'),
+            icon: SvgPicture.asset(
+              'assets/icons/ic_add.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_add.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/ic_chat.svg'),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_chat.svg'),
+            icon: SvgPicture.asset(
+              'assets/icons/ic_chat.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_chat.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/icons/personal.svg'),
-            activeIcon: SvgPicture.asset('assets/icons/ic_active_profile.svg'),
+            icon: SvgPicture.asset(
+              'assets/icons/personal.svg',
+              color: AppColors.primaryTextColor,
+            ),
+            activeIcon: SvgPicture.asset(
+              'assets/icons/ic_active_profile.svg',
+              color: AppColors.primaryTextColor,
+            ),
             label: '',
           ),
         ],
