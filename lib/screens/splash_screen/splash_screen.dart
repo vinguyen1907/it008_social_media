@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:it008_social_media/screens/on_boarding/on_boarding1.dart';
+import 'package:it008_social_media/screens/on_boarding/on_boarind_scroll.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,7 +13,7 @@ class _SplashScreen extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 2), ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => OnBoarding1()))));
+    Timer(Duration(seconds: 2), ()=>Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => OnBoardingScroll()))));
   }
   @override
   Widget build(BuildContext context) {
