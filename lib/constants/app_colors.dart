@@ -11,5 +11,5 @@ class AppColors {
   static const Color opacityGreyColor = Color(0xFFE5E5E5);
   static const Color tetFieldColor = Color(0xFFF2F2F2);
   static const Color timeMessageColor = Color(0xFFB3B9C9);
-
+  static const Color darkBackgroundColor = Color(0xFF1C1C1C);
 }
