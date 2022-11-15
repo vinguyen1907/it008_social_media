@@ -13,6 +13,7 @@ class SearchBar extends StatelessWidget {
         child: TextFormField(
       style: AppStyles.searchText,
       decoration: InputDecoration(
+        isDense: false,
         hintText: 'Type something...',
         hintStyle: AppStyles.searchHintText,
         prefixIcon: Padding(

@@ -36,7 +36,7 @@ class AppStyles {
       fontFamily: "Poppins",
       fontWeight: FontWeight.w700,
       color: Colors.black,
-      fontSize: 10);
+      fontSize: 12);
   static const TextStyle postDescription = TextStyle(
       fontFamily: "Poppins",
       fontWeight: FontWeight.w400,
@@ -44,4 +44,16 @@ class AppStyles {
       fontSize: 10);
   static const TextStyle headerTitle = TextStyle(
       fontFamily: 'Poppins', fontSize: 18, fontWeight: FontWeight.w600);
+  static const TextStyle bottomSheetSelection = TextStyle(
+    fontFamily: "Poppins",
+    color: AppColors.primaryMainColor,
+    fontWeight: FontWeight.w500,
+  );
+  static LinearGradient storyGradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        AppColors.primaryMainColor,
+        const Color.fromARGB(255, 108, 209, 229).withOpacity(0.5),
+      ]);
 }
