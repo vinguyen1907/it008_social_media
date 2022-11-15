@@ -10,15 +10,16 @@ class AppAssets {
   static const icNotification = '$iconPath/notification.svg';
   static const icPlus = '$iconPath/plus.svg';
   static const icMagnifier = '$iconPath/magnifier.svg';
-  static const icHeart = '$iconPath/heart.svg';
+  static const icHeart = '$iconPath/unlike_heart.svg';
   static const icComment = '$iconPath/comment.svg';
   static const icClose = '$iconPath/close.svg';
   static const icArrowLeft = '$iconPath/arrow_left.svg';
   static const icDelete = '$iconPath/delete.svg';
   static const icOutlinedImage = '$iconPath/outlined_image.svg';
-  static const icSwitchCamera = '$iconPath/switch_camera.png';
+  static const icSwitchCamera = '$iconPath/switch_camera.svg';
   static const icCircle = '$iconPath/circle.svg';
   static const icArrowUp = '$iconPath/arrow_up.svg';
+  static const icSend = '$iconPath/send.svg';
 
   // example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';

@@ -7,6 +7,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setEnabledSystemUIMode(
   //     SystemUiMode.leanBack); // hide status bar on Android devices
+
   runApp(MyApp(appRouter: AppRouter()));
 }
 
