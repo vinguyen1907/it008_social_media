@@ -159,53 +159,7 @@ class _OnBoarding2State extends State<OnBoarding2> {
               style: TextStyle(fontFamily: 'Poppins-Regular', fontWeight: FontWeight.w500, fontSize: height_variable*0.025),
             )
           ),
-          Positioned(
-            top: height_variable*0.72,
-            left: (width_variable - width_variable*0.856)/2,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => OnBoarding3())));
-              },
-              child: Container(
-                height: height_variable*0.06,
-                width: width_variable*0.856,
-                decoration: BoxDecoration(
-                  color: Color(0xff006175),
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: Center(
-                  child: Text(
-                    'Next',
-                    style: TextStyle(fontWeight: FontWeight.w600,fontFamily: 'Poppins', fontSize: 18, color: Colors.white),
-                  )
-                ),
-              ),
-            )
-          ),
-          Positioned(
-            top: height_variable*0.804,
-            left: (width_variable - width_variable*0.856)/2,
-            child: GestureDetector(
-              onTap: () {
-                
-              },
-              child: Container(
-                height: height_variable*0.06,
-                width: width_variable*0.856,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.black, width: 1)
-                ),
-                child: Center(
-                  child: Text(
-                    'Skip',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black,fontFamily: 'Poppins', fontSize: 18),
-                  )
-                ),
-              ),
-            )
-          ),
+          
           Positioned(
             top: height_variable*0.897,
             left: (width_variable - width_variable*0.637)/2,

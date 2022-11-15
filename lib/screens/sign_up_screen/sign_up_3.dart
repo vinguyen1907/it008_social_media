@@ -58,6 +58,7 @@ class _SignUp3State extends State<SignUp3> {
             top: height_variable*0.298,
             left: width_variable*0.072,
             child: Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               width: width_variable*0.856,
               height: height_variable*0.06,
               decoration: BoxDecoration(
@@ -84,6 +85,7 @@ class _SignUp3State extends State<SignUp3> {
             top: height_variable*0.405,
             left: width_variable*0.072,
             child: Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               width: width_variable*0.856,
               height: height_variable*0.06,
               decoration: BoxDecoration(
@@ -110,6 +112,7 @@ class _SignUp3State extends State<SignUp3> {
             top: height_variable*0.512,
             left: width_variable*0.072,
             child: Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
               width: width_variable*0.856,
               height: height_variable*0.06,
               decoration: BoxDecoration(
