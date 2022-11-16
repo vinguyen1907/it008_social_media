@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "187623073523",
+    "project_id": "somedia-32434",
+    "storage_bucket": "somedia-32434.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187623073523:android:9016128eaf32e393343986",
+        "android_client_info": {
+          "package_name": "com.example.it008_social_media"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187623073523-jhbap292653on8d8j5chall1hfcschvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4OxZU1EM1lkeRRhQnjacnYjRvsKcRoEw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187623073523-jhbap292653on8d8j5chall1hfcschvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

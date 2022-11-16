@@ -25,7 +25,7 @@ class _SignUp3State extends State<SignUp3> {
             left: width_variable*0.027,
             child: IconButton(
               onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => SignUp2())));
+                Navigator.of(context).pop();
               }, 
               icon: const Icon(FontAwesomeIcons.angleLeft)
             )
@@ -132,7 +132,7 @@ class _SignUp3State extends State<SignUp3> {
             left: width_variable*0.072,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => Welcome())));
+                Navigator.push(context, MaterialPageRoute(builder: ((context) => Welcome())));
               },
               child: Container(
                 height: height_variable*0.06,
@@ -162,7 +162,7 @@ class _SignUp3State extends State<SignUp3> {
                 SizedBox(width: 5),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => SignIn())));
+                    Navigator.push(context, MaterialPageRoute(builder: ((context) => SignIn())));
                   },
                   child: Text(
                     'Sign in',
