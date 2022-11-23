@@ -4,6 +4,7 @@ import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/services/router.dart';
 import 'screens/splash_screen/splash_screen.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setEnabledSystemUIMode(

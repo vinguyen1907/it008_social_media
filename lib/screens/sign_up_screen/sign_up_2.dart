@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
+import 'package:validators/validators.dart';
 import 'sign_up.dart';
 import 'sign_up_3.dart';
 
@@ -12,6 +13,8 @@ class SignUp2 extends StatefulWidget {
 }
 
 class _SignUp2State extends State<SignUp2> {
+  bool isNameCorrect = false;
+  bool isEmailCorrect = false;
   DateTime date = DateTime(2022, 10, 16);
   final List<String> Gender = ['Male', 'Female'];
   String _dropDownValue = 'Male';
@@ -67,9 +70,14 @@ class _SignUp2State extends State<SignUp2> {
               decoration: BoxDecoration(
                 color: Color(0xfff2f2f2),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xff006175))
+                border: Border.all(color: isNameCorrect == false ?Colors.red :Colors.green)
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    isNameCorrect = matches(value, r'^[a-z A-Z]+$');
+                  });
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
@@ -94,9 +102,14 @@ class _SignUp2State extends State<SignUp2> {
               decoration: BoxDecoration(
                 color: Color(0xfff2f2f2),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xff006175))
+                border: Border.all(color: isEmailCorrect == false ?Colors.red :Colors.green)
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    isEmailCorrect = isEmail(value);
+                  });
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
@@ -214,7 +227,7 @@ class _SignUp2State extends State<SignUp2> {
                 height: height_variable*0.06,
                 width: width_variable*0.856,
                 decoration: BoxDecoration(
-                  color: Color(0xff006175),
+                  color: isEmailCorrect == true && isNameCorrect == true ?Color(0xff006175) :Color(0xff006175).withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: Center(

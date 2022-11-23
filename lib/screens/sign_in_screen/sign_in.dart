@@ -11,6 +11,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  bool _obscureT = true;
   @override
   Widget build(BuildContext context) {
     double height_variable = MediaQuery.of(context).size.height;
@@ -84,8 +85,17 @@ class _SignInState extends State<SignIn> {
                 ),
                 child: TextField(
                   decoration: InputDecoration(
-                    border: InputBorder.none
+                    border: InputBorder.none,
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureT = !_obscureT;
+                        });
+                      },
+                      child: Icon(_obscureT ?Icons.visibility :Icons.visibility_off),
+                    )
                   ),
+                  obscureText: _obscureT,
                 ),
               )
             ),

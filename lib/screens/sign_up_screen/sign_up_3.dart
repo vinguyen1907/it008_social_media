@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
+import 'package:validators/validators.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
 import 'package:it008_social_media/screens/welcome_screen/welcome.dart';
@@ -13,6 +14,10 @@ class SignUp3 extends StatefulWidget {
 }
 
 class _SignUp3State extends State<SignUp3> {
+  bool isUserNameCorrect = false;
+  bool isPasswordCorrect = false;
+  String password = "!@#%^";
+  bool _obsText = true;
   @override
   Widget build(BuildContext context) {
     double height_variable = MediaQuery.of(context).size.height;
@@ -64,9 +69,14 @@ class _SignUp3State extends State<SignUp3> {
               decoration: BoxDecoration(
                 color: Color(0xfff2f2f2),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xff006175))
+                border: Border.all(color: isUserNameCorrect == false ?Colors.red :Colors.green)
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    isUserNameCorrect = isAscii(value);
+                  });
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
@@ -94,9 +104,23 @@ class _SignUp3State extends State<SignUp3> {
                 border: Border.all(color: Color(0xff006175))
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
                 decoration: InputDecoration(
-                  border: InputBorder.none
+                  border: InputBorder.none,
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _obsText = !_obsText;
+                      });
+                    },
+                    child: Icon(_obsText ?Icons.visibility :Icons.visibility_off),
+                  )
                 ),
+                obscureText: _obsText,
               ),
             )
           ),
@@ -118,12 +142,23 @@ class _SignUp3State extends State<SignUp3> {
               decoration: BoxDecoration(
                 color: Color(0xfff2f2f2),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Color(0xff006175))
+                border: Border.all(color: isPasswordCorrect == false ?Colors.red :Colors.green)
               ),
               child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    if (value == password)
+                  {
+                    isPasswordCorrect = true;
+                  }else{
+                    isPasswordCorrect = false;
+                  }
+                  });   
+                },
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
+                obscureText: true,
               ),
             )
           ),
@@ -132,13 +167,16 @@ class _SignUp3State extends State<SignUp3> {
             left: width_variable*0.072,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => Welcome())));
+                if (isUserNameCorrect && isPasswordCorrect)
+                {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => Welcome())));
+                }     
               },
               child: Container(
                 height: height_variable*0.06,
                 width: width_variable*0.856,
                 decoration: BoxDecoration(
-                  color: Color(0xff006175),
+                  color: isUserNameCorrect == true && isPasswordCorrect == true ?Color(0xff006175) :Color(0xff006175).withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: Center(
