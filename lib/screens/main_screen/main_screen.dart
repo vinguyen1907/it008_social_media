@@ -3,14 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/screens/add_post/add_post_page.dart';
 import 'package:it008_social_media/screens/chat/chat_page.dart';
-import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
 import 'package:it008_social_media/screens/home_screen/home_screen.dart';
-import 'package:it008_social_media/screens/profile/profile_page.dart';
 
 import '../profile/my_profile_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  static const String id = 'main_screen';
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -18,7 +18,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _widgetOptions = [
+  final List<Widget> _widgetOptions = const [
+    // Scaffold(),
     HomeScreen(),
     AddPostPage(),
     ChatPage(),
@@ -28,18 +29,31 @@ class _MainScreenState extends State<MainScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.jumpToPage(index);
     });
+  }
+
+  final PageController _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          _onItemTapped(index);
+        },
+        children: _widgetOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedIconTheme: IconThemeData(color: Colors.blueAccent),
+        selectedIconTheme: const IconThemeData(color: Colors.blueAccent),
         unselectedItemColor: Colors.amber,
         showSelectedLabels: false, // <-- HERE
         showUnselectedLabels: false,
@@ -51,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/ic_active_home.svg',
-              color: AppColors.primaryTextColor,
+              // color: AppColors.primaryTextColor,
             ),
             label: '',
           ),
@@ -62,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/ic_active_add.svg',
-              color: AppColors.primaryTextColor,
+              // color: AppColors.primaryTextColor,
             ),
             label: '',
           ),
@@ -73,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/ic_active_chat.svg',
-              color: AppColors.primaryTextColor,
+              // color: AppColors.primaryTextColor,
             ),
             label: '',
           ),
@@ -84,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/ic_active_profile.svg',
-              color: AppColors.primaryTextColor,
+              // color: AppColors.primaryTextColor,
             ),
             label: '',
           ),
