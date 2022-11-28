@@ -6,7 +6,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24,top: 7),
+      margin: EdgeInsets.only(left: 24, right: 24, top: 7),
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -21,7 +21,7 @@ class PostWidget extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-6/312576837_481329224039824_1971902793594846384_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=730e14&_nc_ohc=wBUYKw46M3YAX_pOyT7&_nc_ht=scontent.fsgn8-4.fna&oh=00_AT9lDJ_i0zv-RyzB9gFVUG8WjKA-vzN2SDUkxHkiA7s_Vg&oe=635C103E",
+              "https://firebasestorage.googleapis.com/v0/b/somedia-32434.appspot.com/o/story_image%2Fqlu8m5vUDRqjVpx4u8jD?alt=media&token=49f64034-2097-46d4-bff2-ef5458ffc8dd",
               fit: BoxFit.cover,
             ),
           );

@@ -21,7 +21,9 @@ class TextInputWidget extends StatelessWidget {
     this.textEditingController,
     this.obscureText = false,
     this.onTapSuffixIcon,
-    this.fillColor, this.minLine, this.maxLine,
+    this.fillColor,
+    this.minLine,
+    this.maxLine,
   }) : super(key: key);
 
   @override
@@ -41,24 +43,21 @@ class TextInputWidget extends StatelessWidget {
         ),
         contentPadding: prefixIcon != null
             ? EdgeInsets.symmetric(vertical: 15)
-            : EdgeInsets.symmetric(
-            vertical: 15, horizontal: 20),
+            : EdgeInsets.symmetric(vertical: 15, horizontal: 20),
         prefixIcon: prefixIcon,
         suffixIcon: onTapSuffixIcon == null
             ? suffixIcon
             : GestureDetector(
-          onTap: onTapSuffixIcon,
-          child: suffixIcon,
-        ),
+                onTap: onTapSuffixIcon,
+                child: suffixIcon,
+              ),
         fillColor: fillColor ?? AppColors.primaryHertButtonColor,
         enabledBorder: OutlineInputBorder(
-          borderSide:
-          BorderSide(width: 0.0, color: AppColors.lightGreyColor),
+          borderSide: BorderSide(width: 0.0, color: AppColors.lightGreyColor),
           borderRadius: BorderRadius.circular(15.0),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide:
-          BorderSide(width: 0.0, color: AppColors.primaryMainColor),
+          borderSide: BorderSide(width: 0.0, color: AppColors.primaryMainColor),
           borderRadius: BorderRadius.circular(15.0),
         ),
         errorBorder: OutlineInputBorder(

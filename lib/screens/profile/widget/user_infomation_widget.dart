@@ -3,7 +3,7 @@ import 'package:it008_social_media/constants/app_styles.dart';
 
 class UserInformationWidget extends StatelessWidget {
   final Icon? icon;
-  const UserInformationWidget({Key? key,  this.icon}) : super(key: key);
+  const UserInformationWidget({Key? key, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class UserInformationWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: ClipOval(
                       child: Image.network(
-                        'https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/305767392_1705138999870466_4301266471825436049_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=AsULsruoGWEAX_mHDzP&_nc_ht=scontent.fsgn3-1.fna&oh=00_AT_a-s9PIXh1whMI5WR0K6QHgxI8k5bKhOam1Z5OdMt5kw&oe=635C1E3D',
+                        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
                         width: 67,
                         height: 67,
                         fit: BoxFit.cover,
@@ -45,7 +45,7 @@ class UserInformationWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(onPressed: () {}, icon: icon??Icon(Icons.logout)),
+              IconButton(onPressed: () {}, icon: icon ?? Icon(Icons.logout)),
             ],
           ),
         ),

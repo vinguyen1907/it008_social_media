@@ -14,16 +14,17 @@ class ShowStoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: PageView.builder(
-          itemCount: Story.listStories.length,
-          itemBuilder: (context, index) {
-            return StoryWidget(
-              backgroundImageUrl: Story.listStories[index].imageUrl,
-              isFullScreen: Story.listStories[index].isFullScreen,
-            );
-          }),
-    ));
+        //     body: SafeArea(
+        //   child: PageView.builder(
+        //       itemCount: Story.listStories.length,
+        //       itemBuilder: (context, index) {
+        //         return StoryWidget(
+        //           backgroundImageUrl: Story.listStories[index].imageUrl,
+        //           isFullScreen: Story.listStories[index].isFullScreen,
+        //         );
+        //       }),
+        // )
+        );
   }
 }
 

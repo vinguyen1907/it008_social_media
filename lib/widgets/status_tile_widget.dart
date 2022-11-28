@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
@@ -20,7 +21,8 @@ class StatusTile extends StatelessWidget {
       width: double.infinity,
       child: Row(children: [
         CircleAvatar(
-            radius: 23, backgroundImage: NetworkImage(backgroundImageUrl)),
+            radius: 23,
+            backgroundImage: CachedNetworkImageProvider(backgroundImageUrl)),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

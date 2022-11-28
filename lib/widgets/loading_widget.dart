@@ -22,16 +22,16 @@ class _LoadingManagerState extends State<LoadingManager> {
         widget.child,
         widget.isLoading
             ? Container(
-          color: Colors.black.withOpacity(0.5),
-        )
+                color: Colors.black.withOpacity(0.5),
+              )
             : Container(),
         widget.isLoading
             ? const Center(
-          child: SpinKitFadingCube(
-            color: Colors.greenAccent,
-            size: 50.0,
-          ),
-        )
+                child: SpinKitFadingCube(
+                  color: Colors.greenAccent,
+                  size: 50.0,
+                ),
+              )
             : Container(),
       ],
     );

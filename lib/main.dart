@@ -5,7 +5,7 @@ import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/services/router.dart';
 import 'screens/splash_screen/splash_screen.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   // SystemChrome.setEnabledSystemUIMode(
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const MainScreen(),
       onGenerateRoute: appRouter.onGenerateRoute,
     );
   }

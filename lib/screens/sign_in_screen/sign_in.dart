@@ -78,12 +78,12 @@ class _SignInState extends State<SignIn> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Color(0xff006175))),
                 child: TextFormField(
-                  validator:  (String? inputVal) {
-              if (!emailRegex.hasMatch(inputVal.toString())) {
-              return 'Email format is not matching';
-              }
-              return null;
-              },
+                  validator: (String? inputVal) {
+                    if (!emailRegex.hasMatch(inputVal.toString())) {
+                      return 'Email format is not matching';
+                    }
+                    return null;
+                  },
                   controller: _email,
                   decoration: InputDecoration(border: InputBorder.none),
                 ),
@@ -119,6 +119,7 @@ class _SignInState extends State<SignIn> {
                   },
                   controller: _password,
                   decoration: InputDecoration(border: InputBorder.none),
+                  obscureText: true,
                 ),
               )),
           Positioned(
@@ -146,7 +147,6 @@ class _SignInState extends State<SignIn> {
               child: GestureDetector(
                 onTap: () {
                   _submitFormOnLogin();
-
                 },
                 child: Container(
                   width: width_variable * 0.856,
@@ -244,8 +244,10 @@ class _SignInState extends State<SignIn> {
                     SizedBox(width: 5),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: ((context) => SignUp())));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => SignUp())));
                       },
                       child: Text('Sign up',
                           style: TextStyle(
@@ -275,8 +277,16 @@ class _SignInState extends State<SignIn> {
         await authInstance.signInWithEmailAndPassword(
             email: _email.text.toLowerCase().trim(),
             password: _password.text.trim());
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => MainScreen())));
+
+        if (!mounted) return;
+
+        // showDialog(
+        //     context: context,
+        //     builder: (context) => AlertDialog(
+        //           content: Text("Login Successful"),
+        //         ));
+
+        Navigator.of(context).pushNamed(MainScreen.id);
       } on FirebaseException catch (error) {
         GlobalMethods.errorDialog(
             subtitle: '${error.message}', context: context);

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:uuid/uuid.dart';
 
 import '../widgets/text_widget.dart';
@@ -19,8 +21,8 @@ class GlobalMethods {
         builder: (context) {
           return AlertDialog(
             title: Row(children: [
-              Image.asset(
-                'assets/images/warning-sign.png',
+              SvgPicture.asset(
+                AppAssets.warningSign,
                 height: 20,
                 width: 20,
                 fit: BoxFit.fill,
@@ -68,8 +70,8 @@ class GlobalMethods {
         builder: (context) {
           return AlertDialog(
             title: Row(children: [
-              Image.asset(
-                'assets/images/warning-sign.png',
+              SvgPicture.asset(
+                AppAssets.warningSign,
                 height: 20,
                 width: 20,
                 fit: BoxFit.fill,
@@ -89,7 +91,7 @@ class GlobalMethods {
                 },
                 child: TextWidget(
                   color: Colors.cyan,
-                  text: 'Ok',
+                  text: 'OK',
                   textSize: 18,
                 ),
               ),
@@ -100,8 +102,8 @@ class GlobalMethods {
 
   static Future<void> addToCart(
       {required String productId,
-        required int quantity,
-        required BuildContext context}) async {
+      required int quantity,
+      required BuildContext context}) async {
     final User? user = authInstance.currentUser;
     final _uid = user!.uid;
     final cartId = const Uuid().v4();
