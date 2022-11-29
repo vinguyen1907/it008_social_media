@@ -133,7 +133,7 @@ class _PostWidgetState extends State<PostWidget> {
                         Text("$likeQuantity", style: AppStyles.postReaction),
                         const SizedBox(width: 10),
                         SvgPicture.asset(AppAssets.icComment,
-                            width: 18, fit: BoxFit.cover),
+                            width: 18, height: 18, fit: BoxFit.cover),
                         const SizedBox(width: 10),
                         Text("${widget.post.comments.length}",
                             style: AppStyles.postReaction)
