@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
@@ -16,6 +17,7 @@ import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.d
 import 'package:it008_social_media/services/utils.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
+import 'package:provider/provider.dart';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({Key? key}) : super(key: key);
@@ -53,6 +55,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: LoadingManager(
@@ -185,10 +188,15 @@ class _AddPostPageState extends State<AddPostPage> {
                       Post newPost = Post(
                           id: postDoc.id,
                           userId: user!.uid,
+                          userName:
+                              userProvider.getUser.fullName ?? "No user name",
+                          userAvatarUrl:
+                              userProvider.getUser.avatarImageUrl ?? "",
                           uploadTime: Timestamp.now(),
                           imageUrl: imageUrl ?? '',
                           caption: _captionTextController.text,
-                          likedUserIdList: []);
+                          likedUserIdList: [],
+                          comments: []);
                       postsRef.doc(postDoc.id).set(newPost.toJson());
 
                       // 4. notify upload successfully

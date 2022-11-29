@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/screens/add_post/add_post_page.dart';
 import 'package:it008_social_media/screens/chat/chat_page.dart';
 import 'package:it008_social_media/screens/home_screen/home_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../profile/my_profile_page.dart';
 
@@ -17,6 +19,19 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+
+  @override
+  void initState() {
+    loadUserData();
+  }
+
+  loadUserData() async {
+    UserProvider _userProvider =
+    Provider.of<UserProvider>(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = const [
     // Scaffold(),

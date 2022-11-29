@@ -123,12 +123,16 @@ class StoryItem extends StatelessWidget {
                                 future: usersRef.doc(userId).get(),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
-                                    User user = User.fromJson(snapshot.data!
+                                    Users user = Users.fromJson(snapshot.data!
                                         .data() as Map<String, dynamic>);
                                     return ClipOval(
                                       child: user.avatarImageUrl != ''
-                                          ? Image.network(
-                                              user.avatarImageUrl,
+                                          ? CachedNetworkImage(
+                                              imageUrl:
+                                                  user.avatarImageUrl ?? "",
+                                              placeholder: ((context, url) =>
+                                                  Container(
+                                                      color: Colors.grey[200])),
                                               height: 25,
                                               width: 25,
                                               fit: BoxFit.cover,
@@ -178,9 +182,9 @@ class StoryItem extends StatelessWidget {
                           if (snapshot.hasData &&
                               snapshot.connectionState ==
                                   ConnectionState.done) {
-                            User user = User.fromJson(
+                            Users user = Users.fromJson(
                                 snapshot.data!.data() as Map<String, dynamic>);
-                            return Text(user.fullName,
+                            return Text(user.fullName ?? "No user name",
                                 style: AppStyles.storyLabel,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1);

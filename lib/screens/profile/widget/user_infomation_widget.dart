@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
+import 'package:provider/provider.dart';
 
 class UserInformationWidget extends StatelessWidget {
   final Icon? icon;
@@ -7,6 +9,7 @@ class UserInformationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Column(
       children: [
         Padding(
@@ -22,7 +25,7 @@ class UserInformationWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: ClipOval(
                       child: Image.network(
-                        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
+                        userProvider.getUser.avatarImageUrl ?? "",
                         width: 67,
                         height: 67,
                         fit: BoxFit.cover,
@@ -34,7 +37,7 @@ class UserInformationWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Oyin Dolapo",
+                        userProvider.getUser.userName ?? "",
                         style: AppStyles.postUserName.copyWith(fontSize: 18),
                       ),
                       Text(

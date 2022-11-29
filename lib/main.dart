@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/services/router.dart';
+import 'package:provider/provider.dart';
+import 'change_notifies/user_provider.dart';
 import 'screens/splash_screen/splash_screen.dart';
 
 void main() async {
@@ -20,10 +22,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const MainScreen(),
-      onGenerateRoute: appRouter.onGenerateRoute,
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => UserProvider(),
+          ),
+        ],
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: const MainScreen(),
+            onGenerateRoute: appRouter.onGenerateRoute,
+          );
+        });
   }
 }

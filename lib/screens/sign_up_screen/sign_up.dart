@@ -261,7 +261,7 @@ class _SignUpState extends State<SignUp> {
         final User? user = authInstance.currentUser;
         final _uid = user!.uid;
 
-        model.User _user = model.User(
+        model.Users _user = model.Users(
           id: _uid,
           userName: '',
           email: _email.text.toLowerCase().trim(),

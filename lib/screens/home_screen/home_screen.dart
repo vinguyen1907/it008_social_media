@@ -9,6 +9,7 @@ import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
+import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
 import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
@@ -27,79 +28,27 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin<HomeScreen> {
   @override
   bool get wantKeepAlive => true;
-
-  Future<User?> getCurrentUser() async {
-    final docUser = usersRef.doc(user!.uid);
-    final snapshot = await docUser.get();
-    if (snapshot.exists) {
-      return User.fromJson(snapshot.data()! as Map<String, dynamic>);
-    }
-  }
-
-  Future<User?> getUserFromFirebaseByID(String userId) async {
-    final docUser = usersRef.doc(userId);
-    final snapshot = await docUser.get();
-    if (snapshot.exists) {
-      return User.fromJson(snapshot.data() as Map<String, dynamic>);
-    }
-  }
-
-  Stream<List<Story>> getStoryListStreamFromFirebase() {
-    return storiesRef
-        .orderBy('createdTime', descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => Story.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
-    });
-  }
-
-  Future<List<Story>> getStoryListFromFirebase() async {
-    final snapshot = await storiesRef.get();
-    return snapshot.docs.map((doc) {
-      return Story.fromJson(doc.data() as Map<String, dynamic>);
-    }).toList();
-  }
-
-  Future<bool> isFollowing(
-      {required String followerId, required followingId}) async {
-    bool result = false;
-    final snapshot = await followRef.get();
-
-    snapshot.docs.forEach((doc) {
-      final FollowModel follow =
-          FollowModel.fromJson(doc.data() as Map<String, dynamic>);
-      // print(
-      //     "FB: follower: \"${follow.followerId}\" - following: \"${follow.followingId}\"");
-      // print("follower: \"$followerId\" - following: \"$followingId\"");
-
-      if (follow.followerId.trim() == followerId &&
-          follow.followingId.trim() == followingId) {
-        // print("true ne");
-        result = true;
-      } else {
-        // print("false ne");
-        result = false;
-      }
-    });
-    return result;
-  }
-
-  int postQuantity = 5;
-  final ScrollController _scrollController = ScrollController();
+  // int postQuantity = 5;
+  // final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() async {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        setState(() {
-          postQuantity += 5;
-        });
-      }
-    });
+    // _scrollController.addListener(() async {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     setState(() {
+    //       postQuantity += 5;
+    //     });
+    //   }
+    // });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
   }
 
   @override
@@ -112,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen>
       onRefresh: () {
         return postsRef
             .orderBy('uploadTime', descending: true)
-            .limit(postQuantity)
+            // .limit(postQuantity)
             .get();
       },
       child: SingleChildScrollView(
-        controller: _scrollController,
+        // controller: _scrollController,
         child: Column(children: [
           Container(
             width: size.width - Dimensions.defaultHorizontalMargin,
@@ -125,7 +74,13 @@ class _HomeScreenState extends State<HomeScreen>
                 top: 20, left: Dimensions.defaultHorizontalMargin),
             child: Row(
               children: [
-                const SearchBar(),
+                SearchBar(
+                  controller: _searchController,
+                  readOnly: true,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(SearchScreen.id);
+                  },
+                ),
                 IconButton(
                     padding: const EdgeInsets.all(0.0),
                     onPressed: () {
@@ -150,10 +105,10 @@ class _HomeScreenState extends State<HomeScreen>
                         future: getCurrentUser(),
                         builder: ((context, snapshot) {
                           if (snapshot.hasData) {
-                            final User user = snapshot.data as User;
+                            final Users user = snapshot.data as Users;
                             return StoryItem(
                                 size: size,
-                                imageUrl: user.avatarImageUrl,
+                                imageUrl: user.avatarImageUrl ?? "",
                                 hasBorder: true,
                                 onTap: () {
                                   showModalBottomSheet<dynamic>(
@@ -188,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     .subtract(const Duration(days: 1))
                                     .isBefore(story.createdTime.toDate());
                           }).map((story) {
-                            return FutureBuilder<User?>(
+                            return FutureBuilder<Users?>(
                                 future: getUserFromFirebaseByID(story.userId),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasData) {
@@ -280,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen>
           FutureBuilder<QuerySnapshot>(
               future: postsRef
                   .orderBy('uploadTime', descending: true)
-                  .limit(postQuantity)
+                  // .limit(postQuantity)
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -291,32 +246,15 @@ class _HomeScreenState extends State<HomeScreen>
                       shrinkWrap: true,
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
-                        final post = Post.fromJson(
+                        Post post = Post.fromJson(
                             docs[index].data() as Map<String, dynamic>);
 
                         return Padding(
-                          padding: const EdgeInsets.only(
-                              top: Dimensions.smallVerticalMargin),
-                          child: FutureBuilder<DocumentSnapshot>(
-                              future: usersRef.doc(post.userId).get(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData &&
-                                    snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                  final user = User.fromJson(snapshot.data!
-                                      .data() as Map<String, dynamic>);
-                                  return PostWidget(
-                                    post: post,
-                                    user: user,
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Text(
-                                      "Error: ${snapshot.error.toString()}");
-                                } else {
-                                  return Container();
-                                }
-                              }),
-                        );
+                            padding: const EdgeInsets.only(
+                                top: Dimensions.smallVerticalMargin),
+                            child: PostWidget(
+                              post: post,
+                            ));
                       });
                 } else {
                   return Container();
@@ -325,5 +263,63 @@ class _HomeScreenState extends State<HomeScreen>
         ]),
       ),
     )));
+  }
+
+  Future<Users?> getCurrentUser() async {
+    final docUser = usersRef.doc(user!.uid);
+    final snapshot = await docUser.get();
+    if (snapshot.exists) {
+      return Users.fromJson(snapshot.data()! as Map<String, dynamic>);
+    }
+  }
+
+  Future<Users?> getUserFromFirebaseByID(String userId) async {
+    final docUser = usersRef.doc(userId);
+    final snapshot = await docUser.get();
+    if (snapshot.exists) {
+      return Users.fromJson(snapshot.data() as Map<String, dynamic>);
+    }
+  }
+
+  Stream<List<Story>> getStoryListStreamFromFirebase() {
+    return storiesRef
+        .orderBy('createdTime', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => Story.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+    });
+  }
+
+  Future<List<Story>> getStoryListFromFirebase() async {
+    final snapshot = await storiesRef.get();
+    return snapshot.docs.map((doc) {
+      return Story.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
+  }
+
+  Future<bool> isFollowing(
+      {required String followerId, required followingId}) async {
+    bool result = false;
+    final snapshot = await followRef.get();
+
+    snapshot.docs.forEach((doc) {
+      final FollowModel follow =
+          FollowModel.fromJson(doc.data() as Map<String, dynamic>);
+      // print(
+      //     "FB: follower: \"${follow.followerId}\" - following: \"${follow.followingId}\"");
+      // print("follower: \"$followerId\" - following: \"$followingId\"");
+
+      if (follow.followerId.trim() == followerId &&
+          follow.followingId.trim() == followingId) {
+        // print("true ne");
+        result = true;
+      } else {
+        // print("false ne");
+        result = false;
+      }
+    });
+    return result;
   }
 }

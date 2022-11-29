@@ -154,4 +154,22 @@ class GlobalMethods {
       errorDialog(subtitle: error.toString(), context: context);
     }
   }
+
+  static String getPeriodTimeToNow(DateTime uploadTime) {
+    final DateTime now = DateTime.now();
+    if (now.day - uploadTime.day > 0) {
+      return '${now.day - uploadTime.day} day${now.day - uploadTime.day == 1 ? '' : 's'} ago';
+    } else {
+      if (now.hour - uploadTime.hour > 0) {
+        return '${now.hour - uploadTime.hour} hr${now.hour - uploadTime.hour == 1 ? '' : 's'} ago';
+      } else {
+        if (now.minute - uploadTime.minute > 0) {
+          return '${now.minute - uploadTime.minute} min${now.minute - uploadTime.minute == 1 ? '' : 's'} ago';
+        } else {
+          return 'Just now';
+        }
+      }
+    }
+    // now.difference(uploadTime);
+  }
 }

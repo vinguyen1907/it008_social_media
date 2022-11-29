@@ -20,9 +20,12 @@ class StatusTile extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Row(children: [
-        CircleAvatar(
-            radius: 23,
-            backgroundImage: CachedNetworkImageProvider(backgroundImageUrl)),
+        ClipOval(
+            child: CachedNetworkImage(
+                imageUrl: backgroundImageUrl, height: 46, width: 46)),
+        // CircleAvatar(
+        //     radius: 23,
+        //     backgroundImage: CachedNetworkImageProvider(backgroundImageUrl)),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

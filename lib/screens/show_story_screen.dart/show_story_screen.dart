@@ -39,6 +39,7 @@ class StoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final TextEditingController controller = TextEditingController();
     return Scaffold(
       backgroundColor: AppColors.darkBackgroundColor,
       body: SafeArea(
@@ -85,6 +86,7 @@ class StoryWidget extends StatelessWidget {
                         borderColor: Colors.white,
                         hintColor: Colors.white,
                         textColor: Colors.white,
+                        controller: controller,
                         onPressed: () {})
                   ]),
                 )

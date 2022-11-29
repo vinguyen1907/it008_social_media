@@ -47,8 +47,9 @@ dependencies:
   cloud_firestore: ^4.0.5
   firebase_storage: ^11.0.5
   # cache network images
-  cached_network_image: ^3.2.2
+  cached_network_image: ^3.2.3
 
+  provider: ^6.0.4
   # camera: ^0.10.0+4
   # path_provider: ^2.0.11
   # path: ^1.8.2
