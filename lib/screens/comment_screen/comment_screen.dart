@@ -62,6 +62,7 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               PostWidget(
                 post: widget.post,
+                isActive: false,
               ),
               const SizedBox(height: 10),
 
