@@ -16,9 +16,11 @@ import '../models/user_model.dart';
 class PostWidget extends StatefulWidget {
   const PostWidget({
     Key? key,
+    required this.isActive,
     required this.post,
   }) : super(key: key);
 
+  final bool isActive;
   final Post post;
 
   @override
@@ -44,8 +46,10 @@ class _PostWidgetState extends State<PostWidget> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .pushNamed(CommentScreen.id, arguments: widget.post);
+        if (widget.isActive) {
+          Navigator.of(context)
+              .pushNamed(CommentScreen.id, arguments: widget.post);
+        }
       },
       child: Container(
           width: size.width - 2 * Dimensions.defaultHorizontalMargin,
@@ -91,47 +95,51 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
               ),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // update post in firestore
-                      List<String> newLikedList = List<String>.from(
-                          widget.post.likedUserIdList); // copy list
-                      if (!isLiked) {
-                        newLikedList.add(user!.uid);
-                      } else {
-                        newLikedList.remove(user!.uid);
-                      }
-                      // newLikedList.add(user!.uid);
-                      postsRef
-                          .doc(widget.post.id)
-                          .update({'likedUserIdList': newLikedList});
+              widget.isActive
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // update post in firestore
+                            List<String> newLikedList = List<String>.from(
+                                widget.post.likedUserIdList); // copy list
+                            if (!isLiked) {
+                              newLikedList.add(user!.uid);
+                            } else {
+                              newLikedList.remove(user!.uid);
+                            }
+                            // newLikedList.add(user!.uid);
+                            postsRef
+                                .doc(widget.post.id)
+                                .update({'likedUserIdList': newLikedList});
 
-                      // update UI
-                      setState(() {
-                        isLiked = !isLiked;
-                        likeQuantity = newLikedList.length;
-                        // widget.post.likedUserIdList = newLikedList;
-                      });
-                    },
-                    child: SvgPicture.asset(
-                        isLiked ? AppAssets.icLikedHeart : AppAssets.icHeart,
-                        width: 18,
-                        height: 18,
-                        fit: BoxFit.cover),
-                  ),
-                  const SizedBox(width: 10),
-                  Text("$likeQuantity", style: AppStyles.postReaction),
-                  const SizedBox(width: 10),
-                  SvgPicture.asset(AppAssets.icComment,
-                      width: 18, fit: BoxFit.cover),
-                  const SizedBox(width: 10),
-                  Text("${widget.post.comments.length}",
-                      style: AppStyles.postReaction)
-                ],
-              )
+                            // update UI
+                            setState(() {
+                              isLiked = !isLiked;
+                              likeQuantity = newLikedList.length;
+                              // widget.post.likedUserIdList = newLikedList;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                              isLiked
+                                  ? AppAssets.icLikedHeart
+                                  : AppAssets.icHeart,
+                              width: 18,
+                              height: 18,
+                              fit: BoxFit.cover),
+                        ),
+                        const SizedBox(width: 10),
+                        Text("$likeQuantity", style: AppStyles.postReaction),
+                        const SizedBox(width: 10),
+                        SvgPicture.asset(AppAssets.icComment,
+                            width: 18, fit: BoxFit.cover),
+                        const SizedBox(width: 10),
+                        Text("${widget.post.comments.length}",
+                            style: AppStyles.postReaction)
+                      ],
+                    )
+                  : Container()
             ],
           )),
     );
