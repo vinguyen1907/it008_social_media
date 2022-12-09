@@ -157,19 +157,19 @@ class GlobalMethods {
 
   static String getPeriodTimeToNow(DateTime uploadTime) {
     final DateTime now = DateTime.now();
-    if (now.day - uploadTime.day > 0) {
-      return '${now.day - uploadTime.day} day${now.day - uploadTime.day == 1 ? '' : 's'} ago';
+    Duration difference = now.difference(uploadTime);
+    if (difference.inDays > 0) {
+      return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
     } else {
-      if (now.hour - uploadTime.hour > 0) {
-        return '${now.hour - uploadTime.hour} hr${now.hour - uploadTime.hour == 1 ? '' : 's'} ago';
+      if (difference.inHours > 0) {
+        return '${difference.inHours} hr${difference.inHours == 1 ? '' : 's'} ago';
       } else {
-        if (now.minute - uploadTime.minute > 0) {
-          return '${now.minute - uploadTime.minute} min${now.minute - uploadTime.minute == 1 ? '' : 's'} ago';
+        if (difference.inMinutes > 0) {
+          return '${difference.inMinutes} min${difference.inMinutes == 1 ? '' : 's'} ago';
         } else {
           return 'Just now';
         }
       }
     }
-    // now.difference(uploadTime);
   }
 }

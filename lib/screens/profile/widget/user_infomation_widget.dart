@@ -25,7 +25,7 @@ class UserInformationWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: ClipOval(
                       child: Image.network(
-                        userProvider.getUser.avatarImageUrl ?? "",
+                        userProvider.getUser!.avatarImageUrl ?? "",
                         width: 67,
                         height: 67,
                         fit: BoxFit.cover,
@@ -37,7 +37,7 @@ class UserInformationWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        userProvider.getUser.userName ?? "",
+                        userProvider.getUser!.userName ?? "",
                         style: AppStyles.postUserName.copyWith(fontSize: 18),
                       ),
                       Text(

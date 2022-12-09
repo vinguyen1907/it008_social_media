@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
   Users? _user;
   final CloudStoreDataManagement _authMethods = CloudStoreDataManagement();
 
-  Users get getUser => _user!;
+  Users? get getUser => _user;
 
   Future<void> refreshUser() async {
     Users user = await _authMethods.getUserDetails();

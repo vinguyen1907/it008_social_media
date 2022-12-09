@@ -28,7 +28,7 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  late bool isLiked;
+  bool isLiked = false;
   late int likeQuantity;
   // late Post post;
 
@@ -72,8 +72,11 @@ class _PostWidgetState extends State<PostWidget> {
                 backgroundImageUrl: widget.post.userAvatarUrl,
               ),
               const SizedBox(height: 10),
-              Text(widget.post.caption,
-                  style: AppStyles.postDescription, textAlign: TextAlign.left),
+              widget.post.caption != ""
+                  ? Text(widget.post.caption,
+                      style: AppStyles.postDescription,
+                      textAlign: TextAlign.left)
+                  : Container(),
               const SizedBox(height: 10),
               Container(
                 decoration: BoxDecoration(
@@ -90,9 +93,8 @@ class _PostWidgetState extends State<PostWidget> {
                       placeholder: (context, url) {
                         return Container(height: 200, color: Colors.grey[200]);
                       },
-                    )
-                    // Image.network(postImageUrl),
-                    ),
+                      errorWidget: (context, url, error) => Container(),
+                    )),
               ),
               const SizedBox(height: 10),
               widget.isActive
@@ -133,7 +135,7 @@ class _PostWidgetState extends State<PostWidget> {
                         Text("$likeQuantity", style: AppStyles.postReaction),
                         const SizedBox(width: 10),
                         SvgPicture.asset(AppAssets.icComment,
-                            width: 18, fit: BoxFit.cover),
+                            width: 18, height: 18, fit: BoxFit.cover),
                         const SizedBox(width: 10),
                         Text("${widget.post.comments.length}",
                             style: AppStyles.postReaction)

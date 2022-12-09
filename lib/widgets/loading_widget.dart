@@ -15,6 +15,7 @@ class _LoadingManagerState extends State<LoadingManager> {
   late Animation<double> containerSize;
   late AnimationController animationController;
   late Duration animationDuration = const Duration(milliseconds: 270);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
