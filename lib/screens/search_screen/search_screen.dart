@@ -79,11 +79,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                     Container(color: Colors.grey[200]),
                                 errorWidget: (context, url, error) {
                                   return Container(
-                                    color: Colors.grey[200],
-                                    child: const Icon(
-                                      Icons.error,
-                                    ),
-                                  );
+                                      color: Colors.grey[200],
+                                      child:
+                                          Image.asset(AppAssets.defaultImage));
                                   // return Container(color: Colors.red);
                                 },
                                 width: 40,

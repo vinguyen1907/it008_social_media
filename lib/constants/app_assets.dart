@@ -25,6 +25,8 @@ class AppAssets {
   static const icAddPost = '$iconPath/ic_add_post.svg';
   static const icCheck = '$iconPath/ic_check.svg';
   static const icSend = '$iconPath/send.svg';
+  static const icTap = '$iconPath/tap.png';
+  static const icSlideLeft = '$iconPath/slide-left.png';
 
   // image
   static const warningSign = '$imagePath/warning-sign.svg';

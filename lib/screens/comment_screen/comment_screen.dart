@@ -15,6 +15,8 @@ import 'package:it008_social_media/widgets/input_and_send.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/app_colors.dart';
+
 class CommentScreen extends StatefulWidget {
   const CommentScreen({Key? key, required this.post}) : super(key: key);
 
@@ -41,138 +43,161 @@ class _CommentScreenState extends State<CommentScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-        body: SafeArea(
-            child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Header(
-          title: 'Comments',
-          prefixIcon: IconButton(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: SvgPicture.asset(AppAssets.icArrowLeft,
-                width: 18, height: 18, fit: BoxFit.contain),
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.primaryTextColor,
+            ),
+          ),
+          centerTitle: true,
+          title: Text(
+            "Comment",
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
           ),
         ),
-        Expanded(
-          child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PostWidget(
-                post: widget.post,
-                isActive: false,
-              ),
-              const SizedBox(height: 10),
-
-              // input comment
-              Container(
-                height: size.height * 0.05,
-                width: size.width,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Dimensions.defaultHorizontalMargin),
-                child: Row(children: [
-                  ClipOval(
-                      child: CachedNetworkImage(
-                    imageUrl: widget.post.userAvatarUrl,
-                    height: size.height * 0.05,
-                  )),
-                  const SizedBox(width: 10),
-                  InputAndSendWidget(
-                    size: size,
-                    hintText: "Add a comment...",
-                    borderColor: const Color(0xff4D4D4D),
-                    hintColor: const Color(0xffcccccc),
-                    textColor: Colors.black,
-                    controller: controller,
-                    onPressed: () {
-                      final doc = postsRef
-                          .doc(widget.post.id)
-                          .collection('comments')
-                          .doc();
-                      Comment comment = Comment(
-                        id: doc.id,
-                        content: controller.text,
-                        userId: userProvider.getUser.id ?? "No user",
-                        userName: userProvider.getUser.fullName ?? "No name",
-                        userAvatarUrl:
-                            userProvider.getUser.avatarImageUrl ?? "",
-                        createdTime: Timestamp.now(),
-                      );
-                      setState(() {
-                        comments.insert(0, comment);
-                      });
-                      postsRef
-                          .doc(widget.post.id)
-                          .collection('comments')
-                          .doc(doc.id)
-                          .set(comment.toJson());
-                      controller.clear();
-                    },
+        body: SafeArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header(
+            //   title: 'Comments',
+            //   prefixIcon: IconButton(
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //     },
+            //     icon: SvgPicture.asset(AppAssets.icArrowLeft,
+            //         width: 18, height: 18, fit: BoxFit.contain),
+            //   ),
+            // ),
+            Expanded(
+              child: SingleChildScrollView(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PostWidget(
+                    post: widget.post,
+                    isActive: false,
                   ),
-                ]),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(
-                    left: Dimensions.defaultHorizontalMargin,
-                    top: Dimensions.smallVerticalMargin),
-                child: Text('Comments',
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600)),
-              ),
-              FutureBuilder<Object>(
-                  future: postsRef
-                      .doc(widget.post.id)
-                      .collection('comments')
-                      .orderBy('createdTime', descending: true)
-                      .get(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      QuerySnapshot querySnapshot =
-                          snapshot.data as QuerySnapshot;
-                      if (querySnapshot.docs.isEmpty) {
-                        return SizedBox(
-                          width: size.width,
-                          child: Text(
-                            "No comments found",
-                            style: AppStyles.noItemText,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }
-                      comments = querySnapshot.docs
-                          .map((doc) => Comment.fromJson(
-                              doc.data() as Map<String, dynamic>))
-                          .toList();
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            Comment comment = comments[index];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      Dimensions.defaultHorizontalMargin,
-                                  vertical: Dimensions.smallVerticalMargin),
-                              child: CommentWidget(
-                                comment: comment,
+                  const SizedBox(height: 10),
+
+                  // input comment
+                  Container(
+                    height: size.height * 0.05,
+                    width: size.width,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.defaultHorizontalMargin),
+                    child: Row(children: [
+                      ClipOval(
+                          child: CachedNetworkImage(
+                        imageUrl: widget.post.userAvatarUrl,
+                        height: size.height * 0.05,
+                      )),
+                      const SizedBox(width: 10),
+                      InputAndSendWidget(
+                        size: size,
+                        hintText: "Add a comment...",
+                        borderColor: const Color(0xff4D4D4D),
+                        hintColor: const Color(0xffcccccc),
+                        textColor: Colors.black,
+                        controller: controller,
+                        onPressed: () {
+                          if (controller.text != "") {
+                            final doc = postsRef
+                                .doc(widget.post.id)
+                                .collection('comments')
+                                .doc();
+                            Comment comment = Comment(
+                              id: doc.id,
+                              content: controller.text,
+                              userId: userProvider.getUser!.id ?? "No user",
+                              userName:
+                                  userProvider.getUser!.fullName ?? "No name",
+                              userAvatarUrl:
+                                  userProvider.getUser!.avatarImageUrl ?? "",
+                              createdTime: Timestamp.now(),
+                            );
+                            setState(() {
+                              comments.insert(0, comment);
+                            });
+                            postsRef
+                                .doc(widget.post.id)
+                                .collection('comments')
+                                .doc(doc.id)
+                                .set(comment.toJson());
+                            controller.clear();
+                          }
+                        },
+                      ),
+                    ]),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        left: Dimensions.defaultHorizontalMargin,
+                        top: Dimensions.smallVerticalMargin),
+                    child: Text('Comments',
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600)),
+                  ),
+                  FutureBuilder<Object>(
+                      future: postsRef
+                          .doc(widget.post.id)
+                          .collection('comments')
+                          .orderBy('createdTime', descending: true)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          QuerySnapshot querySnapshot =
+                              snapshot.data as QuerySnapshot;
+                          if (querySnapshot.docs.isEmpty) {
+                            return SizedBox(
+                              width: size.width,
+                              child: Text(
+                                "No comments found",
+                                style: AppStyles.noItemText,
+                                textAlign: TextAlign.center,
                               ),
                             );
-                          });
-                    } else if (snapshot.hasError) {
-                      return const Text("Error");
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  })
-            ],
-          )),
-        ),
-      ],
-    )));
+                          }
+                          comments = querySnapshot.docs
+                              .map((doc) => Comment.fromJson(
+                                  doc.data() as Map<String, dynamic>))
+                              .toList();
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                Comment comment = comments[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          Dimensions.defaultHorizontalMargin,
+                                      vertical: Dimensions.smallVerticalMargin),
+                                  child: CommentWidget(
+                                    comment: comment,
+                                  ),
+                                );
+                              });
+                        } else if (snapshot.hasError) {
+                          return const Text("Error");
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      })
+                ],
+              )),
+            ),
+          ],
+        )));
   }
 }

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
+import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/screens/add_post/add_post_button.dart';
@@ -64,13 +65,15 @@ class _AddPostPageState extends State<AddPostPage> {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.transparent,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: AppColors.primaryTextColor,
-              ),
-            ),
+            // leading: IconButton(
+            //   onPressed: () {
+            //     Navigator.pop(context);
+            //   },
+            //   icon: const Icon(
+            //     Icons.arrow_back_ios_new,
+            //     color: AppColors.primaryTextColor,
+            //   ),
+            // ),
             centerTitle: true,
             title: Text(
               "Post",
@@ -80,13 +83,14 @@ class _AddPostPageState extends State<AddPostPage> {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 27),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.defaultHorizontalMargin),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 34, bottom: 5),
+                    padding: const EdgeInsets.only(top: 10, bottom: 5),
                     child: Text(
                       'Select Image',
                       style: AppStyles.postUploadTime
@@ -125,10 +129,16 @@ class _AddPostPageState extends State<AddPostPage> {
                         right: 0,
                         child: IconButton(
                           onPressed: selectImage,
-                          icon: SvgPicture.asset(
-                            height: 25,
-                            width: 25,
-                            AppAssets.icAddPost,
+                          icon: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: SvgPicture.asset(
+                              height: 25,
+                              width: 25,
+                              AppAssets.icAddPost,
+                            ),
                           ),
                         ),
                       ),
@@ -189,9 +199,9 @@ class _AddPostPageState extends State<AddPostPage> {
                           id: postDoc.id,
                           userId: user!.uid,
                           userName:
-                              userProvider.getUser.fullName ?? "No user name",
+                              userProvider.getUser!.fullName ?? "No user name",
                           userAvatarUrl:
-                              userProvider.getUser.avatarImageUrl ?? "",
+                              userProvider.getUser!.avatarImageUrl ?? "",
                           uploadTime: Timestamp.now(),
                           imageUrl: imageUrl ?? '',
                           caption: _captionTextController.text,
