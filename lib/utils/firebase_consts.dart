@@ -13,6 +13,8 @@ final CollectionReference usersRef = firestore.collection('users');
 final CollectionReference storiesRef = firestore.collection('stories');
 final CollectionReference followRef = firestore.collection('follow');
 final CollectionReference postsRef = firestore.collection('posts');
+final CollectionReference notificationsRef =
+    firestore.collection('notification');
 
 // storage ref
 final storageRef = FirebaseStorage.instance.ref();

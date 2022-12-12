@@ -49,6 +49,8 @@ dependencies:
   # cache network images
   cached_network_image: ^3.2.3
   animations: ^2.0.7
+  # slidable widget
+  flutter_slidable: ^2.0.0
 
   provider: ^6.0.4
   # camera: ^0.10.0+4
