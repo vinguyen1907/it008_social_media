@@ -84,24 +84,27 @@ class _PostWidgetState extends State<PostWidget> {
                       textAlign: TextAlign.left)
                   : Container(),
               const SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 0.5,
-                    color: Colors.black,
-                  ),
-                ),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.post.imageUrl,
-                      placeholder: (context, url) {
-                        return Container(height: 200, color: Colors.grey[200]);
-                      },
-                      errorWidget: (context, url, error) => Container(),
-                    )),
-              ),
+              widget.post.imageUrl != ""
+                  ? Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          width: 0.5,
+                          color: Colors.black,
+                        ),
+                      ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.post.imageUrl,
+                            placeholder: (context, url) {
+                              return Container(
+                                  height: 200, color: Colors.grey[200]);
+                            },
+                            errorWidget: (context, url, error) => Container(),
+                          )),
+                    )
+                  : Container(),
               const SizedBox(height: 10),
               widget.isActive
                   ? Row(

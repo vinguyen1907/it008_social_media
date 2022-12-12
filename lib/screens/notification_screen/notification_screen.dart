@@ -85,14 +85,8 @@ class NotificationScreen extends StatelessWidget {
                               document.data()! as Map<String, dynamic>;
                           final NotificationModel notification =
                               NotificationModel.fromJson(data);
-                          final String description =
-                              (notification.notificationType ==
-                                      NotificationType.comment.toString()
-                                  ? " commented on your post"
-                                  : notification.notificationType ==
-                                          NotificationType.like.toString()
-                                      ? " liked your post"
-                                      : " followed you");
+
+                          String description = _getDescription(notification);
 
                           return Slidable(
                             endActionPane: ActionPane(
@@ -115,19 +109,8 @@ class NotificationScreen extends StatelessWidget {
                               ],
                             ),
                             child: GestureDetector(
-                              onTap: () {
-                                if (notification.notificationType ==
-                                        NotificationType.comment.toString() ||
-                                    notification.notificationType ==
-                                        NotificationType.like.toString()) {
-                                  postsRef.doc(notification.postId).get().then(
-                                      (post) => Navigator.of(context).pushNamed(
-                                          CommentScreen.id,
-                                          arguments: Post.fromJson(post.data()
-                                              as Map<String, dynamic>)));
-                                }
-                                // TODO: Handle following situation
-                              },
+                              onTap: () =>
+                                  _onNotificationTap(notification, context),
                               child: Container(
                                 color: Colors.transparent,
                                 padding: const EdgeInsets.only(
@@ -151,5 +134,33 @@ class NotificationScreen extends StatelessWidget {
             )),
           ],
         )));
+  }
+
+  _onNotificationTap(NotificationModel notification, BuildContext context) {
+    if (notification.notificationType == NotificationType.comment.toString() ||
+        notification.notificationType == NotificationType.like.toString() ||
+        notification.notificationType == NotificationType.addPost.toString()) {
+      postsRef.doc(notification.postId).get().then((post) =>
+          Navigator.of(context).pushNamed(CommentScreen.id,
+              arguments: Post.fromJson(post.data() as Map<String, dynamic>)));
+    }
+    // TODO: Handle following situation
+  }
+
+  String _getDescription(NotificationModel notification) {
+    if (notification.notificationType == NotificationType.comment.toString()) {
+      return " commented on your post";
+    } else if (notification.notificationType ==
+        NotificationType.like.toString()) {
+      return " liked your post";
+    } else if (notification.notificationType ==
+        NotificationType.addPost.toString()) {
+      return " added a new post";
+    } else if (notification.notificationType ==
+        NotificationType.follow.toString()) {
+      return " followed you";
+    } else {
+      return "";
+    }
   }
 }
