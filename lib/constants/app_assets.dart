@@ -32,6 +32,8 @@ class AppAssets {
   static const warningSign = '$imagePath/warning-sign.svg';
   static const imageFailed = '$imagePath/image_failed.svg';
   static const defaultImage = '$imagePath/default_avatar.jpg';
+  static const emptyNotification = '$imagePath/my_notifications.svg';
+  static const emptyPost = '$imagePath/no-post.svg';
 
   // example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';

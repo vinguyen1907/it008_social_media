@@ -221,7 +221,10 @@ class _HomeScreenState extends State<HomeScreen>
             const SizedBox(height: 10),
 
             // list of posts
-            posts.isNotEmpty ? _postList() : const CircularProgressIndicator(),
+            posts.isNotEmpty
+                ? _postList()
+                : SvgPicture.asset(AppAssets.emptyPost,
+                    height: size.height / 4),
           ]),
         ),
       )),

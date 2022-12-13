@@ -1,10 +1,7 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
@@ -180,89 +177,7 @@ class _AddPostPageState extends State<AddPostPage> {
                     ),
                     AddPostButton(
                       onTap: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        // 1. create doc to get doc id
-                        final postDoc = postsRef.doc();
-
-                        // 2. upload image to firebase storage
-                        String? imageUrl;
-                        if (pickedImagePath != null) {
-                          final imageRef =
-                              storageRef.child('post_image/${postDoc.id}');
-                          File image = File(pickedImagePath!);
-                          try {
-                            await imageRef.putFile(image);
-                          } on FirebaseException catch (e) {
-                            print(e);
-                          }
-                          imageUrl = await imageRef.getDownloadURL();
-                        }
-
-                        // 3. upload post to firestore
-                        Post newPost = Post(
-                            id: postDoc.id,
-                            userId: user!.uid,
-                            userName: userProvider.getUser!.fullName ??
-                                "No user name",
-                            userAvatarUrl:
-                                userProvider.getUser!.avatarImageUrl ?? "",
-                            uploadTime: Timestamp.now(),
-                            imageUrl: imageUrl ?? '',
-                            caption: _captionTextController.text,
-                            likedUserIdList: [],
-                            comments: []);
-                        postsRef.doc(postDoc.id).set(newPost.toJson());
-
-                        // 4. notify upload successfully
-                        if (!mounted) return;
-                        showSnackBar(context, 'Successfully');
-
-                        // 5. reset add post screen
-                        setState(() {
-                          pickedImagePath = null;
-                          _captionTextController.clear();
-                        });
-
-                        setState(() {
-                          isLoading = false;
-                        });
-
-                        // Add notification to followers
-                        // 1. get list followers
-                        List<String> followersId = [];
-                        followRef
-                            .where('followingId', isEqualTo: user!.uid)
-                            .get()
-                            .then((snapshot) {
-                          snapshot.docs.forEach((doc) {
-                            followersId.add(doc['followerId']);
-                          });
-
-                          // 2. create notification
-                          for (String id in followersId) {
-                            final doc = notificationsRef
-                                .doc(id)
-                                .collection('notifications')
-                                .doc();
-                            NotificationModel notification = NotificationModel(
-                                id: doc.id,
-                                fromUserId: userProvider.getUser!.id!,
-                                fromUserName: userProvider.getUser!.fullName!,
-                                fromUserAvatarUrl:
-                                    userProvider.getUser!.avatarImageUrl!,
-                                toUserId: id,
-                                postId: newPost.id,
-                                notificationType:
-                                    NotificationType.addPost.toString(),
-                                createdTime: Timestamp.now());
-                            doc.set(notification.toJson());
-                          }
-                        });
-
-                        // Dismiss keyboard
-                        FocusManager.instance.primaryFocus?.unfocus();
+                        await _handleAddPost(userProvider);
                       },
                     ),
                   ],
@@ -273,5 +188,80 @@ class _AddPostPageState extends State<AddPostPage> {
         ),
       ),
     );
+  }
+
+  _handleAddPost(UserProvider userProvider) async {
+    setState(() {
+      isLoading = true;
+    });
+    // 1. create doc to get doc id
+    final postDoc = postsRef.doc();
+
+    // 2. upload image to firebase storage
+    String? imageUrl;
+    if (pickedImagePath != null) {
+      final imageRef = storageRef.child('post_image/${postDoc.id}');
+      File image = File(pickedImagePath!);
+      try {
+        await imageRef.putFile(image);
+      } on FirebaseException catch (e) {
+        print(e);
+      }
+      imageUrl = await imageRef.getDownloadURL();
+    }
+
+    // 3. upload post to firestore
+    Post newPost = Post(
+        id: postDoc.id,
+        userId: user!.uid,
+        userName: userProvider.getUser!.fullName ?? "No user name",
+        userAvatarUrl: userProvider.getUser!.avatarImageUrl ?? "",
+        uploadTime: Timestamp.now(),
+        imageUrl: imageUrl ?? '',
+        caption: _captionTextController.text,
+        likedUserIdList: [],
+        comments: []);
+    postsRef.doc(postDoc.id).set(newPost.toJson());
+
+    // 4. notify upload successfully
+    if (!mounted) return;
+    showSnackBar(context, 'Successfully');
+
+    // 5. reset add post screen
+    setState(() {
+      pickedImagePath = null;
+      _captionTextController.clear();
+    });
+
+    setState(() {
+      isLoading = false;
+    });
+
+    // Add notification to followers
+    // 1. get list followers
+    List<String> followersId = [];
+    followRef.where('followingId', isEqualTo: user!.uid).get().then((snapshot) {
+      snapshot.docs.forEach((doc) {
+        followersId.add(doc['followerId']);
+      });
+
+      // 2. create notification
+      for (String id in followersId) {
+        final doc = notificationsRef.doc(id).collection('notifications').doc();
+        NotificationModel notification = NotificationModel(
+            id: doc.id,
+            fromUserId: userProvider.getUser!.id!,
+            fromUserName: userProvider.getUser!.fullName!,
+            fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
+            toUserId: id,
+            postId: newPost.id,
+            notificationType: NotificationType.addPost.toString(),
+            createdTime: Timestamp.now());
+        doc.set(notification.toJson());
+      }
+    });
+
+    // Dismiss keyboard
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 }
