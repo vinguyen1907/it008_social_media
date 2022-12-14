@@ -24,42 +24,41 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: AppColors.primaryTextColor,
-              ),
-            ),
-            centerTitle: true,
-            title: Text(
-              "My Profile",
-              style: AppStyles.postUserName
-                  .copyWith(fontSize: 18, height: 27 / 18),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: AppColors.primaryTextColor,
             ),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                UserInformationWidget(),
-                MyDescriptionLabel(),
-                EditProfileButton(onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditProfilePage()));
-                }),
-                FollowWidget(),
-                PostLabel(),
-                PostWidget(),
-              ],
-            ),
-          )),
+          centerTitle: true,
+          title: Text(
+            "My Profile",
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              UserInformationWidget(),
+              MyDescriptionLabel(),
+              EditProfileButton(onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditProfilePage()));
+              }),
+              FollowWidget(),
+              PostLabel(),
+              PostWidget(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

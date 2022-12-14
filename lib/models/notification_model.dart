@@ -17,6 +17,5 @@ class Notification {
     this.postId,
     required this.notificationType,
     required this.createdTime,
-    
-  })
+  });
 }
