@@ -6,11 +6,15 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
+import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
+import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/follow_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/models/user_model.dart';
+import 'package:it008_social_media/screens/add_post/add_post_button.dart';
+import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
 import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
@@ -157,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen>
                                 initialPage: 0,
                               );
                             });
-                        // ));
                       })),
 
                   // stories
@@ -199,17 +202,6 @@ class _HomeScreenState extends State<HomeScreen>
                                         stories: stories,
                                         initialPage: index,
                                       );
-
-                                      // pageController =
-                                      //     PageController(initialPage: index);
-                                      // return PageView(
-                                      //     controller: pageController,
-                                      //     children: List.generate(
-                                      //       stories.length,
-                                      //       (index) => FullScreenStory(
-                                      //         storyGroup: stories[index],
-                                      //       ),
-                                      //     ));
                                     });
                               });
                         } else {
@@ -222,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen>
 
             // list of posts
             posts.isNotEmpty
-                ? _postList()
+                ? _buildPostList(size)
                 : SvgPicture.asset(AppAssets.emptyPost,
                     height: size.height / 4),
           ]),
@@ -264,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  ListView _postList() {
+  ListView _buildPostList(Size size) {
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -289,10 +281,256 @@ class _HomeScreenState extends State<HomeScreen>
           return Padding(
               padding:
                   const EdgeInsets.only(top: Dimensions.smallVerticalMargin),
-              child: PostWidget(
-                post: posts[index],
-                isActive: true,
+              child: Stack(
+                children: [
+                  PostWidget(
+                    post: posts[index],
+                    isActive: true,
+                  ),
+                  posts[index].userId == user!.uid
+                      ? Positioned(
+                          top: 0,
+                          right: 20,
+                          child: IconButton(
+                              icon:
+                                  SvgPicture.asset(AppAssets.icMore, width: 20),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return _buildPostOptionBottomSheet(
+                                          size, index, context);
+                                    });
+                              }))
+                      : Container()
+                ],
               ));
+        });
+  }
+
+  Container _buildPostOptionBottomSheet(
+      Size size, int index, BuildContext context) {
+    return Container(
+        width: size.width - 2 * Dimensions.defaultHorizontalMargin,
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Wrap(
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              width: size.width - 2 * Dimensions.defaultHorizontalMargin,
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: size.width,
+                    child: TextButton(
+                        onPressed: () {
+                          _handleDeletePost(context, index);
+                        },
+                        child: Text("Delete Post",
+                            style: AppStyles.bottomSheetSelection
+                                .copyWith(color: Colors.red))),
+                  ),
+                  Container(height: 1, color: Colors.black12),
+                  SizedBox(
+                    width: size.width,
+                    child: TextButton(
+                        onPressed: () {
+                          _handleEditPost(context, index);
+                        },
+                        child: const Text("Edit Post",
+                            style: AppStyles.bottomSheetSelection)),
+                  ),
+                ],
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  minimumSize: Size(
+                      size.width - 2 * Dimensions.defaultHorizontalMargin, 50),
+                  backgroundColor: AppColors.primaryMainColor,
+                  foregroundColor: Colors.white),
+              child: Text("Cancel",
+                  style: AppStyles.bottomSheetSelection
+                      .copyWith(color: Colors.white)),
+            ),
+          ],
+        ));
+  }
+
+  _handleEditPost(BuildContext context, int index) {
+    final TextEditingController _captionController =
+        TextEditingController(text: posts[index].caption);
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+              backgroundColor: Colors.white,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.defaultHorizontalMargin,
+                      vertical: Dimensions.defaultMargin),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // EDIT IMAGE: Khi nào rảnh thì làm
+
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //       top: 10, bottom: 5),
+                      //   child: Text(
+                      //     'Select Image',
+                      //     style: AppStyles.postUploadTime
+                      //         .copyWith(
+                      //             fontSize: 14,
+                      //             height: 21 / 14),
+                      //   ),
+                      // ),
+                      // Stack(
+                      //   children: [
+                      //     Container(
+                      //       width: size.width,
+                      //       // height: 133,
+                      //       // padding: EdgeInsets.symmetric(
+                      //       //     vertical: pickedImagePath == null ? 60 : 0),
+                      //       decoration: BoxDecoration(
+                      //         borderRadius:
+                      //             BorderRadius.circular(10),
+                      //         color: AppColors.tetFieldColor,
+                      //       ),
+                      //       child: ClipRRect(
+                      //           borderRadius:
+                      //               BorderRadius.circular(10),
+                      //           child:
+                      //               // pickedImagePath != null
+                      //               //     ? Image.file(File(pickedImagePath!),
+                      //               //         fit: BoxFit.fitWidth)
+                      //               //     :
+                      //               Container()
+                      //           // picked != null
+                      //           //     ? Image.memory(
+                      //           //         _image!,
+                      //           //         width: 67,
+                      //           //         height: 67,
+                      //           //         fit: BoxFit.cover,
+                      //           //       )
+                      //           //     : Container(),
+                      //           ),
+                      //     ),
+                      //     Positioned(
+                      //       bottom: 0,
+                      //       right: 0,
+                      //       child: IconButton(
+                      //         // onPressed: selectImage,
+                      //         onPressed: () {},
+                      //         icon: Container(
+                      //           decoration: BoxDecoration(
+                      //             color: Colors.white,
+                      //             borderRadius:
+                      //                 BorderRadius.circular(
+                      //                     15),
+                      //           ),
+                      //           child: SvgPicture.asset(
+                      //             height: 25,
+                      //             width: 25,
+                      //             AppAssets.icAddPost,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: Dimensions.smallVerticalMargin),
+                        child: Text(
+                          'Edit caption',
+                          style: AppStyles.postUploadTime
+                              .copyWith(fontSize: 14, height: 21 / 14),
+                        ),
+                      ),
+                      TextInputWidget(
+                        maxLine: 3,
+                        fillColor: AppColors.tetFieldColor,
+                        textEditingController: _captionController,
+                      ),
+                      const SizedBox(
+                        height: 47,
+                      ),
+                      AddPostButton(
+                        onTap: () {
+                          if (posts[index].caption != _captionController.text) {
+                            setState(() {
+                              posts[index].caption = _captionController.text;
+                            });
+                            postsRef.doc(posts[index].id).update({
+                              'caption': _captionController.text,
+                            });
+                          }
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ));
+        });
+  }
+
+  _handleDeletePost(BuildContext context, int index) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: const Text('Delete Post',
+                  style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600)),
+              content: const Text('Are you sure you want to delete this post?',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                  )),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                      )),
+                ),
+                TextButton(
+                  onPressed: () {
+                    postsRef.doc(posts[index].id).delete();
+                    setState(() {
+                      posts.removeAt(index);
+                    });
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Delete',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        color: Colors.red,
+                      )),
+                ),
+              ]);
         });
   }
 

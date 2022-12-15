@@ -148,13 +148,11 @@ class _PostWidgetState extends State<PostWidget> {
         builder: ((context, snapshot) {
           if (snapshot.hasError) {
             return Container();
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               height: 18,
             );
-          } else {
+          } else if (snapshot.hasData) {
             final Post post =
                 Post.fromJson(snapshot.data!.data()! as Map<String, dynamic>);
             isLiked = post.likedUserIdList.contains(user!.uid);
@@ -174,6 +172,8 @@ class _PostWidgetState extends State<PostWidget> {
                     style: AppStyles.postReaction),
               ],
             );
+          } else {
+            return Container();
           }
         }));
   }
