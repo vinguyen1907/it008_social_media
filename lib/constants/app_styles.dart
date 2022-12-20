@@ -66,4 +66,7 @@ class AppStyles {
         AppColors.primaryMainColor,
         const Color.fromARGB(255, 108, 209, 229).withOpacity(0.5),
       ]);
+
+  static const TextStyle addPodcastSectionTitle = TextStyle(
+      fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600);
 }
