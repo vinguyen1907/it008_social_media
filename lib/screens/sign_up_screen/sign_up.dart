@@ -270,6 +270,10 @@ class _SignUpState extends State<SignUp> {
           about: '',
           avatarImageUrl: '',
           fullName: '',
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
         );
 
         await FirebaseFirestore.instance

@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/chat/chat_room_page.dart';
-import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
-import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
+import 'package:it008_social_media/screens/chat/widget/user_widget.dart';
 import 'package:it008_social_media/screens/profile/profile_page.dart';
+import 'package:provider/provider.dart';
+
+import '../../change_notifies/user_provider.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -16,8 +19,17 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  String chatRoomId(String user1, String user2) {
+    if (user1.compareTo(user2) == -1) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -81,129 +93,205 @@ class _ChatPageState extends State<ChatPage> {
                       .copyWith(height: 21 / 14, fontSize: 14),
                 ),
               ),
-              Container(
-                height: 53,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          height: 49,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .where('id', isNotEqualTo: userProvider.getUser?.id ?? "")
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Container(
+                      height: 53,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (BuildContext context, int index) {
+                          return UserWidget(
+                            onPress: () {
+                              String roomId = '';
+                              roomId = chatRoomId(
+                                userProvider.getUser!.id ?? "",
+                                snapshot.data!.docs[index].data()['id'],
+                              );
+                              if (roomId != '') {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => ChatRoomPage(
+                                      uid: snapshot.data?.docs[index]
+                                              .data()['id'] ??
+                                          "",
+                                      contactname: snapshot.data?.docs[index]
+                                          .data()['userName'],
+                                      contactphotoURl: snapshot
+                                              .data?.docs[index]
+                                              .data()["avatarImageUrl"] ??
+                                          "",
+                                      messagesId: roomId,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            snap: snapshot.data!.docs[index].data(),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(
+                          width: 16,
                         ),
-                        Positioned(
-                          bottom: 1,
-                          right: -3,
-                          child: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                                color: AppColors.primaryHertButtonColor,
-                                borderRadius: BorderRadius.circular(100)),
-                          ),
-                        ),
-                      ],
+                        itemCount: (snapshot.data! as dynamic).docs.length,
+                      ),
                     );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(
-                    width: 16,
-                  ),
-                  itemCount: 8,
-                ),
-              ),
+                  }),
               Padding(
                 padding: const EdgeInsets.only(top: 18, bottom: 16),
                 child: Text(
-                  'Frequently chatted',
+                  'All Messages',
                   style: AppStyles.postUploadTime
                       .copyWith(height: 21 / 14, fontSize: 14),
                 ),
               ),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ChatRoomPage()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ClipOval(
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80',
-                                width: 49,
-                                height: 49,
-                                fit: BoxFit.cover,
+              StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('messages')
+                      .where("Members", arrayContains: userProvider.getUser!.id)
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            String roomId =
+                                snapshot.data!.docs[index].data()['RoomId'];
+                            String contactname = snapshot.data!.docs[index]
+                                        .data()['user1'] ==
+                                    userProvider.getUser?.userName
+                                ? snapshot.data!.docs[index].data()['user2']
+                                : snapshot.data!.docs[index].data()['user1'];
+                            String contactphotoURl = snapshot.data!.docs[index]
+                                        .data()['photoUrl1'] ==
+                                    userProvider.getUser?.userName
+                                ? snapshot.data!.docs[index].data()['photoUrl2']
+                                : snapshot.data!.docs[index]
+                                    .data()['photoUrl1'];
+                            String contactId =
+                                snapshot.data!.docs[index].data()['uid1'] ==
+                                        userProvider.getUser?.id
+                                    ? snapshot.data!.docs[index].data()['uid2']
+                                    : snapshot.data!.docs[index].data()['uid1'];
+
+                            if (roomId != '') {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChatRoomPage(
+                                    contactname: contactname,
+                                    contactphotoURl: contactphotoURl,
+                                    messagesId: roomId,
+                                    uid: contactId,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipOval(
+                                    child: Image.network(
+                                      snapshot.data!.docs[index]
+                                                  .data()['photoUrl1'] ==
+                                              userProvider
+                                                  .getUser?.avatarImageUrl
+                                          ? snapshot.data?.docs[index]
+                                                  .data()['photoUrl2'] ??
+                                              "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg"
+                                          : snapshot.data?.docs[index]
+                                                  .data()['photoUrl1'] ??
+                                              "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
+                                      width: 49,
+                                      height: 49,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        snapshot.data!.docs[index]
+                                                    .data()['user1'] ==
+                                                userProvider.getUser?.userName
+                                            ? snapshot.data!.docs[index]
+                                                .data()['user2']
+                                            : snapshot.data!.docs[index]
+                                                .data()['user1'],
+                                        style: AppStyles.postUserName.copyWith(
+                                            fontSize: 12, height: 18 / 12),
+                                      ),
+                                      Text(
+                                        snapshot.data!.docs[index]
+                                            .data()['message'],
+                                        style: AppStyles.storyLabel.copyWith(
+                                            fontSize: 10,
+                                            height: 15 / 10,
+                                            color: AppColors.primaryMainColor),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Chris uil",
-                                  style: AppStyles.postUserName
-                                      .copyWith(fontSize: 12, height: 18 / 12),
-                                ),
-                                Text(
-                                  "Send me d link bro",
-                                  style: AppStyles.storyLabel.copyWith(
-                                      fontSize: 10,
-                                      height: 15 / 10,
-                                      color: AppColors.primaryMainColor),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "08:43",
-                              style: AppStyles.storyLabel.copyWith(
-                                  fontSize: 10,
-                                  height: 15 / 10,
-                                  color: AppColors.timeMessageColor),
-                            ),
-                            SvgPicture.asset(
-                              height: 6,
-                              width: 8,
-                              AppAssets.icCheck,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => SizedBox(
-                  height: 21,
-                ),
-                itemCount: 8,
-              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    snapshot.data!.docs[index]
+                                        .data()['lasttime'],
+                                    style: AppStyles.storyLabel.copyWith(
+                                        fontSize: 10,
+                                        height: 15 / 10,
+                                        color: AppColors.timeMessageColor),
+                                  ),
+                                  SvgPicture.asset(
+                                    height: 6,
+                                    width: 8,
+                                    AppAssets.icCheck,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          SizedBox(
+                        height: 21,
+                      ),
+                      itemCount: snapshot.data!.docs.length,
+                    );
+                  }),
             ],
           ),
         ),
