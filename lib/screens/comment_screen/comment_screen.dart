@@ -7,6 +7,8 @@ import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/comment_model.dart';
+import 'package:it008_social_media/models/enum/notification_type.dart';
+import 'package:it008_social_media/models/notification_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
@@ -66,16 +68,6 @@ class _CommentScreenState extends State<CommentScreen> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header(
-            //   title: 'Comments',
-            //   prefixIcon: IconButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //     },
-            //     icon: SvgPicture.asset(AppAssets.icArrowLeft,
-            //         width: 18, height: 18, fit: BoxFit.contain),
-            //   ),
-            // ),
             Expanded(
               child: SingleChildScrollView(
                   child: Column(
@@ -108,31 +100,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         textColor: Colors.black,
                         controller: controller,
                         onPressed: () {
-                          if (controller.text != "") {
-                            final doc = postsRef
-                                .doc(widget.post.id)
-                                .collection('comments')
-                                .doc();
-                            Comment comment = Comment(
-                              id: doc.id,
-                              content: controller.text,
-                              userId: userProvider.getUser!.id ?? "No user",
-                              userName:
-                                  userProvider.getUser!.fullName ?? "No name",
-                              userAvatarUrl:
-                                  userProvider.getUser!.avatarImageUrl ?? "",
-                              createdTime: Timestamp.now(),
-                            );
-                            setState(() {
-                              comments.insert(0, comment);
-                            });
-                            postsRef
-                                .doc(widget.post.id)
-                                .collection('comments')
-                                .doc(doc.id)
-                                .set(comment.toJson());
-                            controller.clear();
-                          }
+                          _comment(userProvider);
                         },
                       ),
                     ]),
@@ -199,5 +167,51 @@ class _CommentScreenState extends State<CommentScreen> {
             ),
           ],
         )));
+  }
+
+  void _comment(UserProvider userProvider) {
+    // push comment to Firebase
+    if (controller.text != "") {
+      final doc = postsRef.doc(widget.post.id).collection('comments').doc();
+      Comment comment = Comment(
+        id: doc.id,
+        content: controller.text,
+        userId: userProvider.getUser!.id ?? "No user",
+        userName: userProvider.getUser!.fullName ?? "No name",
+        userAvatarUrl: userProvider.getUser!.avatarImageUrl ?? "",
+        createdTime: Timestamp.now(),
+      );
+      setState(() {
+        comments.insert(0, comment);
+      });
+      postsRef
+          .doc(widget.post.id)
+          .collection('comments')
+          .doc(doc.id)
+          .set(comment.toJson());
+      controller.clear();
+    }
+
+    // add notification if it is not own post
+    final notiDoc =
+        notificationsRef.doc(user!.uid).collection('notifications').doc();
+    NotificationModel notification = NotificationModel(
+      id: notiDoc.id,
+      fromUserId: userProvider.getUser!.id!,
+      fromUserName: userProvider.getUser!.fullName!,
+      fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
+      toUserId: widget.post.userId,
+      notificationType: NotificationType.comment.toString(),
+      postId: widget.post.id,
+      createdTime: Timestamp.now(),
+    );
+    notificationsRef
+        .doc(user!.uid)
+        .collection('notifications')
+        .doc(notiDoc.id)
+        .set(notification.toJson());
+
+    // dismiss keyboard
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 }

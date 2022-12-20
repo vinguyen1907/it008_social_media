@@ -228,29 +228,35 @@ class _HomeScreenState extends State<HomeScreen>
     ));
   }
 
-  Container _buildSearch(Size size, BuildContext context) {
-    return Container(
-      width: size.width - Dimensions.defaultHorizontalMargin,
-      height: 35,
-      margin: const EdgeInsets.only(
-          top: 20, left: Dimensions.defaultHorizontalMargin),
-      child: Row(
-        children: [
-          SearchBar(
-            controller: _searchController,
-            readOnly: true,
-            onTap: () {
-              Navigator.of(context).pushNamed(SearchScreen.id);
-            },
+  Widget _buildSearch(Size size, BuildContext context) {
+    return Hero(
+      tag: 'search_bar',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Container(
+          width: size.width - Dimensions.defaultHorizontalMargin,
+          height: 35,
+          margin: const EdgeInsets.only(
+              top: 20, left: Dimensions.defaultHorizontalMargin),
+          child: Row(
+            children: [
+              SearchBar(
+                controller: _searchController,
+                readOnly: true,
+                onTap: () {
+                  Navigator.of(context).pushNamed(SearchScreen.id);
+                },
+              ),
+              IconButton(
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () {
+                    Navigator.pushNamed(context, NotificationScreen.id);
+                  },
+                  icon: SvgPicture.asset(AppAssets.icNotification,
+                      width: 18, fit: BoxFit.cover)),
+            ],
           ),
-          IconButton(
-              padding: const EdgeInsets.all(0.0),
-              onPressed: () {
-                Navigator.pushNamed(context, NotificationScreen.id);
-              },
-              icon: SvgPicture.asset(AppAssets.icNotification,
-                  width: 18, fit: BoxFit.cover)),
-        ],
+        ),
       ),
     );
   }
@@ -270,9 +276,12 @@ class _HomeScreenState extends State<HomeScreen>
                         child: Text('End of Posts.'),
                       )
                     : const SizedBox(
-                        height: 20,
+                        height: 40,
                         width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2)));
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )));
           }
           return Padding(
               padding:

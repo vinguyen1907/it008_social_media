@@ -39,77 +39,86 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-        body: SafeArea(
-            child: Column(
-      children: [
-        Container(
-            width: size.width,
-            height: 35,
-            margin: const EdgeInsets.only(
-                top: 20,
-                left: Dimensions.defaultHorizontalMargin,
-                right: Dimensions.defaultHorizontalMargin),
-            alignment: Alignment.center,
-            child: Row(children: [
-              SearchBar(
-                controller: _searchController,
-                autofocus: true,
-                onChanged: (keyword) => search(keyword),
-              ),
-            ])),
-        const SizedBox(height: 10),
-        searchResult.isEmpty
-            ? Text("No search result.", style: AppStyles.noItemText)
-            : Flexible(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: searchResult.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                            left: Dimensions.defaultHorizontalMargin,
-                            bottom: Dimensions.smallVerticalMargin),
-                        child: Row(
-                          children: [
-                            ClipOval(
-                              child: CachedNetworkImage(
-                                imageUrl: searchResult[index].avatarImageUrl!,
-                                placeholder: (context, url) =>
-                                    Container(color: Colors.grey[200]),
-                                errorWidget: (context, url, error) {
-                                  return Container(
-                                      color: Colors.grey[200],
-                                      child:
-                                          Image.asset(AppAssets.defaultImage));
-                                  // return Container(color: Colors.red);
-                                },
-                                width: 40,
-                                height: 40,
-                                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+          body: SafeArea(
+              child: Column(
+        children: [
+          Hero(
+            tag: 'search_bar',
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                  width: size.width,
+                  height: 35,
+                  margin: const EdgeInsets.only(
+                      top: 20,
+                      left: Dimensions.defaultHorizontalMargin,
+                      right: Dimensions.defaultHorizontalMargin),
+                  alignment: Alignment.center,
+                  child: Row(children: [
+                    SearchBar(
+                      controller: _searchController,
+                      autofocus: true,
+                      onChanged: (keyword) => search(keyword),
+                    ),
+                  ])),
+            ),
+          ),
+          const SizedBox(height: 10),
+          searchResult.isEmpty
+              ? Text("No search result.", style: AppStyles.noItemText)
+              : Flexible(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: searchResult.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: Dimensions.defaultHorizontalMargin,
+                              bottom: Dimensions.smallVerticalMargin),
+                          child: Row(
+                            children: [
+                              ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: searchResult[index].avatarImageUrl!,
+                                  placeholder: (context, url) =>
+                                      Container(color: Colors.grey[200]),
+                                  errorWidget: (context, url, error) {
+                                    return Container(
+                                        color: Colors.grey[200],
+                                        child: Image.asset(
+                                            AppAssets.defaultImage));
+                                    // return Container(color: Colors.red);
+                                  },
+                                  width: 40,
+                                  height: 40,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(searchResult[index].fullName ?? "No name",
-                                style: AppStyles.searchResultStyle),
-                            const Spacer(),
-                            IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    searchResult.remove(searchResult[index]);
-                                  });
-                                },
-                                icon: SvgPicture.asset(AppAssets.icClose,
-                                    height: 10,
-                                    color: AppColors.primaryMainColor
-                                        .withOpacity(0.5))),
-                          ],
-                        ),
-                      );
-                    }),
-              )
-      ],
-    )));
+                              const SizedBox(width: 10),
+                              Text(searchResult[index].fullName ?? "No name",
+                                  style: AppStyles.searchResultStyle),
+                              const Spacer(),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      searchResult.remove(searchResult[index]);
+                                    });
+                                  },
+                                  icon: SvgPicture.asset(AppAssets.icClose,
+                                      height: 10,
+                                      color: AppColors.primaryMainColor
+                                          .withOpacity(0.5))),
+                            ],
+                          ),
+                        );
+                      }),
+                )
+        ],
+      ))),
+    );
   }
 
   Future<void> search(String keyword) async {
