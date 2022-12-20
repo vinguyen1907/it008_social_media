@@ -100,7 +100,7 @@ class _CommentScreenState extends State<CommentScreen> {
                         textColor: Colors.black,
                         controller: controller,
                         onPressed: () {
-                          _comment(userProvider);
+                          _handleComment(userProvider);
                         },
                       ),
                     ]),
@@ -169,7 +169,7 @@ class _CommentScreenState extends State<CommentScreen> {
         )));
   }
 
-  void _comment(UserProvider userProvider) {
+  void _handleComment(UserProvider userProvider) {
     // push comment to Firebase
     if (controller.text != "") {
       final doc = postsRef.doc(widget.post.id).collection('comments').doc();
@@ -193,23 +193,25 @@ class _CommentScreenState extends State<CommentScreen> {
     }
 
     // add notification if it is not own post
-    final notiDoc =
-        notificationsRef.doc(user!.uid).collection('notifications').doc();
-    NotificationModel notification = NotificationModel(
-      id: notiDoc.id,
-      fromUserId: userProvider.getUser!.id!,
-      fromUserName: userProvider.getUser!.fullName!,
-      fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
-      toUserId: widget.post.userId,
-      notificationType: NotificationType.comment.toString(),
-      postId: widget.post.id,
-      createdTime: Timestamp.now(),
-    );
-    notificationsRef
-        .doc(user!.uid)
-        .collection('notifications')
-        .doc(notiDoc.id)
-        .set(notification.toJson());
+    if (user!.uid != widget.post.userId) {
+      final notiDoc =
+          notificationsRef.doc(user!.uid).collection('notifications').doc();
+      NotificationModel notification = NotificationModel(
+        id: notiDoc.id,
+        fromUserId: userProvider.getUser!.id!,
+        fromUserName: userProvider.getUser!.fullName!,
+        fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
+        toUserId: widget.post.userId,
+        notificationType: NotificationType.comment.toString(),
+        postId: widget.post.id,
+        createdTime: Timestamp.now(),
+      );
+      notificationsRef
+          .doc(user!.uid)
+          .collection('notifications')
+          .doc(notiDoc.id)
+          .set(notification.toJson());
+    }
 
     // dismiss keyboard
     FocusManager.instance.primaryFocus?.unfocus();

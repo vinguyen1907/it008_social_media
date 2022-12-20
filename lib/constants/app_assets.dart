@@ -27,11 +27,14 @@ class AppAssets {
   static const icSend = '$iconPath/send.svg';
   static const icTap = '$iconPath/tap.png';
   static const icSlideLeft = '$iconPath/slide-left.png';
+  static const icMore = '$iconPath/horizontal-more.svg';
 
   // image
   static const warningSign = '$imagePath/warning-sign.svg';
   static const imageFailed = '$imagePath/image_failed.svg';
   static const defaultImage = '$imagePath/default_avatar.jpg';
+  static const emptyNotification = '$imagePath/my_notifications.svg';
+  static const emptyPost = '$imagePath/no-post.svg';
 
   // example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';
