@@ -11,8 +11,10 @@ import 'package:it008_social_media/screens/edit_profile/widget/update_button.dar
 import 'package:it008_social_media/screens/profile/my_profile_page.dart';
 import 'package:it008_social_media/services/utils.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../change_notifies/user_provider.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../services/storage_methods.dart';
@@ -49,7 +51,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var _phoneController = TextEditingController();
     var _aboutController = TextEditingController();
     var _genderController = TextEditingController();
-
+    addData() async {
+      UserProvider _userProvider =
+      Provider.of<UserProvider>(context, listen: false);
+      await _userProvider.refreshUser();
+    }
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -287,6 +293,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 'phone': _phoneController.text.toLowerCase().trim(),
                                 'avatarImageUrl' : photoUrl,
                               });
+                              addData();
                               Navigator.of(context).pop();
                             }else{
                               GlobalMethods.errorDialog(subtitle: 'please pick image', context: context);
@@ -321,4 +328,5 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
+
 }

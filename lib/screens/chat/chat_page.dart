@@ -185,9 +185,9 @@ class _ChatPageState extends State<ChatPage> {
                             String contactphotoURl = snapshot.data!.docs[index]
                                         .data()['photoUrl1'] ==
                                     userProvider.getUser?.userName
-                                ? snapshot.data!.docs[index].data()['photoUrl2']
+                                ? snapshot.data!.docs[index].data()['photoUrl1']
                                 : snapshot.data!.docs[index]
-                                    .data()['photoUrl1'];
+                                    .data()['photoUrl2'];
                             String contactId =
                                 snapshot.data!.docs[index].data()['uid1'] ==
                                         userProvider.getUser?.id
