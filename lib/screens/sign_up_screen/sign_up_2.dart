@@ -20,7 +20,7 @@ class SignUp2 extends StatefulWidget {
 }
 
 class _SignUp2State extends State<SignUp2> {
-  final GlobalKey<FormState> _infoKey = GlobalKey<FormState>();
+   final GlobalKey<FormState> _infoKey = GlobalKey<FormState>();
 
   final TextEditingController _fullName = TextEditingController();
   final TextEditingController _userName = TextEditingController();
@@ -43,6 +43,7 @@ class _SignUp2State extends State<SignUp2> {
     double height_variable = MediaQuery.of(context).size.height;
     double width_variable = MediaQuery.of(context).size.width;
     return Scaffold(
+      
       body: LoadingManager(
         isLoading: _isLoading,
         child: SingleChildScrollView(
@@ -253,8 +254,7 @@ class _SignUp2State extends State<SignUp2> {
                 ),
               ),
             ),
-        ),
-      )
+        ),      )
     );
   }
   void _submitFormOnRegister() async {

@@ -10,7 +10,7 @@ import '../../utils/global_methods.dart';
 import '../../widgets/loading_widget.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
-
+import 'package:validators/validators.dart';
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
