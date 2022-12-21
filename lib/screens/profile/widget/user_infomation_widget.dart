@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
+import 'package:provider/provider.dart';
 
 class UserInformationWidget extends StatelessWidget {
   final Icon? icon;
-  const UserInformationWidget({Key? key,  this.icon}) : super(key: key);
+  const UserInformationWidget({Key? key, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Column(
       children: [
         Padding(
@@ -22,7 +25,7 @@ class UserInformationWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: ClipOval(
                       child: Image.network(
-                        'https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/305767392_1705138999870466_4301266471825436049_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=AsULsruoGWEAX_mHDzP&_nc_ht=scontent.fsgn3-1.fna&oh=00_AT_a-s9PIXh1whMI5WR0K6QHgxI8k5bKhOam1Z5OdMt5kw&oe=635C1E3D',
+                        userProvider.getUser?.avatarImageUrl ?? "",
                         width: 67,
                         height: 67,
                         fit: BoxFit.cover,
@@ -34,7 +37,7 @@ class UserInformationWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Oyin Dolapo",
+                        userProvider.getUser!.userName ?? "",
                         style: AppStyles.postUserName.copyWith(fontSize: 18),
                       ),
                       Text(
@@ -45,7 +48,7 @@ class UserInformationWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(onPressed: () {}, icon: icon??Icon(Icons.logout)),
+              IconButton(onPressed: () {}, icon: icon ?? Icon(Icons.logout)),
             ],
           ),
         ),

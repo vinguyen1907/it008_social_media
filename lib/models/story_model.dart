@@ -1,61 +1,57 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+// import 'dart:convert';
+
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Story {
   String id;
   String userId;
+  String userName;
+  String userAvatarUrl;
   String imageUrl;
-  bool isViewed;
-  DateTime createdTime;
+  // bool isViewed;
   bool isFullScreen;
+  Timestamp createdTime;
+  List<String> whoCanSee;
 
   Story({
     required this.id,
     required this.userId,
+    required this.userName,
+    required this.userAvatarUrl,
     required this.imageUrl,
-    required this.isViewed,
+    // required this.isViewed,
     required this.createdTime,
-    this.isFullScreen = false,
+    this.isFullScreen = true,
+    required this.whoCanSee,
   });
 
-  static List<Story> listStories = [
-    Story(
-      id: "1",
-      userId: "1",
-      imageUrl:
-          'https://images.unsplash.com/photo-1594058573823-d8edf1ad3380?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=462&q=80',
-      isViewed: false,
-      createdTime: DateTime(2022),
-      isFullScreen: true,
-    ),
-    Story(
-      id: "1",
-      userId: "1",
-      imageUrl:
-          'https://images.unsplash.com/photo-1588925762549-c414056c4d3e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bW90b2Jpa2V8ZW58MHx8MHx8&w=1000&q=80',
-      isViewed: false,
-      createdTime: DateTime(2022),
-      isFullScreen: true,
-    ),
-    Story(
-        id: "1",
-        userId: "1",
-        imageUrl:
-            'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-        isViewed: false,
-        createdTime: DateTime(2022)),
-    Story(
-        id: "1",
-        userId: "1",
-        imageUrl:
-            'https://images.unsplash.com/photo-1565630916779-e303be97b6f5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        isViewed: false,
-        createdTime: DateTime(2022)),
-    Story(
-      id: "1",
-      userId: "1",
-      imageUrl:
-          'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
-      isViewed: false,
-      createdTime: DateTime(2022),
-      isFullScreen: true,
-    )
-  ];
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'userId': userId,
+      'userName': userName,
+      'userAvatarUrl': userAvatarUrl,
+      'imageUrl': imageUrl,
+      'isFullScreen': isFullScreen,
+      'createdTime': createdTime,
+      'whoCanSee': whoCanSee,
+    };
+  }
+
+  factory Story.fromJson(Map<String, dynamic> map) {
+    return Story(
+        id: map['id'] as String,
+        userId: map['userId'] as String,
+        userName: map['userName'] as String,
+        userAvatarUrl: map['userAvatarUrl'] as String,
+        imageUrl: map['imageUrl'] as String,
+        isFullScreen: map['isFullScreen'] as bool,
+        createdTime: map['createdTime'] as Timestamp,
+        whoCanSee: List<String>.from(
+          (map['whoCanSee'] ?? [] as List<String>),
+        ));
+  }
 }

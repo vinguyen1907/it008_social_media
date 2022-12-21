@@ -11,6 +11,7 @@ class AppAssets {
   static const icPlus = '$iconPath/plus.svg';
   static const icMagnifier = '$iconPath/magnifier.svg';
   static const icHeart = '$iconPath/unlike_heart.svg';
+  static const icLikedHeart = '$iconPath/liked_heart.svg';
   static const icComment = '$iconPath/comment.svg';
   static const icClose = '$iconPath/close.svg';
   static const icArrowLeft = '$iconPath/arrow_left.svg';
@@ -23,11 +24,18 @@ class AppAssets {
   static const icCamera = '$iconPath/ic_camera.svg';
   static const icAddPost = '$iconPath/ic_add_post.svg';
   static const icCheck = '$iconPath/ic_check.svg';
-// example
-
   static const icSend = '$iconPath/send.svg';
+  static const icTap = '$iconPath/tap.png';
+  static const icSlideLeft = '$iconPath/slide-left.png';
+  static const icMore = '$iconPath/horizontal-more.svg';
+
+  // image
+  static const warningSign = '$imagePath/warning-sign.svg';
+  static const imageFailed = '$imagePath/image_failed.svg';
+  static const defaultImage = '$imagePath/default_avatar.jpg';
+  static const emptyNotification = '$imagePath/my_notifications.svg';
+  static const emptyPost = '$imagePath/no-post.svg';
 
   // example
-
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';
 }

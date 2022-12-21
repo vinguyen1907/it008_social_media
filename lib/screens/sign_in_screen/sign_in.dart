@@ -74,6 +74,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   Text(
                     'Email',
+
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
@@ -314,8 +315,16 @@ class _SignInState extends State<SignIn> {
         await authInstance.signInWithEmailAndPassword(
             email: _email.text.toLowerCase().trim(),
             password: _password.text.trim());
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => MainScreen())));
+
+        if (!mounted) return;
+
+        // showDialog(
+        //     context: context,
+        //     builder: (context) => AlertDialog(
+        //           content: Text("Login Successful"),
+        //         ));
+
+        Navigator.of(context).pushNamed(MainScreen.id);
       } on FirebaseException catch (error) {
         GlobalMethods.errorDialog(
             subtitle: '${error.message}', context: context);

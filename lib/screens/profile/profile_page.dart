@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
-import 'package:it008_social_media/screens/profile/widget/description_text.dart';
 import 'package:it008_social_media/screens/profile/widget/description_widget.dart';
-import 'package:it008_social_media/screens/profile/widget/follow_button.dart';
 import 'package:it008_social_media/screens/profile/widget/follow_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/follower_widget.dart';
-import 'package:it008_social_media/screens/profile/widget/message_button.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/posts_label.dart';
 import 'package:it008_social_media/screens/profile/widget/user_infomation_widget.dart';

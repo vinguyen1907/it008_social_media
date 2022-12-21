@@ -5,12 +5,38 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
+  const SearchBar({
+    Key? key,
+    required this.controller,
+    this.readOnly,
+    this.onTap,
+    this.onChanged,
+    this.autofocus,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+  final bool? readOnly;
+  final Function? onTap;
+  final Function(String keyword)? onChanged;
+  final bool? autofocus;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
         child: TextFormField(
+      autofocus: autofocus ?? false,
+      readOnly: readOnly ?? false,
+      controller: controller,
+      onTap: () {
+        if (onTap != null && readOnly != null && readOnly == true) {
+          onTap!();
+        }
+      },
+      onChanged: (String value) {
+        if (onChanged != null) {
+          onChanged!(value);
+        }
+      },
       style: AppStyles.searchText,
       decoration: InputDecoration(
         isDense: false,

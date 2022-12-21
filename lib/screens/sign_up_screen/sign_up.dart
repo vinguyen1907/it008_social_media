@@ -237,16 +237,17 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
             ),
+
           ),
         ),
-      )
-    );
+      ),
+    ));
   }
+
   void _submitFormOnRegister() async {
     final isValid = _signUpKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
-
       _signUpKey.currentState!.save();
       setState(() {
         _isLoading = true;
@@ -259,7 +260,7 @@ class _SignUpState extends State<SignUp> {
         final User? user = authInstance.currentUser;
         final _uid = user!.uid;
 
-        model.User _user = model.User(
+        model.Users _user = model.Users(
           id: _uid,
           userName: '',
           email: _email.text.toLowerCase().trim(),
@@ -268,13 +269,18 @@ class _SignUpState extends State<SignUp> {
           about: '',
           avatarImageUrl: '',
           fullName: '',
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
         );
 
         await FirebaseFirestore.instance
             .collection('users')
             .doc(_uid)
-            .set(_user.toJson());
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => SignUp2())));
+            .set(_user.toJson() as Map<String, dynamic>);
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => SignUp2())));
       } on FirebaseException catch (error) {
         GlobalMethods.errorDialog(
             subtitle: '${error.message}', context: context);
@@ -292,6 +298,5 @@ class _SignUpState extends State<SignUp> {
         });
       }
     }
-    }
   }
-
+}

@@ -12,6 +12,7 @@ class InputAndSendWidget extends StatelessWidget {
     required this.hintColor,
     required this.textColor,
     required this.onPressed,
+    required this.controller,
   }) : super(key: key);
 
   final Size size;
@@ -20,6 +21,7 @@ class InputAndSendWidget extends StatelessWidget {
   final Color hintColor;
   final Color textColor;
   final Function onPressed;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class InputAndSendWidget extends StatelessWidget {
                     fontSize: 12,
                     color: textColor,
                   ),
+                  controller: controller,
                   decoration: InputDecoration(
                     isDense: true,
                     contentPadding: const EdgeInsets.all(0),
@@ -61,9 +64,7 @@ class InputAndSendWidget extends StatelessWidget {
               ),
               IconButton(
                 iconSize: 25,
-                onPressed: () {
-                  onPressed();
-                },
+                onPressed: () => onPressed(),
                 icon: SvgPicture.asset(
                   AppAssets.icSend,
                   height: 25,

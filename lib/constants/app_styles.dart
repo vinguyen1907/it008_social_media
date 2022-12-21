@@ -49,6 +49,16 @@ class AppStyles {
     color: AppColors.primaryMainColor,
     fontWeight: FontWeight.w500,
   );
+  static TextStyle noItemText = TextStyle(
+      fontFamily: "Poppins",
+      color: Colors.grey[500],
+      fontWeight: FontWeight.w400,
+      fontSize: 14);
+  static const TextStyle searchResultStyle = TextStyle(
+      fontFamily: "Poppins",
+      color: Colors.black,
+      fontWeight: FontWeight.w500,
+      fontSize: 14);
   static LinearGradient storyGradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
