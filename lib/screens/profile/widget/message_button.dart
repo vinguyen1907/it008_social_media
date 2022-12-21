@@ -12,7 +12,6 @@ class MessageButton extends StatelessWidget {
         border: Border.all(
           color: AppColors.primaryTextColor,
         ),
-        
       ),
       padding: EdgeInsets.only(top: 6,bottom: 5,left: 14,right: 15),
       child: Icon(Icons.message,size: 16,),

@@ -12,7 +12,10 @@ class Users {
   String? about;
   String? gender;
   String? dateOfBirth;
-
+  List? followers;
+  List? following;
+  String? address;
+  String? phone;
   Users({
     required this.id,
     required this.gender,
@@ -22,6 +25,10 @@ class Users {
     required this.fullName,
     required this.about,
     required this.dateOfBirth,
+    required this.followers,
+    required this.following,
+    required this.address,
+    required this.phone
   });
 
   static Users fromSnap(DocumentSnapshot snap) {
@@ -30,13 +37,17 @@ class Users {
     return Users(
       id: snapshot['id'] ?? "",
       gender: snapshot['gender'] ?? "",
-      email: snapshot['email'] ?? null,
+      email: snapshot['email'] ?? "",
       avatarImageUrl: snapshot['avatarImageUrl'] ??
           "https://images.ctfassets.net/lh3zuq09vnm2/yBDals8aU8RWtb0xLnPkI/19b391bda8f43e16e64d40b55561e5cd/How_tracking_user_behavior_on_your_website_can_improve_customer_experience.png",
       userName: snapshot['userName'] ?? "",
       fullName: snapshot['fullName'] ?? "",
       about: snapshot['about'] ?? "",
       dateOfBirth: snapshot['dateOfBirth'] ?? "",
+      followers: snapshot['followers'] ?? [],
+      following: snapshot['following'] ?? [],
+      address: snapshot['following'] ?? "",
+      phone: snapshot['phone'] ?? "",
     );
   }
 
@@ -49,6 +60,10 @@ class Users {
         "about": about,
         "gender": gender,
         "dateOfBirth": dateOfBirth,
+        "followers": followers,
+        "following" : following,
+        "address" : address,
+        "phone" : phone
       };
 
   factory Users.fromJson(Map<String, dynamic> map) {
@@ -64,6 +79,10 @@ class Users {
       gender: map['gender'] != null ? map['gender'] as String : null,
       dateOfBirth:
           map['dateOfBirth'] != null ? map['dateOfBirth'] as String : null,
+      followers: map['following']??[],
+      following: map['following']??[],
+      address: map['address'],
+      phone: map['phone'],
     );
   }
 }

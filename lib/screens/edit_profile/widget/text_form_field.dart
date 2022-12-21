@@ -29,6 +29,7 @@ class TextInputWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+
       minLines: minLine,
       maxLines: maxLine,
       obscureText: obscureText,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'on_boarding2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class OnBoarding1 extends StatefulWidget {
   const OnBoarding1({super.key});
@@ -19,137 +21,26 @@ class _OnBoarding1State extends State<OnBoarding1> {
       body: Stack(
         children: [
           Positioned(
-            top: height_variable*0.151,
-            left: (width_variable - height_variable*0.209)/2,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/73.png'),
-                height: height_variable*0.17,
-                width: height_variable*0.17,
-                color: null
-              ),
-              width: height_variable*0.209,
-              height: height_variable*0.209,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xffDBE9EC),
-              )
-            ),
+            top: height_variable*0.05,
+            left: width_variable*0.0000000001,
+            child: Lottie.asset('assets/gifs/family.zip', width: width_variable, height: width_variable),
           ),
           Positioned(
-            top: height_variable*0.131,
-            left: width_variable*0.09,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/108.png'),
-                height: height_variable*0.023,
-                width: height_variable*0.023,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175).withOpacity(0.5),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.313,
-            left: width_variable*0.09,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/90.png'),
-                height: height_variable*0.047,
-                width: height_variable*0.047,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.432,
-            left: width_variable*0.267,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/85.png'),
-                height: height_variable*0.024,
-                width: height_variable*0.024,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175).withOpacity(0.33),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.113,
-            left: width_variable*0.704,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/65.png'),
-                height: height_variable*0.052,
-                width: height_variable*0.052,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175).withOpacity(0.6),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.293,
-            left: width_variable*0.826,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/38.png'),
-                height: height_variable*0.025,
-                width: height_variable*0.025,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175).withOpacity(0.3),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.392,
-            left: width_variable*0.696,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/89.png'),
-                height: height_variable*0.047,
-                width: height_variable*0.047,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175).withOpacity(0.14),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.51,
+            top: height_variable*0.53,
             left: width_variable*0.072,
             child: Text(
-              'Connect with Friends\nand Family',
+              'Connect with',
               style: TextStyle(fontFamily: 'Poppins-Regular', fontWeight: FontWeight.w600, fontSize: height_variable*0.03),
+            ),
+          ),
+          Positioned(
+            top: height_variable*0.497,
+            left: width_variable*0.45,
+            child: AnimatedTextKit(
+              animatedTexts:[
+                RotateAnimatedText('Family', textStyle: TextStyle(fontFamily: 'Poppins-Regular', fontWeight: FontWeight.w600, fontSize: height_variable*0.03, color: Color(0xff006175)),),
+                RotateAnimatedText('Friends', textStyle: TextStyle(fontFamily: 'Poppins-Regular', fontWeight: FontWeight.w600, fontSize: height_variable*0.03, color: Color(0xff006175)),)
+              ],
             )
           ),
           Positioned(
@@ -160,7 +51,11 @@ class _OnBoarding1State extends State<OnBoarding1> {
               style: TextStyle(fontFamily: 'Poppins-Regular', fontWeight: FontWeight.w500, fontSize: height_variable*0.025),
             )
           ),
-          
+          Positioned(
+            top:height_variable*0.77,
+            left: width_variable*0.23,
+            child: Text('>> Slide for more >>', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 20, color: Color(0xff006175)) )
+          ),
           Positioned(
             top: height_variable*0.897,
             left: (width_variable - width_variable*0.637)/2,

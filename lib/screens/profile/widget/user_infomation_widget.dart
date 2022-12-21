@@ -25,7 +25,7 @@ class UserInformationWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16),
                     child: ClipOval(
                       child: Image.network(
-                        userProvider.getUser!.avatarImageUrl ?? "",
+                        userProvider.getUser?.avatarImageUrl ?? "",
                         width: 67,
                         height: 67,
                         fit: BoxFit.cover,

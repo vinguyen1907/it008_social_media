@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,13 +44,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   int _selectedIndex = 0;
-  final List<Widget> _widgetOptions = const [
+  final List<Widget> _widgetOptions = [
     // Scaffold(),
     HomeScreen(),
     AddPostPage(),
     PodcastPage(),
     ChatPage(),
-    MyProfilePage(),
+    MyProfilePage(uid:FirebaseAuth.instance.currentUser!.uid.toString()),
   ];
 
   void _onItemTapped(int index) {
