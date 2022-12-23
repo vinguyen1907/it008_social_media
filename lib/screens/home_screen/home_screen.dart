@@ -16,6 +16,7 @@ import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/add_post/add_post_button.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
+import 'package:it008_social_media/screens/home_screen/widgets/stories.dart';
 import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
@@ -93,122 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
                 width: size.width,
                 margin: const EdgeInsets.only(
                     left: Dimensions.defaultHorizontalMargin),
-                child: ListView(scrollDirection: Axis.horizontal, children: [
-                  // add story button
-                  Padding(
-                      padding: const EdgeInsets.only(right: 15),
-                      child: GestureDetector(
-                        onTap: () async {
-                          await showModalBottomSheet<dynamic>(
-                              context: context,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return ChooseImageModalBottomSheet(size: size);
-                              });
-                        },
-                        child: StoryItem(
-                          size: size,
-                          imageUrl: userProvider.getUser!.avatarImageUrl ?? '',
-                          hasBorder: true,
-                        ),
-                      )),
-
-                  // my stories
-                  StreamBuilder<QuerySnapshot>(
-                      stream: storiesRef
-                          .doc(user!.uid)
-                          .collection('stories')
-                          .orderBy('createdTime', descending: true)
-                          .snapshots(),
-                      builder: ((context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong',
-                              style: TextStyle(color: Colors.red));
-                        }
-
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const SpinKitCircle(
-                            color: Colors.blue,
-                            size: 50.0,
-                          );
-                        }
-                        myStories = snapshot.data!.docs
-                            .map((doc) => Story.fromJson(
-                                doc.data() as Map<String, dynamic>))
-                            .toList();
-                        stories[0] = myStories;
-                        return OpenContainer(
-                            closedColor: Colors.transparent,
-                            closedElevation: 0,
-                            closedBuilder: (context, voidCallback) => Padding(
-                                  padding: const EdgeInsets.only(right: 15),
-                                  child: StoryItem(
-                                    size: size,
-                                    imageUrl: myStories.first.imageUrl,
-                                    userId: myStories.first.userId,
-                                    userName: myStories.first.userName,
-                                    userAvatarUrl:
-                                        myStories.first.userAvatarUrl,
-                                  ),
-                                ),
-                            openBuilder: (context, action) {
-                              pageController = PageController(
-                                  // initialPage: index
-                                  );
-                              return FullScreenStory(
-                                stories: stories,
-                                initialPage: 0,
-                              );
-                            });
-                      })),
-
-                  // stories
-                  FutureBuilder<void>(
-                      future: getStories(),
-                      builder: (context, snapshot) {
-                        if (stories.isNotEmpty) {
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: stories.length,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return Container();
-                                } // already showed my stories above
-                                return OpenContainer(
-                                    closedColor: Colors.transparent,
-                                    closedElevation: 0,
-                                    closedBuilder: (context, voidCallback) =>
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 15),
-                                          child: StoryItem(
-                                            size: size,
-                                            imageUrl:
-                                                stories[index].first.imageUrl,
-                                            userId: stories[index].first.userId,
-                                            userName:
-                                                stories[index].first.userName,
-                                            userAvatarUrl: stories[index]
-                                                .first
-                                                .userAvatarUrl,
-                                          ),
-                                        ),
-                                    openBuilder: (context, action) {
-                                      pageController =
-                                          PageController(initialPage: index);
-                                      return FullScreenStory(
-                                        stories: stories,
-                                        initialPage: index,
-                                      );
-                                    });
-                              });
-                        } else {
-                          return Container();
-                        }
-                      }),
-                ])),
+                child: Stories()),
 
             const SizedBox(height: 10),
 
@@ -532,30 +418,6 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ]);
         });
-  }
-
-  Future<void> getStories() async {
-    List<List<Story>> temp = [myStories];
-    // get stories from following people
-    QuerySnapshot<Object?> snapshot =
-        await storiesRef.get(); // all documentSnapshot with user name
-    final docs = snapshot.docs;
-    for (var doc in docs) {
-      final storiesSnapshot = await storiesRef
-          .doc(doc.id)
-          .collection('stories')
-          .where('whoCanSee', arrayContains: user!.uid)
-          .limit(20)
-          // .where('createdTime',
-          //     isGreaterThan: Timestamp.fromDate(
-          //         DateTime.now().subtract(const Duration(days: 1))))
-          .get();
-      final newStory = storiesSnapshot.docs
-          .map((doc) => Story.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
-      temp.add(newStory);
-    }
-    stories = temp;
   }
 
   Future<void> getPostsList() async {
