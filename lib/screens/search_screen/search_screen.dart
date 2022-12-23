@@ -9,7 +9,7 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/user_model.dart';
-import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
+import 'package:it008_social_media/widgets/search_bar_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 
 class SearchScreen extends StatefulWidget {
