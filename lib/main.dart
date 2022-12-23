@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: const OnBoardingScroll(),
+            home: const MainScreen(),
             onGenerateRoute: appRouter.onGenerateRoute,
           );
         });
