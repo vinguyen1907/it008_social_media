@@ -242,7 +242,10 @@ class _FullScreenStoryState extends State<FullScreenStory>
     );
   }
 
-  Padding _buildTile(BuildContext context, List<Story> storyGroup) {
+  _buildTile(BuildContext context, List<Story> storyGroup) {
+    // if (storyGroup.isEmpty) {
+    //   return const CircularProgressIndicator();
+    // }
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: Dimensions.defaultHorizontalMargin),

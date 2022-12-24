@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:it008_social_media/screens/on_boarding/on_boarind_scroll.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -95,6 +96,16 @@ class _SplashScreen extends State<SplashScreen> {
                             shape: BoxShape.circle,
                             color: Color(0xff006175),
                             )
+                  )
+                ),
+                Positioned(
+                  top: height_variable*0.62,
+                  left: width_variable*0.432,
+                  child: Container(
+                    child: SpinKitFadingCube(
+                      color: Color(0xff006175),
+                      size: 45
+                    ),
                   )
                 ),
                 Center(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/add_new_podcast_screen/add_new_podcast_screen.dart';
 import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_screen.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
@@ -26,6 +27,8 @@ class AppRouter {
             builder: (_) => VerifyStoryScreen(
                   imagePath: args,
                 ));
+      case (AddNewPodcastScreen.id):
+        return MaterialPageRoute(builder: (_) => const AddNewPodcastScreen());
     }
   }
 }

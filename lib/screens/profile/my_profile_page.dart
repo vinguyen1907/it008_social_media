@@ -45,7 +45,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
       isLoading = true;
     });
     try {
-      var userSnap = await FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
 
       // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
@@ -60,7 +63,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
       userData = userSnap.data()!;
       followers = userSnap.data()?['followers'].length ?? 0;
       following = userSnap.data()?['following'].length ?? 0;
-      isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid.toString());
+      isFollowing = userSnap
+          .data()!['followers']
+          .contains(FirebaseAuth.instance.currentUser!.uid.toString());
       setState(() {});
     } catch (e) {
       // showSnackBar(
@@ -93,7 +98,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
           centerTitle: true,
           title: Text(
             "My Profile",
-            style: AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
           ),
         ),
         body: SingleChildScrollView(
@@ -114,9 +120,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             padding: const EdgeInsets.only(right: 16),
                             child: ClipOval(
                               child: Image.network(
-                                userData["avatarImageUrl"] != null &&  userData["avatarImageUrl"] != ""
-                                    ? userData["avatarImageUrl"] :"https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg"
-                                ,
+                                userData["avatarImageUrl"] != null &&
+                                        userData["avatarImageUrl"] != ""
+                                    ? userData["avatarImageUrl"]
+                                    : "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
                                 width: 67,
                                 height: 67,
                                 fit: BoxFit.cover,
@@ -128,12 +135,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                userData['userName'] ?? "",
-                                style: AppStyles.postUserName.copyWith(fontSize: 18),
+                                userData['fullName'] ?? "",
+                                style: AppStyles.postUserName
+                                    .copyWith(fontSize: 18),
                               ),
                               Text(
-                                userData['address'] ?? "no address yet",
-                                style: AppStyles.postUserName.copyWith(fontSize: 12),
+                                userData['address'] ?? "No address yet",
+                                style: AppStyles.postUserName
+                                    .copyWith(fontSize: 12),
                               ),
                             ],
                           ),
@@ -147,7 +156,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   padding: EdgeInsets.only(left: 29, right: 79, top: 12),
                   child: Text(
                     userData['about'] ?? "",
-                    style: AppStyles.postUploadTime.copyWith(fontSize: 12, height: 18 / 12),
+                    style: AppStyles.postUploadTime
+                        .copyWith(fontSize: 12, height: 18 / 12),
                     textAlign: TextAlign.start,
                     maxLines: 2,
                   ),
@@ -157,8 +167,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditProfilePage(
-                        name: userData['fullName']??"",
-                        address: userData['address']??"no address yet",
+                        name: userData['fullName'] ?? "",
+                        address: userData['address'] ?? "no address yet",
                       ),
                     ),
                   );
@@ -203,7 +213,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     children: [
                       Text(
                         'Posts',
-                        style: AppStyles.postUserName.copyWith(fontSize: 14, height: 21 / 14),
+                        style: AppStyles.postUserName
+                            .copyWith(fontSize: 14, height: 21 / 14),
                       ),
                     ],
                   ),

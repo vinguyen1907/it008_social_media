@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:it008_social_media/screens/sign_up_screen/sign_up.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
 
@@ -18,130 +19,9 @@ class _OnBoarding3State extends State<OnBoarding3> {
       body: Stack(
         children: [
           Positioned(
-            top: height_variable*0.151,
-            left: (width_variable - height_variable*0.209)/2,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/18.png'),
-                height: height_variable*0.17,
-                width: height_variable*0.17,
-                color: null
-              ),
-              width: height_variable*0.209,
-              height: height_variable*0.209,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xffDBE9EC),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.131,
-            left: width_variable*0.09,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/107.png'),
-                height: height_variable*0.023,
-                width: height_variable*0.023,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.313,
-            left: width_variable*0.09,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/43.png'),
-                height: height_variable*0.047,
-                width: height_variable*0.047,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.432,
-            left: width_variable*0.267,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/103.png'),
-                height: height_variable*0.024,
-                width: height_variable*0.024,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.113,
-            left: width_variable*0.704,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/92.png'),
-                height: height_variable*0.052,
-                width: height_variable*0.052,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xffB3B9C9),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.293,
-            left: width_variable*0.826,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/21.png'),
-                height: height_variable*0.025,
-                width: height_variable*0.025,
-                color: null
-              ),
-              width: height_variable*0.038,
-              height: height_variable*0.038,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
-          ),
-          Positioned(
-            top: height_variable*0.392,
-            left: width_variable*0.696,
-            child: Container(
-              child: Image(
-                image: AssetImage('assets/images/108.png'),
-                height: height_variable*0.047,
-                width: height_variable*0.047,
-                color: null
-              ),
-              width: height_variable*0.06,
-              height: height_variable*0.06,
-              decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff006175),
-              )
-            ),
+            top: height_variable*0.13,
+            left: width_variable*0.2,
+            child: Lottie.asset('assets/gifs/goldcup.zip', width: width_variable*0.6, height: width_variable*0.6),
           ),
           Positioned(
             top: height_variable*0.51,

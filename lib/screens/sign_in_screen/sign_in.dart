@@ -4,7 +4,6 @@ import 'package:it008_social_media/screens/sign_up_screen/sign_up.dart';
 import 'package:it008_social_media/screens/forgot_password_screen/forgot_password.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
-
 import '../../services/utils.dart';
 import '../../utils/firebase_consts.dart';
 import '../../utils/global_methods.dart';
@@ -20,7 +19,17 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
+
+  OutlineInputBorder _buildborder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(color: color, width: 1) 
+    );
+  }
+
   bool onTapLogin = false;
+  bool _obscureText = true;
+  
   @override
   Widget build(BuildContext context) {
     double height_variable = MediaQuery.of(context).size.height;
@@ -30,237 +39,266 @@ class _SignInState extends State<SignIn> {
       child: LoadingManager(
         isLoading: onTapLogin,
         child: Scaffold(
-            body: Stack(children: [
-          Positioned(
-            top: height_variable * 0.167,
-            left: width_variable * 0.072,
-            child: Text(
-              'Sign in',
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20,
-                  color: Colors.black),
-            ),
-          ),
-          Positioned(
-            top: height_variable * 0.211,
-            left: width_variable * 0.072,
-            child: Text(
-              'Enter your credentials',
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                  color: Colors.black),
-            ),
-          ),
-          Positioned(
-              top: height_variable * 0.266,
-              left: width_variable * 0.072,
-              child: Text(
-                'Email',
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.black),
-              )),
-          Positioned(
-              top: height_variable * 0.298,
-              left: width_variable * 0.072,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                width: width_variable * 0.856,
-                height: height_variable * 0.06,
-                decoration: BoxDecoration(
-                    color: Color(0xfff2f2f2),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Color(0xff006175))),
-                child: TextFormField(
-                  validator: (String? inputVal) {
-                    if (!emailRegex.hasMatch(inputVal.toString())) {
-                      return 'Email format is not matching';
-                    }
-                    return null;
-                  },
-                  controller: _email,
-                  decoration: InputDecoration(border: InputBorder.none),
-                ),
-              )),
-          Positioned(
-              top: height_variable * 0.373,
-              left: width_variable * 0.072,
-              child: Text(
-                'Password',
-                style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: Colors.black),
-              )),
-          Positioned(
-              top: height_variable * 0.405,
-              left: width_variable * 0.072,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                width: width_variable * 0.856,
-                height: height_variable * 0.06,
-                decoration: BoxDecoration(
-                    color: Color(0xfff2f2f2),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Color(0xff006175))),
-                child: TextFormField(
-                  validator: (String? inputVal) {
-                    if (inputVal!.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    return null;
-                  },
-                  controller: _password,
-                  decoration: InputDecoration(border: InputBorder.none),
-                  obscureText: true,
-                ),
-              )),
-          Positioned(
-              top: height_variable * 0.48,
-              left: width_variable * 0.597,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => ForgotPassword())));
-                },
-                child: Text(
-                  'Forgot password?',
-                  style: TextStyle(
+          body: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: height_variable*0.167,
+                  ),
+                  Text(
+                    'Sign in',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                      color: Colors.black
+                    ),
+                  ),
+                  SizedBox(
+                    height: height_variable*0.006,
+                  ),
+                  Text(
+                    'Enter your credentials',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Colors.black
+                    ),
+                  ),
+                  SizedBox(
+                    height: height_variable*0.026,
+                  ),
+                  Text(
+                    'Email',
+
+                    style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
-                      color: Color(0xff006175)),
-                ),
-              )),
-          Positioned(
-              top: height_variable * 0.532,
-              left: width_variable * 0.072,
-              child: GestureDetector(
-                onTap: () {
-                  _submitFormOnLogin();
-                },
-                child: Container(
-                  width: width_variable * 0.856,
-                  height: height_variable * 0.06,
-                  decoration: BoxDecoration(
-                      color: Color(0xff006175),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                      color: Colors.black
+                    ),
+                  ),
+                  SizedBox(
+                    height: height_variable*0.006,
+                  ),
+                  TextFormField(
+                    validator:  (String? inputVal) {
+                      if (!emailRegex.hasMatch(inputVal.toString())) {
+                       return 'Email format is not matching';
+                      }
+                      return null;
+                    },
+                    controller: _email,
+                    decoration: InputDecoration(
+                      enabledBorder: _buildborder(Color(0xff006175)),
+                      errorBorder: _buildborder(Colors.red),
+                      focusedErrorBorder: _buildborder(Colors.red),
+                      focusedBorder: _buildborder(Colors.blue),
+                      disabledBorder: _buildborder(Color(0xff006175)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height_variable*0.0148,
+                  ),
+                  Text(
+                    'Password',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Colors.black
+                    )
+                  ),
+                  SizedBox(
+                    height: height_variable*0.006,
+                  ),
+                  TextFormField(
+                    validator: (String? inputVal) {
+                      if (inputVal!.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      return null;
+                    },
+                    controller: _password,
+                    decoration: InputDecoration(
+                      enabledBorder: _buildborder(Color(0xff006175)),
+                      errorBorder: _buildborder(Colors.red),
+                      focusedErrorBorder: _buildborder(Colors.red),
+                      focusedBorder: _buildborder(Colors.blue),
+                      disabledBorder: _buildborder(Color(0xff006175)),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                        child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off ),
+                      )
+                    ),
+                    obscureText: _obscureText,
+                  ),
+                  SizedBox(
+                    height: height_variable*0.015,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [GestureDetector(
+                      onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => ForgotPassword())));
+                      },
                       child: Text(
-                    'Done',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Poppins',
-                        fontSize: 18,
-                        color: Colors.white),
-                  )),
-                ),
-              )),
-          Positioned(
-            top: height_variable * 0.651,
-            left: width_variable * 0.072,
-            child: Row(
-              children: [
-                Container(
-                  width: width_variable * 0.339,
-                  height: 1,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
-                ),
-                SizedBox(width: 27),
-                Text('or',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Poppins',
-                        fontSize: 12,
-                        color: Colors.black)),
-                SizedBox(
-                  width: 27,
-                ),
-                Container(
-                  width: width_variable * 0.339,
-                  height: 1,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
-                )
-              ],
-            ),
-          ),
-          Positioned(
-              top: height_variable * 0.702,
-              left: width_variable * 0.072,
-              child: GestureDetector(
-                onTap: () {
+                        'Forgot password?',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: Color(0xff006175)
+                        ),
+                      ),
+                    ),]
+                  ),
+                  SizedBox(
+                    height: height_variable*0.026,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                    _submitFormOnLogin();
+                    },
+                    child: Container(
+                      width: width_variable * 0.856,
+                      height: height_variable * 0.06,
+                      decoration: BoxDecoration(
+                        color: Color(0xff006175),
+                        borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Done',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                            fontSize: 18,
+                            color: Colors.white),
+                        )
+                      ),
+                    )
+                  ),
+                  SizedBox(
+                    height: height_variable*0.048,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                      width: width_variable * 0.3,
+                      height: 1,
+                      decoration:BoxDecoration(border: Border.all(color: Colors.black)),
+                      ),
+                      SizedBox(width: 27),
+                      Text(
+                        'or',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Poppins',
+                          fontSize: 12,
+                          color: Colors.black
+                        )
+                      ),
+                      SizedBox(
+                        width: 27,
+                      ),
+                      Container(
+                        width: width_variable * 0.3,
+                        height: 1,
+                        decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: height_variable*0.048,
+                  ),
+                  GestureDetector(
+                    onTap: () {
                   //Do nothing
-                },
-                child: Container(
-                    width: width_variable * 0.856,
-                    height: height_variable * 0.06,
-                    decoration: BoxDecoration(
+                    },
+                    child: Container(
+                      width: width_variable * 0.856,
+                      height: height_variable * 0.06,
+                      decoration: BoxDecoration(
                         color: Color(0xfffaf6f4),
                         borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
                             image: AssetImage('assets/images/google.png'),
                             height: height_variable * 0.031,
                             width: height_variable * 0.031,
-                            color: null),
-                        SizedBox(width: 15),
-                        Text(
-                          'Sign in with Google',
-                          style: TextStyle(
+                            color: null
+                          ),
+                          SizedBox(width: 15),
+                          Text(
+                            'Sign in with Google',
+                            style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Poppins',
                               fontSize: 14,
-                              color: Color(0xff006175)),
-                        ),
-                      ],
-                    )),
-              )),
-          Positioned(
-              top: height_variable * 0.897,
-              left: width_variable * 0.1813,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Do not have an account?',
-                        style: TextStyle(
+                              color: Color(0xff006175)
+                            ),
+                          ),
+                        ],
+                      )
+                    )
+                  ),
+                  SizedBox(
+                    height: height_variable*0.134,
+                  ),
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Do not have an account?',
+                          style: TextStyle(
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
-                            color: Colors.black)),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => SignUp())));
-                      },
-                      child: Text('Sign up',
-                          style: TextStyle(
+                            color: Colors.black
+                          )
+                        ),
+                        SizedBox(width: 5),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                            MaterialPageRoute(builder: ((context) => SignUp())));
+                          },
+                          child: Text(
+                            'Sign up',
+                            style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
                               fontSize: 14,
-                              color: Color(0xff006175))),
-                    )
-                  ],
-                ),
-              ))
-        ])),
-      ),
+                              color: Color(0xff006175)
+                            )
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        )
+      )
     );
   }
 

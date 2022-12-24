@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
+import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/screens/add_post/add_post_page.dart';
 import 'package:it008_social_media/screens/chat/chat_page.dart';
 import 'package:it008_social_media/screens/home_screen/home_screen.dart';
-import 'package:it008_social_media/widgets/loading_widget.dart';
+import 'package:it008_social_media/screens/podcast_page/podcast_page.dart';
 import 'package:provider/provider.dart';
 
 import '../profile/my_profile_page.dart';
@@ -47,6 +48,7 @@ class _MainScreenState extends State<MainScreen> {
     // Scaffold(),
     HomeScreen(),
     AddPostPage(),
+    PodcastPage(),
     ChatPage(),
     MyProfilePage(uid:FirebaseAuth.instance.currentUser!.uid.toString()),
   ];
@@ -107,6 +109,13 @@ class _MainScreenState extends State<MainScreen> {
                     'assets/icons/ic_active_add.svg',
                     // color: AppColors.primaryTextColor,
                   ),
+                  label: '',
+                ),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(AppAssets.icVoice,
+                      color: AppColors.primaryTextColor, height: 25),
+                  activeIcon:
+                      SvgPicture.asset(AppAssets.icActiveVoice, height: 25),
                   label: '',
                 ),
                 BottomNavigationBarItem(
