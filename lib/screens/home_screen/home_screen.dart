@@ -15,6 +15,7 @@ import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/add_post/add_post_button.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
+import 'package:it008_social_media/screens/home_screen/bar_item_page.dart';
 import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
 import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
@@ -241,6 +242,17 @@ class _HomeScreenState extends State<HomeScreen>
                 onTap: () {
                   Navigator.of(context).pushNamed(SearchScreen.id);
                 },
+              ),
+              IconButton(
+                onPressed: (() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BarItemPage(),
+                    ),
+                  );
+                }),
+                icon: Icon(Icons.image_search),
               ),
               IconButton(
                   padding: const EdgeInsets.all(0.0),

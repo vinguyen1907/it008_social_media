@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/change_notifies/image_detector_provider.dart';
 // import 'package:flutter/services.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/screens/on_boarding/on_boarind_scroll.dart';
@@ -27,6 +28,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (_) => UserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ImageDetectionProvider(),
           ),
         ],
         builder: (context, child) {
