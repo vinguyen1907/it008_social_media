@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
     AddPostPage(),
     PodcastPage(),
     ChatPage(),
-    MyProfilePage(uid:FirebaseAuth.instance.currentUser!.uid.toString()),
+    MyProfilePage(uid: FirebaseAuth.instance.currentUser!.uid.toString()),
   ];
 
   void _onItemTapped(int index) {
@@ -76,6 +76,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: SpinKitSquareCircle(color: AppColors.primaryMainColor)))
         : Scaffold(
             body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               onPageChanged: (index) {
                 _onItemTapped(index);

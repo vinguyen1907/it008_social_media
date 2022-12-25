@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:it008_social_media/add_new_podcast_screen/add_new_podcast_screen.dart';
+import 'package:it008_social_media/screens/add_new_podcast_screen/add_new_podcast_screen.dart';
+import 'package:it008_social_media/models/podcast_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_screen.dart';
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/screens/notification_screen/notification_screen.dart';
+import 'package:it008_social_media/screens/play_podcast_screen/play_podcast_screen.dart';
 import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/screens/verify_story/verify_story.dart';
 
@@ -29,6 +31,12 @@ class AppRouter {
                 ));
       case (AddNewPodcastScreen.id):
         return MaterialPageRoute(builder: (_) => const AddNewPodcastScreen());
+      case (PlayPodcastScreen.id):
+        final args = routeSettings.arguments as Podcast;
+        return MaterialPageRoute(
+            builder: (_) => PlayPodcastScreen(
+                  podcast: args,
+                ));
     }
   }
 }

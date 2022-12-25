@@ -10,7 +10,7 @@ import 'package:it008_social_media/models/enum/podcast_background_colors.dart';
 import 'package:it008_social_media/screens/add_post/add_post_button.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 
-import '../constants/app_colors.dart';
+import '../../constants/app_colors.dart';
 
 class AddNewPodcastScreen extends StatefulWidget {
   const AddNewPodcastScreen({super.key});
