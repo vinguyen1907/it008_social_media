@@ -11,6 +11,9 @@ import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.d
 import 'package:it008_social_media/screens/home_screen/widgets/homescreen_search_bar.dart';
 import 'package:it008_social_media/screens/home_screen/widgets/stories.dart';
 import 'package:it008_social_media/services/post_service.dart';
+import 'package:it008_social_media/screens/home_screen/bar_item_page.dart';
+import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
+import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
@@ -87,6 +90,52 @@ class _HomeScreenState extends State<HomeScreen>
       )),
     ));
   }
+
+
+  Widget _buildSearch(Size size, BuildContext context) {
+    return Hero(
+      tag: 'search_bar',
+      child: Material(
+        type: MaterialType.transparency,
+        child: Container(
+          width: size.width - Dimensions.defaultHorizontalMargin,
+          height: 35,
+          margin: const EdgeInsets.only(
+              top: 20, left: Dimensions.defaultHorizontalMargin),
+          child: Row(
+            children: [
+              SearchBar(
+                controller: _searchController,
+                readOnly: true,
+                onTap: () {
+                  Navigator.of(context).pushNamed(SearchScreen.id);
+                },
+              ),
+              IconButton(
+                onPressed: (() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BarItemPage(),
+                    ),
+                  );
+                }),
+                icon: Icon(Icons.image_search),
+              ),
+              IconButton(
+                  padding: const EdgeInsets.all(0.0),
+                  onPressed: () {
+                    Navigator.pushNamed(context, NotificationScreen.id);
+                  },
+                  icon: SvgPicture.asset(AppAssets.icNotification,
+                      width: 18, fit: BoxFit.cover)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 
   ListView _buildPostList(Size size) {
     return ListView.builder(
