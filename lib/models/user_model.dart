@@ -16,20 +16,19 @@ class Users {
   List? following;
   String? address;
   String? phone;
-  Users({
-    required this.id,
-    required this.gender,
-    required this.email,
-    required this.avatarImageUrl,
-    required this.userName,
-    required this.fullName,
-    required this.about,
-    required this.dateOfBirth,
-    required this.followers,
-    required this.following,
-    required this.address,
-    required this.phone
-  });
+  Users(
+      {required this.id,
+      required this.gender,
+      required this.email,
+      required this.avatarImageUrl,
+      required this.userName,
+      required this.fullName,
+      required this.about,
+      required this.dateOfBirth,
+      required this.followers,
+      required this.following,
+      required this.address,
+      required this.phone});
 
   static Users fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -46,7 +45,7 @@ class Users {
       dateOfBirth: snapshot['dateOfBirth'] ?? "",
       followers: snapshot['followers'] ?? [],
       following: snapshot['following'] ?? [],
-      address: snapshot['following'] ?? "",
+      address: snapshot['address'] ?? '',
       phone: snapshot['phone'] ?? "",
     );
   }
@@ -61,9 +60,9 @@ class Users {
         "gender": gender,
         "dateOfBirth": dateOfBirth,
         "followers": followers,
-        "following" : following,
-        "address" : address,
-        "phone" : phone
+        "following": following,
+        "address": address,
+        "phone": phone
       };
 
   factory Users.fromJson(Map<String, dynamic> map) {
@@ -79,8 +78,8 @@ class Users {
       gender: map['gender'] != null ? map['gender'] as String : null,
       dateOfBirth:
           map['dateOfBirth'] != null ? map['dateOfBirth'] as String : null,
-      followers: map['following']??[],
-      following: map['following']??[],
+      followers: map['following'] ?? [],
+      following: map['following'] ?? [],
       address: map['address'],
       phone: map['phone'],
     );

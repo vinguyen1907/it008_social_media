@@ -61,8 +61,8 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: 34,
                 child: TextFormField(
-                  onEditingComplete: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProfilePage())),
+                  // onEditingComplete: () => Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => ProfilePage())),
                   style: AppStyles.searchText,
                   decoration: InputDecoration(
                     hintText: 'Type something...',

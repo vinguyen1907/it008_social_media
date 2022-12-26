@@ -87,8 +87,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           backgroundColor: Colors.transparent,
           leading: IconButton(
             onPressed: () {
-              print(postLen);
-              //Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             icon: Icon(
               Icons.arrow_back_ios_new,
@@ -219,7 +218,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ],
                   ),
                 ),
-                PostWidget(),
+                PostWidget(
+                  uid: widget.uid,
+                ),
               ],
             ),
           ),

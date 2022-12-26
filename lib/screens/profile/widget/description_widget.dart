@@ -18,7 +18,7 @@ class DescriptionWidget extends StatelessWidget {
           Row(
             children: [
               MessageButton(),
-              FollowButton(),
+              // FollowButton(),
             ],
           ),
         ],
