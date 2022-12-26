@@ -157,8 +157,9 @@ class _AddNewPodcastScreenState extends State<AddNewPodcastScreen> {
   }
 
   _handlePickAudio() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.audio);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+    );
 
     if (result != null) {
       setState(() {

@@ -24,6 +24,7 @@ class _PlayPodcastScreenState extends State<PlayPodcastScreen> {
   late Duration duration = const Duration(seconds: 0);
   Duration position = const Duration(seconds: 0);
   late PlayerState playerState = PlayerState.stopped;
+  int backgroundColorIndex = 0;
 
   void playAudio() async {
     await player.play(UrlSource(widget.podcast.audioUrl));
@@ -32,6 +33,12 @@ class _PlayPodcastScreenState extends State<PlayPodcastScreen> {
   @override
   void initState() {
     super.initState();
+
+    backgroundColorIndex = PodcastBackgroundColorsValue.values
+        .where((element) => element.toString() == widget.podcast.backgroundType)
+        .first
+        .index;
+
     player = AudioPlayer();
     playAudio();
 
@@ -97,13 +104,7 @@ class _PlayPodcastScreenState extends State<PlayPodcastScreen> {
                     image: DecorationImage(
                         fit: BoxFit.cover,
                         image: Image.asset(
-                                podcastBackgroundImage[
-                                    PodcastBackgroundColorsValue.values
-                                        .where((element) =>
-                                            element.toString() ==
-                                            widget.podcast.backgroundType)
-                                        .first
-                                        .index]!,
+                                podcastBackgroundImage[backgroundColorIndex]!,
                                 height: size.width - 40,
                                 width: size.width - 40)
                             .image)),
@@ -111,8 +112,12 @@ class _PlayPodcastScreenState extends State<PlayPodcastScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(widget.podcast.imageUrl,
-                      width: size.width * 0.45,
-                      height: size.width * 0.45,
+                      width: backgroundColorIndex == 0
+                          ? size.width - 40
+                          : size.width * 0.45,
+                      height: backgroundColorIndex == 0
+                          ? size.width - 40
+                          : size.width * 0.45,
                       fit: BoxFit.cover),
                 ),
               ),
