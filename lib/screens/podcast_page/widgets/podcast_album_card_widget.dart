@@ -1,27 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
-import 'package:it008_social_media/models/podcast_model.dart';
+import 'package:it008_social_media/models/podcast_album.dart';
 
-class PodcastItemWidget extends StatelessWidget {
-  const PodcastItemWidget(
-      {Key? key,
-      required this.podcast,
+class PodcastAlbumCardWidget extends StatelessWidget {
+  const PodcastAlbumCardWidget(
+      {super.key,
+      required this.album,
       required this.imageSize,
-      this.textAlign = TextAlign.start,
-      this.maxLines = 1,
-      required this.onTap,
-      this.isAlbum = false,
-      this.orderOfEpisode})
-      : super(key: key);
+      required this.onTap});
 
-  final bool isAlbum;
-  final Podcast podcast;
+  final PodcastAlbum album;
   final Size imageSize;
-  final TextAlign textAlign;
-  final int maxLines;
   final Function onTap;
-  final int? orderOfEpisode;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +27,7 @@ class PodcastItemWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
-                  imageUrl:
-                      // isAlbum ? podcast.userAvatarImageUrl :
-                      podcast.imageUrl,
+                  imageUrl: album.userAvatarUrl,
                   errorWidget: (context, url, error) => Container(
                       color: Colors.grey[200], child: const Icon(Icons.error)),
                   height: imageSize.width,
@@ -47,11 +36,9 @@ class PodcastItemWidget extends StatelessWidget {
             ),
             SizedBox(
               width: imageSize.width,
-              child: Text(
-                  // isAlbum ? podcast.userName :
-                  'Episode${orderOfEpisode != null ? ' $orderOfEpisode' : ''}: ${podcast.title}',
-                  textAlign: textAlign,
-                  maxLines: maxLines,
+              child: Text(album.userName,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppStyles.podcastItemLabel),
             ),

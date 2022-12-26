@@ -15,6 +15,7 @@ final CollectionReference followRef = firestore.collection('follow');
 final CollectionReference postsRef = firestore.collection('posts');
 final CollectionReference notificationsRef =
     firestore.collection('notification');
+final CollectionReference podcastsRef = firestore.collection('podcasts');
 
 // storage ref
 final storageRef = FirebaseStorage.instance.ref();

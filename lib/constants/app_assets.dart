@@ -34,6 +34,10 @@ class AppAssets {
   static const icActiveVoice = '$iconPath/voice-bold.svg';
   static const icEmptyBackgroundButton =
       '$iconPath/empty-background-button.svg';
+  static const icBackward15Second = '$iconPath/backward-15-seconds.svg';
+  static const icForward15Second = '$iconPath/forward-15-seconds.svg';
+  static const icPlay = '$iconPath/play.svg';
+  static const icPause = '$iconPath/pause.svg';
 
   // image
   static const warningSign = '$imagePath/warning-sign.svg';

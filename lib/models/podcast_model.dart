@@ -9,9 +9,8 @@ class Podcast {
   String imageUrl;
   String audioUrl;
   String backgroundType;
-  String userId;
   String userName;
-  String userAvatarImageUrl;
+
   Timestamp uploadTime;
   Podcast({
     required this.id,
@@ -19,10 +18,8 @@ class Podcast {
     required this.imageUrl,
     required this.audioUrl,
     required this.backgroundType,
-    required this.userId,
-    required this.userName,
-    required this.userAvatarImageUrl,
     required this.uploadTime,
+    required this.userName,
   });
 
   Map<String, dynamic> toJson() {
@@ -32,10 +29,8 @@ class Podcast {
       'imageUrl': imageUrl,
       'audioUrl': audioUrl,
       'backgroundType': backgroundType,
-      'userId': userId,
-      'userName': userName,
-      'userAvatarImageUrl': userAvatarImageUrl,
       'uploadTime': uploadTime,
+      'userName': userName,
     };
   }
 
@@ -46,10 +41,8 @@ class Podcast {
       imageUrl: map['imageUrl'] as String,
       audioUrl: map['audioUrl'] as String,
       backgroundType: map['backgroundType'] as String,
-      userId: map['userId'] as String,
-      userName: map['userName'] as String,
-      userAvatarImageUrl: map['userAvatarImageUrl'] as String,
       uploadTime: map['uploadTime'] as Timestamp,
+      userName: map['userName'] as String,
     );
   }
 }
