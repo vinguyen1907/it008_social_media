@@ -85,16 +85,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              print(postLen);
-              //Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.primaryTextColor,
-            ),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     print(postLen);
+          //     //Navigator.of(context).pop();
+          //   },
+          //   icon: Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: AppColors.primaryTextColor,
+          //   ),
+          // ),
           centerTitle: true,
           title: Text(
             "My Profile",

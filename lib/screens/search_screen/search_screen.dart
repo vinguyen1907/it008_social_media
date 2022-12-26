@@ -1,15 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/user_model.dart';
-import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
+import 'package:it008_social_media/widgets/search_bar_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -81,21 +78,25 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Row(
                             children: [
                               ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: searchResult[index].avatarImageUrl!,
-                                  placeholder: (context, url) =>
-                                      Container(color: Colors.grey[200]),
-                                  errorWidget: (context, url, error) {
-                                    return Container(
+                                child: searchResult[index].avatarImageUrl !=
+                                            null &&
+                                        searchResult[index].avatarImageUrl != ""
+                                    ? CachedNetworkImage(
+                                        imageUrl:
+                                            searchResult[index].avatarImageUrl!,
+                                        placeholder: (context, url) =>
+                                            Container(color: Colors.grey[200]),
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
                                         color: Colors.grey[200],
                                         child: Image.asset(
-                                            AppAssets.defaultImage));
-                                    // return Container(color: Colors.red);
-                                  },
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                ),
+                                          AppAssets.defaultImage,
+                                          width: 40,
+                                          height: 40,
+                                        )),
                               ),
                               const SizedBox(width: 10),
                               Text(searchResult[index].fullName ?? "No name",
