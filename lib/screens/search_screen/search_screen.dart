@@ -6,8 +6,13 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/user_model.dart';
+import 'package:it008_social_media/screens/profile/my_profile_page.dart';
+import 'package:it008_social_media/screens/profile/profile_page.dart';
 import 'package:it008_social_media/widgets/search_bar_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
+import 'package:provider/provider.dart';
+
+import '../../change_notifies/user_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -35,6 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -75,44 +81,64 @@ class _SearchScreenState extends State<SearchScreen> {
                           padding: const EdgeInsets.only(
                               left: Dimensions.defaultHorizontalMargin,
                               bottom: Dimensions.smallVerticalMargin),
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                child: searchResult[index].avatarImageUrl !=
-                                            null &&
-                                        searchResult[index].avatarImageUrl != ""
-                                    ? CachedNetworkImage(
-                                        imageUrl:
-                                            searchResult[index].avatarImageUrl!,
-                                        placeholder: (context, url) =>
-                                            Container(color: Colors.grey[200]),
-                                        width: 40,
-                                        height: 40,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Container(
-                                        color: Colors.grey[200],
-                                        child: Image.asset(
-                                          AppAssets.defaultImage,
-                                          width: 40,
-                                          height: 40,
-                                        )),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(searchResult[index].fullName ?? "No name",
-                                  style: AppStyles.searchResultStyle),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      searchResult.remove(searchResult[index]);
-                                    });
-                                  },
-                                  icon: SvgPicture.asset(AppAssets.icClose,
-                                      height: 10,
-                                      color: AppColors.primaryMainColor
-                                          .withOpacity(0.5))),
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              if (searchResult[index].id ==
+                                  userProvider.getUser?.id) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => MyProfilePage(
+                                        uid: userProvider.getUser?.id ?? ""),
+                                  ),
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfilePage(
+                                      uid: searchResult[index].id ?? "",
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: searchResult[index]
+                                            .avatarImageUrl ??
+                                        "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
+                                    placeholder: (context, url) =>
+                                        Container(color: Colors.grey[200]),
+                                    // errorWidget: (context, url, error) {
+                                    //   return Container(
+                                    //       color: Colors.grey[200],
+                                    //       child: Image.asset(
+                                    //           AppAssets.defaultImage));
+                                    //   // return Container(color: Colors.red);
+                                    // },
+                                    width: 40,
+                                    height: 40,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(searchResult[index].fullName ?? "No name",
+                                    style: AppStyles.searchResultStyle),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        searchResult
+                                            .remove(searchResult[index]);
+                                      });
+                                    },
+                                    icon: SvgPicture.asset(AppAssets.icClose,
+                                        height: 10,
+                                        color: AppColors.primaryMainColor
+                                            .withOpacity(0.5))),
+                              ],
+                            ),
                           ),
                         );
                       }),
