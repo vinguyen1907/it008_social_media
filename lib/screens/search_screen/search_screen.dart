@@ -1,17 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/user_model.dart';
-import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
 import 'package:it008_social_media/screens/profile/my_profile_page.dart';
 import 'package:it008_social_media/screens/profile/profile_page.dart';
+import 'package:it008_social_media/widgets/search_bar_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
 
