@@ -5,12 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
-import 'package:it008_social_media/screens/profile/widget/my_discription_label.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/edit_profile_button.dart';
-import 'package:it008_social_media/screens/profile/widget/follow_widget.dart';
-import 'package:it008_social_media/screens/profile/widget/posts_label.dart';
-import 'package:it008_social_media/screens/profile/widget/user_infomation_widget.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 
 import '../../constants/app_assets.dart';
@@ -153,12 +149,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 29, right: 79, top: 12),
-                  child: Text(
-                    userData['about'] ?? "",
-                    style: AppStyles.postUploadTime
-                        .copyWith(fontSize: 12, height: 18 / 12),
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        userData['about'] ?? "",
+                        style: AppStyles.postUploadTime
+                            .copyWith(fontSize: 12, height: 18 / 12),
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                      ),
+                    ],
                   ),
                 ),
                 EditProfileButton(onTap: () {

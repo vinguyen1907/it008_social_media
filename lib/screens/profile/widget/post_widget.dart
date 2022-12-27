@@ -11,7 +11,6 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Container(
       margin: EdgeInsets.only(left: 24, right: 24, top: 7),
       child: StreamBuilder(
