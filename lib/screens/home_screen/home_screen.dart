@@ -10,13 +10,14 @@ import 'package:it008_social_media/screens/add_post/add_post_button.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 import 'package:it008_social_media/screens/home_screen/widgets/homescreen_search_bar.dart';
 import 'package:it008_social_media/screens/home_screen/widgets/stories.dart';
+import 'package:it008_social_media/screens/notification_screen/notification_screen.dart';
 import 'package:it008_social_media/services/post_service.dart';
 import 'package:it008_social_media/screens/home_screen/bar_item_page.dart';
-import 'package:it008_social_media/screens/home_screen/select_image_bottom_sheet.dart';
 import 'package:it008_social_media/screens/search_screen/search_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
+import 'package:it008_social_media/widgets/search_bar_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<Post> posts = [];
   late bool isEndOfPostsList;
   late PageController pageController;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -91,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen>
     ));
   }
 
-
   Widget _buildSearch(Size size, BuildContext context) {
     return Hero(
       tag: 'search_bar',
@@ -135,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     );
   }
-
 
   ListView _buildPostList(Size size) {
     return ListView.builder(
