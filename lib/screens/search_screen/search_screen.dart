@@ -104,23 +104,34 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Row(
                               children: [
                                 ClipOval(
-                                  child: CachedNetworkImage(
-                                    imageUrl: searchResult[index]
-                                            .avatarImageUrl ??
-                                        "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
-                                    placeholder: (context, url) =>
-                                        Container(color: Colors.grey[200]),
-                                    // errorWidget: (context, url, error) {
-                                    //   return Container(
-                                    //       color: Colors.grey[200],
-                                    //       child: Image.asset(
-                                    //           AppAssets.defaultImage));
-                                    //   // return Container(color: Colors.red);
-                                    // },
-                                    width: 40,
-                                    height: 40,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: searchResult[index].avatarImageUrl !=
+                                              null &&
+                                          searchResult[index].avatarImageUrl !=
+                                              ""
+                                      ? CachedNetworkImage(
+                                          imageUrl: searchResult[index]
+                                              .avatarImageUrl!,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                                  color: Colors.grey[200]),
+                                          // errorWidget: (context, url, error) {
+                                          //   return Container(
+                                          //       color: Colors.grey[200],
+                                          //       child: Image.asset(
+                                          //           AppAssets.defaultImage));
+                                          //   // return Container(color: Colors.red);
+                                          // },
+                                          width: 40,
+                                          height: 40,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          color: Colors.grey[200],
+                                          child: Image.asset(
+                                            AppAssets.defaultImage,
+                                            width: 40,
+                                            height: 40,
+                                          )),
                                 ),
                                 const SizedBox(width: 10),
                                 Text(searchResult[index].fullName ?? "No name",
