@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
   List<Post> posts = [];
   late bool isEndOfPostsList;
   late PageController pageController;
-  var _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
