@@ -5,9 +5,11 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/profile/widget/message_button.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
+import 'package:it008_social_media/services/could_store_method.dart';
 import 'package:provider/provider.dart';
 import '../../change_notifies/user_provider.dart';
 import '../../services/utils.dart';
+import 'widget/follow_button.dart';
 import 'widget/follow_infomation_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -166,7 +168,39 @@ class _ProfilePageState extends State<ProfilePage> {
                         MessageButton(
                           onPress: (() {}),
                         ),
-
+                        isFollowing
+                            ? FollowButton(
+                          title: "UnFollow",
+                          onPress: () async {
+                            CloudStoreDataManagement()
+                                .followUser(
+                              userProvider.getUser?.id ?? "",
+                              userData['id'],
+                            )
+                                .then((value) {
+                              setState(() {
+                                isFollowing = false;
+                                followers--;
+                              });
+                            });
+                          },
+                        )
+                            : FollowButton(
+                          title: "Follow",
+                          onPress: () async {
+                            CloudStoreDataManagement()
+                                .followUser(
+                              userProvider.getUser?.id ?? "",
+                              userData['id'],
+                            )
+                                .then((value) {
+                              setState(() {
+                                isFollowing = true;
+                                followers++;
+                              });
+                            });
+                          },
+                        ),
                       ],
                     ),
                   ],
