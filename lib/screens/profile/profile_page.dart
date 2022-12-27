@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/profile/widget/message_button.dart';
+import 'package:it008_social_media/screens/profile/widget/podcast_tab.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/services/could_store_method.dart';
+import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
 import '../../change_notifies/user_provider.dart';
 import '../../services/utils.dart';
@@ -21,6 +23,8 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+enum Tab { post, podcast }
+
 class _ProfilePageState extends State<ProfilePage> {
   var userData = {};
   int postLen = 0;
@@ -28,6 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
+
+  Tab selectedTab = Tab.post;
 
   @override
   void initState() {
@@ -40,11 +46,17 @@ class _ProfilePageState extends State<ProfilePage> {
       isLoading = true;
     });
     try {
-      FirebaseFirestore.instance.collection('users').doc(widget.uid).get().then((value) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get()
+          .then((value) {
         userData = value.data()!;
         followers = value.data()?['followers'].length ?? 0;
         following = value.data()?['following'].length ?? 0;
-        isFollowing = value.data()?['followers'].contains(FirebaseAuth.instance.currentUser?.uid.toString());
+        isFollowing = value
+            .data()?['followers']
+            .contains(FirebaseAuth.instance.currentUser?.uid.toString());
         setState(() {});
       });
 
@@ -92,7 +104,8 @@ class _ProfilePageState extends State<ProfilePage> {
           centerTitle: true,
           title: Text(
             "Profile",
-            style: AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
           ),
         ),
         body: SingleChildScrollView(
@@ -113,7 +126,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           padding: const EdgeInsets.only(right: 16),
                           child: ClipOval(
                             child: Image.network(
-                              userData["avatarImageUrl"] != null && userData["avatarImageUrl"] != ""
+                              userData["avatarImageUrl"] != null &&
+                                      userData["avatarImageUrl"] != ""
                                   ? userData["avatarImageUrl"]
                                   : "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
                               width: 67,
@@ -128,11 +142,13 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             Text(
                               userData['fullName'] ?? "",
-                              style: AppStyles.postUserName.copyWith(fontSize: 18),
+                              style:
+                                  AppStyles.postUserName.copyWith(fontSize: 18),
                             ),
                             Text(
                               userData['address'] ?? "No address yet",
-                              style: AppStyles.postUserName.copyWith(fontSize: 12),
+                              style:
+                                  AppStyles.postUserName.copyWith(fontSize: 12),
                             ),
                           ],
                         ),
@@ -157,7 +173,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: 142,
                         child: Text(
                           userData['about'] ?? "",
-                          style: AppStyles.postUploadTime.copyWith(fontSize: 12, height: 18 / 12),
+                          style: AppStyles.postUploadTime
+                              .copyWith(fontSize: 12, height: 18 / 12),
                           textAlign: TextAlign.start,
                           maxLines: 4,
                         ),
@@ -170,37 +187,37 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         isFollowing
                             ? FollowButton(
-                          title: "UnFollow",
-                          onPress: () async {
-                            CloudStoreDataManagement()
-                                .followUser(
-                              userProvider.getUser?.id ?? "",
-                              userData['id'],
-                            )
-                                .then((value) {
-                              setState(() {
-                                isFollowing = false;
-                                followers--;
-                              });
-                            });
-                          },
-                        )
+                                title: "UnFollow",
+                                onPress: () async {
+                                  CloudStoreDataManagement()
+                                      .followUser(
+                                    userProvider.getUser?.id ?? "",
+                                    userData['id'],
+                                  )
+                                      .then((value) {
+                                    setState(() {
+                                      isFollowing = false;
+                                      followers--;
+                                    });
+                                  });
+                                },
+                              )
                             : FollowButton(
-                          title: "Follow",
-                          onPress: () async {
-                            CloudStoreDataManagement()
-                                .followUser(
-                              userProvider.getUser?.id ?? "",
-                              userData['id'],
-                            )
-                                .then((value) {
-                              setState(() {
-                                isFollowing = true;
-                                followers++;
-                              });
-                            });
-                          },
-                        ),
+                                title: "Follow",
+                                onPress: () async {
+                                  CloudStoreDataManagement()
+                                      .followUser(
+                                    userProvider.getUser?.id ?? "",
+                                    userData['id'],
+                                  )
+                                      .then((value) {
+                                    setState(() {
+                                      isFollowing = true;
+                                      followers++;
+                                    });
+                                  });
+                                },
+                              ),
                       ],
                     ),
                   ],
@@ -263,22 +280,79 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(left: 29),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Posts',
-                      style: AppStyles.postUserName
-                          .copyWith(fontSize: 14, height: 21 / 14),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedTab = Tab.post;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            'Posts',
+                            style: AppStyles.postUserName.copyWith(
+                                fontSize: 16,
+                                height: 21 / 14,
+                                color: selectedTab == Tab.post
+                                    ? AppColors.primaryMainColor
+                                    : AppColors.primaryTextColor),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            height: 2,
+                            width: size.width * 0.5 - 30,
+                            color: selectedTab == Tab.post
+                                ? AppColors.primaryMainColor
+                                : Colors.transparent,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedTab = Tab.podcast;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            'Podcasts',
+                            style: AppStyles.postUserName.copyWith(
+                                fontSize: 16,
+                                height: 21 / 14,
+                                color: selectedTab == Tab.podcast
+                                    ? AppColors.primaryMainColor
+                                    : AppColors.primaryTextColor),
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            height: 2,
+                            width: size.width * 0.5 - 30,
+                            color: selectedTab == Tab.podcast
+                                ? AppColors.primaryMainColor
+                                : Colors.transparent,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              PostWidget(
-                uid: widget.uid,
-              ),
+              const SizedBox(height: 10),
+              selectedTab == Tab.post
+                  ? PostWidget(
+                      uid: widget.uid,
+                    )
+                  : PodcastTab(
+                      userId: widget.uid,
+                    ),
             ],
           ),
         ),

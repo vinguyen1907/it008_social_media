@@ -1,6 +1,7 @@
 // import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
@@ -18,6 +19,7 @@ import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
 import 'package:it008_social_media/widgets/search_bar_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
     isEndOfPostsList = false;
     if (posts.isEmpty) {
-      getPostsList();
+      getPostsList(user!.uid);
     }
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
@@ -58,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final Size size = MediaQuery.of(context).size;
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
         body: LoadingManager(
@@ -65,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: SafeArea(
           child: RefreshIndicator(
         onRefresh: () {
-          return getPostsList();
+          return getPostsList(user!.uid);
         },
         child: SingleChildScrollView(
           controller: _scrollController,
@@ -415,9 +418,9 @@ class _HomeScreenState extends State<HomeScreen>
         });
   }
 
-  Future<void> getPostsList() async {
+  Future<void> getPostsList(String userId) async {
     isEndOfPostsList = false;
-    List<Post> newPosts = await PostService.getPostsFromFB();
+    List<Post> newPosts = await PostService.getPostsFromFB(user!.uid);
     setState(() {
       posts = newPosts;
     });

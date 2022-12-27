@@ -194,8 +194,10 @@ class _CommentScreenState extends State<CommentScreen> {
 
     // add notification if it is not own post
     if (user!.uid != widget.post.userId) {
-      final notiDoc =
-          notificationsRef.doc(user!.uid).collection('notifications').doc();
+      final notiDoc = notificationsRef
+          .doc(widget.post.userId)
+          .collection('notifications')
+          .doc();
       NotificationModel notification = NotificationModel(
         id: notiDoc.id,
         fromUserId: userProvider.getUser!.id!,
@@ -206,11 +208,7 @@ class _CommentScreenState extends State<CommentScreen> {
         postId: widget.post.id,
         createdTime: Timestamp.now(),
       );
-      notificationsRef
-          .doc(user!.uid)
-          .collection('notifications')
-          .doc(notiDoc.id)
-          .set(notification.toJson());
+      notiDoc.set(notification.toJson());
     }
 
     // dismiss keyboard

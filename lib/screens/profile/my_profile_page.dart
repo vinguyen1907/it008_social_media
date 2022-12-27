@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
+import 'package:it008_social_media/screens/profile/widget/podcast_tab.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/edit_profile_button.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
@@ -22,6 +23,8 @@ class MyProfilePage extends StatefulWidget {
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
+enum Tab { post, podcast }
+
 class _MyProfilePageState extends State<MyProfilePage> {
   var userData = {};
   int postLen = 0;
@@ -29,6 +32,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
+
+  Tab selectedTab = Tab.post;
 
   @override
   void initState() {
@@ -76,20 +81,21 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.primaryTextColor,
-            ),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: AppColors.primaryTextColor,
+          //   ),
+          // ),
           centerTitle: true,
           title: Text(
             "My Profile",
@@ -206,22 +212,77 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(left: 29),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Posts',
-                        style: AppStyles.postUserName
-                            .copyWith(fontSize: 14, height: 21 / 14),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedTab = Tab.post;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              'Posts',
+                              style: AppStyles.postUserName.copyWith(
+                                  fontSize: 16,
+                                  height: 21 / 14,
+                                  color: selectedTab == Tab.post
+                                      ? AppColors.primaryMainColor
+                                      : AppColors.primaryTextColor),
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 2,
+                              width: size.width * 0.5 - 30,
+                              color: selectedTab == Tab.post
+                                  ? AppColors.primaryMainColor
+                                  : Colors.transparent,
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedTab = Tab.podcast;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              'Podcasts',
+                              style: AppStyles.postUserName.copyWith(
+                                  fontSize: 16,
+                                  height: 21 / 14,
+                                  color: selectedTab == Tab.podcast
+                                      ? AppColors.primaryMainColor
+                                      : AppColors.primaryTextColor),
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 2,
+                              width: size.width * 0.5 - 30,
+                              color: selectedTab == Tab.podcast
+                                  ? AppColors.primaryMainColor
+                                  : Colors.transparent,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-                PostWidget(
-                  uid: widget.uid,
-                ),
+                const SizedBox(height: 10),
+                selectedTab == Tab.post
+                    ? PostWidget(
+                        uid: widget.uid,
+                      )
+                    : PodcastTab(userId: widget.uid),
               ],
             ),
           ),
