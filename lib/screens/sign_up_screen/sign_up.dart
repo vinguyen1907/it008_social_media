@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:it008_social_media/services/google_sign_in.dart';
 import '../../models/user_model.dart' as model;
 import '../../services/utils.dart';
-import '../../utils/firebase_consts.dart';
 import '../../utils/firebase_consts.dart';
 import '../../utils/global_methods.dart';
 import '../../widgets/loading_widget.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
-import 'package:validators/validators.dart';
+import 'package:provider/provider.dart';
+
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -197,21 +197,27 @@ class _SignUpState extends State<SignUp> {
                       color: Color(0xfffaf6f4),
                       borderRadius: BorderRadius.circular(10)
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage('assets/images/goo.png'),
-                          height: height_variable*0.031,
-                          width: height_variable*0.031,
-                          color: null
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Sign in with Google',
-                          style: TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Poppins', fontSize: 14, color: Color(0xff006175)),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+                        provider.googleLogin(context);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('assets/images/goo.png'),
+                            height: height_variable*0.031,
+                            width: height_variable*0.031,
+                            color: null
+                          ),
+                          SizedBox(width: 15),
+                          Text(
+                            'Sign in with Google',
+                            style: TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Poppins', fontSize: 14, color: Color(0xff006175)),
+                          ),
+                        ],
+                      ),
                     )
                   ),
                   SizedBox(height: height_variable*0.15),
@@ -241,7 +247,7 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
       ),
-    ));
+    );
   }
 
   void _submitFormOnRegister() async {

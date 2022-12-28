@@ -46,7 +46,7 @@ class Users {
       dateOfBirth: snapshot['dateOfBirth'] ?? "",
       followers: snapshot['followers'] ?? [],
       following: snapshot['following'] ?? [],
-      address: snapshot['following'] ?? "",
+      address: "" ?? snapshot['following'],
       phone: snapshot['phone'] ?? "",
     );
   }

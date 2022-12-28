@@ -152,7 +152,7 @@ class _FullScreenStoryState extends State<FullScreenStory>
                         itemBuilder: (context, index) => ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: CachedNetworkImage(
-                            imageUrl: storyGroup[index].imageUrl,
+                            imageUrl: storyGroup[index].imageUrl ?? "https://images.ctfassets.net/lh3zuq09vnm2/yBDals8aU8RWtb0xLnPkI/19b391bda8f43e16e64d40b55561e5cd/How_tracking_user_behavior_on_your_website_can_improve_customer_experience.png",
                             placeholder: ((context, url) => const Center(
                                   child: CircularProgressIndicator(
                                       color: Colors.white),

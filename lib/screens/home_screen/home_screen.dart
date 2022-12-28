@@ -137,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen>
                             .map((doc) => Story.fromJson(
                                 doc.data() as Map<String, dynamic>))
                             .toList();
-                        stories[0] = myStories;
+                        var stories2 = stories;
+                        stories2[0] = myStories;
                         return OpenContainer(
                             closedColor: Colors.transparent,
                             closedElevation: 0,
