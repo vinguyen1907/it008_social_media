@@ -88,8 +88,19 @@ class _HomeScreenState extends State<HomeScreen>
             // list of posts
             posts.isNotEmpty
                 ? _buildPostList(size)
-                : SvgPicture.asset(AppAssets.emptyPost,
-                    height: size.height / 4),
+                : Column(
+                    children: [
+                      SizedBox(height: size.height * 0.1),
+                      SvgPicture.asset(
+                        AppAssets.emptyPost,
+                        height: size.height / 4,
+                        width: size.width * 0.5,
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      Text('Follow people to see their posts')
+                    ],
+                  ),
           ]),
         ),
       )),

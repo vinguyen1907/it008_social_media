@@ -52,21 +52,29 @@ class StoryItem extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        fit: BoxFit.cover,
-                        width: size.width / 5.35,
-                        height: size.height / 8 + smallImageSize.height / 2,
-                        placeholder: (context, url) =>
-                            Container(color: Colors.grey[200]),
-                        errorWidget: (context, url, error) => Container(
-                            color: Colors.grey[200],
-                            child: const Center(
-                                child: Icon(
-                              Icons.error,
-                              color: Colors.red,
-                            ))),
-                      ),
+                      child: imageUrl != ''
+                          ? CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              fit: BoxFit.cover,
+                              width: size.width / 5.35,
+                              height:
+                                  size.height / 8 + smallImageSize.height / 2,
+                              placeholder: (context, url) =>
+                                  Container(color: Colors.grey[200]),
+                              errorWidget: (context, url, error) => Container(
+                                  color: Colors.grey[200],
+                                  child: Image.asset(
+                                    AppAssets.defaultImage,
+                                    fit: BoxFit.cover,
+                                  )),
+                            )
+                          : Image.asset(
+                              AppAssets.defaultImage,
+                              fit: BoxFit.cover,
+                              width: size.width / 5.35,
+                              height:
+                                  size.height / 8 + smallImageSize.height / 2,
+                            ),
                     )),
 
                 // avatar of user who uploaded this story

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 
@@ -21,8 +22,15 @@ class StatusTile extends StatelessWidget {
       width: double.infinity,
       child: Row(children: [
         ClipOval(
-            child: CachedNetworkImage(
-                imageUrl: backgroundImageUrl, height: 46, width: 46)),
+            child: backgroundImageUrl != ''
+                ? CachedNetworkImage(
+                    imageUrl: backgroundImageUrl, height: 46, width: 46)
+                : Image.asset(
+                    AppAssets.defaultImage,
+                    fit: BoxFit.cover,
+                    width: 46,
+                    height: 46,
+                  )),
         // CircleAvatar(
         //     radius: 23,
         //     backgroundImage: CachedNetworkImageProvider(backgroundImageUrl)),
