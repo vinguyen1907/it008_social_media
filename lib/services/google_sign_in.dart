@@ -30,29 +30,9 @@ class GoogleSignInProvider extends ChangeNotifier {
     try{
       
       await FirebaseAuth.instance.signInWithCredential(credential);
-      final User? user = authInstance.currentUser;
-        final _uid = user!.uid;
-
-        model.Users _user = model.Users(
-          id: _uid,
-          userName: '',
-          email: user.email,
-          gender: '',
-          dateOfBirth: '',
-          about: '',
-          avatarImageUrl: '',
-          fullName: '',
-          following: [],
-          followers: [],
-          address: "",
-          phone: "",
-        );
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(_uid)
-            .set(_user.toJson() as Map<String, dynamic>);
+  
       Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => SignUp2())));
+            context, MaterialPageRoute(builder: ((context) => MainScreen())));
     } on FirebaseAuthException catch(error) {
       
     }
