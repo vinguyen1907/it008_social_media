@@ -11,6 +11,7 @@ import 'package:it008_social_media/screens/podcast_page/widgets/podcast_album_ca
 import 'package:it008_social_media/screens/podcast_page/widgets/podcast_item_widget.dart';
 import 'package:it008_social_media/screens/show_all_podcast/show_all_podcast.dart';
 import 'package:it008_social_media/services/router.dart';
+import 'package:it008_social_media/services/user_service.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 
 class PodcastPage extends StatelessWidget {
@@ -117,7 +118,7 @@ class PodcastPage extends StatelessWidget {
       final ref = await podcastsRef
           .doc(doc.id)
           .collection('podcasts')
-          .orderBy('uploadTime')
+          .orderBy('uploadTime', descending: true)
           .limit(1)
           .get();
       podcasts.add(Podcast.fromJson(ref.docs.first.data()));
@@ -127,10 +128,12 @@ class PodcastPage extends StatelessWidget {
   }
 
   Future<List<PodcastAlbum>> getFollowingList() async {
-    final allAlbum = await podcastsRef.get();
-    if (allAlbum.docs.isEmpty) {
-      return [];
-    }
+    final List followingPeople =
+        await UserService.getFollowingPeople(user!.uid);
+
+    final allAlbum =
+        await podcastsRef.where('userId', whereIn: followingPeople).get();
+
     return allAlbum.docs.map((doc) {
       return PodcastAlbum.fromJson(doc.data() as Map<String, dynamic>);
     }).toList();
