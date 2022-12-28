@@ -441,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen>
     final int oldLength = posts.length;
 
     List<Post> newPosts =
-        await PostService.getMorePostsFromFB(posts.last.uploadTime);
+        await PostService.getMorePostsFromFB(user!.uid, posts.last.uploadTime);
     setState(() {
       posts.addAll(newPosts);
     });
