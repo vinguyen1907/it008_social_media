@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
+import 'package:it008_social_media/screens/chat/chat_room_page.dart';
 import 'package:it008_social_media/screens/profile/widget/message_button.dart';
 import 'package:it008_social_media/screens/profile/widget/podcast_tab.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
@@ -10,6 +11,7 @@ import 'package:it008_social_media/services/could_store_method.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
 import '../../change_notifies/user_provider.dart';
+import '../../services/auth_service.dart';
 import '../../services/utils.dart';
 import 'widget/follow_button.dart';
 import 'widget/follow_infomation_widget.dart';
@@ -32,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
+  String id = "";
 
   Tab selectedTab = Tab.post;
 
@@ -80,6 +83,14 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  String chatRoomId(String user1, String user2) {
+    if (user1.compareTo(user2) == -1) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
   }
 
   @override
@@ -154,9 +165,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.logout),
-                      onPressed: () {},
+                    Visibility(
+                      visible: widget.uid == userProvider.getUser?.id,
+                      child: IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -183,7 +199,26 @@ class _ProfilePageState extends State<ProfilePage> {
                     Row(
                       children: [
                         MessageButton(
-                          onPress: (() {}),
+                          onPress: (() {
+                            String roomId = '';
+                            roomId = chatRoomId(
+                              userProvider.getUser!.id ?? "",
+                              userData['id'],
+                            );
+                            if (roomId != '') {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ChatRoomPage(
+                                    uid: userData['id'] ?? "",
+                                    contactname: userData['userName'],
+                                    contactphotoURl:
+                                        userData["avatarImageUrl"] ?? "",
+                                    messagesId: roomId,
+                                  ),
+                                ),
+                              );
+                            }
+                          }),
                         ),
                         isFollowing
                             ? FollowButton(

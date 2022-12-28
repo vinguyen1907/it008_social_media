@@ -12,6 +12,7 @@ import 'package:it008_social_media/widgets/loading_widget.dart';
 
 import '../../constants/app_assets.dart';
 import '../../services/utils.dart';
+import '../sign_in_screen/sign_in.dart';
 import 'widget/follow_infomation_widget.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -149,7 +150,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           ),
                         ],
                       ),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.logout)),
+                      IconButton(onPressed: () async {
+                        await FirebaseAuth.instance.signOut().whenComplete(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignIn(),
+                            ),
+                          );
+                        });
+                      }, icon: Icon(Icons.logout)),
                     ],
                   ),
                 ),
