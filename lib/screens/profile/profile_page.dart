@@ -11,6 +11,7 @@ import 'package:it008_social_media/services/could_store_method.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
 import '../../change_notifies/user_provider.dart';
+import '../../services/auth_service.dart';
 import '../../services/utils.dart';
 import 'widget/follow_button.dart';
 import 'widget/follow_infomation_widget.dart';
@@ -164,9 +165,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.logout),
-                      onPressed: () {},
+                    Visibility(
+                      visible: widget.uid == userProvider.getUser?.id,
+                      child: IconButton(
+                        icon: Icon(Icons.logout),
+                        onPressed: () async {
+
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -203,11 +209,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => ChatRoomPage(
-                                    uid: userData['id'] ??
-                                        "",
+                                    uid: userData['id'] ?? "",
                                     contactname: userData['userName'],
-                                    contactphotoURl: userData["avatarImageUrl"] ??
-                                        "",
+                                    contactphotoURl:
+                                        userData["avatarImageUrl"] ?? "",
                                     messagesId: roomId,
                                   ),
                                 ),
