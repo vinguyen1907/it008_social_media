@@ -8,6 +8,7 @@ class PostService {
   static Future<List<Post>> getPostsFromFB(String userId) async {
     // get followers list
     List followingPeople = await UserService.getFollowingPeople(userId);
+    followingPeople.add(userId);
 
     // get posts from followers
     QuerySnapshot snapshot = await postsRef

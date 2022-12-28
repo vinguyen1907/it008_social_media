@@ -87,10 +87,20 @@ class _CommentScreenState extends State<CommentScreen> {
                         horizontal: Dimensions.defaultHorizontalMargin),
                     child: Row(children: [
                       ClipOval(
-                          child: CachedNetworkImage(
-                        imageUrl: widget.post.userAvatarUrl,
-                        height: size.height * 0.05,
-                      )),
+                          child: userProvider.getUser!.avatarImageUrl != ""
+                              ? CachedNetworkImage(
+                                  imageUrl:
+                                      userProvider.getUser!.avatarImageUrl!,
+                                  errorWidget: (context, url, error) {
+                                    return Container(
+                                        color: Colors.grey[200],
+                                        child: Icon(Icons.error));
+                                  },
+                                  height: size.height * 0.05,
+                                )
+                              : Image.asset(AppAssets.defaultImage,
+                                  fit: BoxFit.cover,
+                                  height: size.height * 0.05)),
                       const SizedBox(width: 10),
                       InputAndSendWidget(
                         size: size,
