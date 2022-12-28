@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/podcast_album.dart';
 
@@ -26,13 +27,20 @@ class PodcastAlbumCardWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                  imageUrl: album.userAvatarUrl,
-                  errorWidget: (context, url, error) => Container(
-                      color: Colors.grey[200], child: const Icon(Icons.error)),
-                  height: imageSize.width,
-                  width: imageSize.width,
-                  fit: BoxFit.cover),
+              child: album.userAvatarUrl != ''
+                  ? CachedNetworkImage(
+                      imageUrl: album.userAvatarUrl,
+                      errorWidget: (context, url, error) => Container(
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.error)),
+                      height: imageSize.width,
+                      width: imageSize.width,
+                      fit: BoxFit.cover)
+                  : Image.asset(
+                      AppAssets.defaultImage,
+                      height: imageSize.width,
+                      width: imageSize.width,
+                    ),
             ),
             SizedBox(
               width: imageSize.width,
