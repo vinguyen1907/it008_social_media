@@ -150,16 +150,20 @@ class _MyProfilePageState extends State<MyProfilePage> {
                           ),
                         ],
                       ),
-                      IconButton(onPressed: () async {
-                        await FirebaseAuth.instance.signOut().whenComplete(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignIn(),
-                            ),
-                          );
-                        });
-                      }, icon: Icon(Icons.logout)),
+                      IconButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance
+                                .signOut()
+                                .whenComplete(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SignIn(),
+                                ),
+                              );
+                            });
+                          },
+                          icon: Icon(Icons.logout)),
                     ],
                   ),
                 ),
