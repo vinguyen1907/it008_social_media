@@ -10,24 +10,26 @@ class StoryService {
     List followingPeople = await UserService.getFollowingPeople(user!.uid);
 
     // get stories from following people
-    QuerySnapshot<Object?> snapshot =
-        await storiesRef.get(); // all documentSnapshot with user name
-    final docs = snapshot.docs;
-    for (var doc in docs) {
+    final snapshot = await storiesRef.get();
+
+    for (var doc in snapshot.docs) {
       final storiesSnapshot = await storiesRef
           .doc(doc.id)
           .collection('stories')
-          .where('whoCanSee', arrayContains: user!.uid)
+          .where('userId', whereIn: followingPeople)
+          // .where('whoCanSee', arrayContains: user!.uid)
           .where('createdTime',
               isGreaterThan: Timestamp.fromDate(
                   DateTime.now().subtract(const Duration(days: 1))))
-          .where('userId', whereIn: followingPeople)
-          .limit(20)
+          .limit(5)
           .get();
+
       final newStory = storiesSnapshot.docs
           .map((doc) => Story.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
-      temp.add(newStory);
+      if (newStory.isNotEmpty) {
+        temp.add(newStory);
+      }
     }
     return temp;
   }
