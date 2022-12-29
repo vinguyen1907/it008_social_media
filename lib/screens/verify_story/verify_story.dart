@@ -7,6 +7,7 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/story_model.dart';
+import 'package:it008_social_media/services/user_service.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
@@ -141,11 +142,8 @@ class _VerifyStoryScreenState extends State<VerifyStoryScreen> {
                           isFullScreen: isFullScreen,
                           createdTime: Timestamp.now(),
                           whoCanSee: followersId);
-                      await storiesRef
-                          .doc(user!.uid)
-                          .collection('stories')
-                          .doc(docStory.id)
-                          .set(story.toJson());
+
+                      await docStory.set(story.toJson());
                       setState(() {
                         isLoading = false;
                       });
@@ -168,13 +166,15 @@ class _VerifyStoryScreenState extends State<VerifyStoryScreen> {
   }
 
   Future<List<String>> getFlowersId(String uid) async {
-    List<String> ids = [];
-    final snapshot = await followRef.get();
-    snapshot.docs.forEach((doc) {
-      if (doc['followingId'] == uid) {
-        ids.add(doc['followerId']);
-      }
-    });
-    return ids;
+    // List<String> ids = [];
+    // final snapshot = await followRef.get();
+    // snapshot.docs.forEach((doc) {
+    //   if (doc['followingId'] == uid) {
+    //     ids.add(doc['followerId']);
+    //   }
+    // });
+    // return ids;
+    final List<String> followers = await UserService.getFollowers(uid);
+    return followers;
   }
 }
