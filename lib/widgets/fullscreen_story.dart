@@ -283,7 +283,7 @@ class _FullScreenStoryState extends State<FullScreenStory>
             ),
             Text(
               GlobalMethods.getPeriodTimeToNow(
-                  storyGroup.first.createdTime.toDate()),
+                  storyGroup[currentIndex].createdTime.toDate()),
               style: AppStyles.postUploadTime.copyWith(
                 color: Colors.white,
                 shadows: <Shadow>[

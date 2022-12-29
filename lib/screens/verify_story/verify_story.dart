@@ -7,6 +7,7 @@ import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/story_model.dart';
+import 'package:it008_social_media/services/story_service.dart';
 import 'package:it008_social_media/services/user_service.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
@@ -110,47 +111,7 @@ class _VerifyStoryScreenState extends State<VerifyStoryScreen> {
                       ),
                     ),
                     onPressed: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      // 1. push image to firebase storage
-                      File imageFile = File(widget.imagePath);
-
-                      final docStory =
-                          storiesRef.doc(user!.uid).collection('stories').doc();
-
-                      final imageRef =
-                          storageRef.child('story_image/${docStory.id}');
-
-                      try {
-                        await imageRef.putFile(imageFile);
-                      } on FirebaseException catch (e) {
-                        print("ERROR: ${e.toString()}");
-                      }
-                      // 2. get image url
-                      final String imageUrl = await imageRef.getDownloadURL();
-
-                      // 3. push story to firebase firestore
-                      final followersId = await getFlowersId(user!.uid);
-                      final Story story = Story(
-                          id: docStory.id,
-                          userId: user!.uid,
-                          userName: userProvider.getUser!.fullName ?? "No name",
-                          userAvatarUrl:
-                              userProvider.getUser!.avatarImageUrl ?? "",
-                          imageUrl: imageUrl,
-                          isFullScreen: isFullScreen,
-                          createdTime: Timestamp.now(),
-                          whoCanSee: followersId);
-
-                      await docStory.set(story.toJson());
-                      setState(() {
-                        isLoading = false;
-                      });
-
-                      // 4. pop screen
-                      if (!mounted) return;
-                      Navigator.pop(context);
+                      await handleUploadStory(userProvider);
                     },
                     child: const Text(
                       'Post',
@@ -165,16 +126,23 @@ class _VerifyStoryScreenState extends State<VerifyStoryScreen> {
     );
   }
 
-  Future<List<String>> getFlowersId(String uid) async {
-    // List<String> ids = [];
-    // final snapshot = await followRef.get();
-    // snapshot.docs.forEach((doc) {
-    //   if (doc['followingId'] == uid) {
-    //     ids.add(doc['followerId']);
-    //   }
-    // });
-    // return ids;
-    final List<String> followers = await UserService.getFollowers(uid);
-    return followers;
+  Future<void> handleUploadStory(UserProvider userProvider) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await StoryService.uploadStory(
+        widget.imagePath,
+        userProvider.getUser!.fullName,
+        userProvider.getUser!.avatarImageUrl,
+        isFullScreen);
+
+    setState(() {
+      isLoading = false;
+    });
+
+    // pop screen
+    if (!mounted) return;
+    Navigator.pop(context);
   }
 }
