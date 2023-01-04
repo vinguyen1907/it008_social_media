@@ -22,8 +22,14 @@ class PostService {
         .toList();
   }
 
-  static Future<List<Post>> getMorePostsFromFB(Timestamp lastUploadTime) async {
+  static Future<List<Post>> getMorePostsFromFB(
+      String userId, Timestamp lastUploadTime) async {
+    // get followers list
+    List followingPeople = await UserService.getFollowingPeople(userId);
+    followingPeople.add(userId);
+
     QuerySnapshot snapshot = await postsRef
+        .where('userId', whereIn: followingPeople)
         .orderBy('uploadTime', descending: true)
         .startAfter([lastUploadTime])
         .limit(5)

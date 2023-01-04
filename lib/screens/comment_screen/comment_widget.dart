@@ -25,11 +25,22 @@ class CommentWidget extends StatelessWidget {
           Column(
             children: [
               ClipOval(
-                child: CachedNetworkImage(
-                    imageUrl: comment.userAvatarUrl,
-                    height: 40,
-                    width: 40,
-                    fit: BoxFit.cover),
+                child: comment.userAvatarUrl != ""
+                    ? CachedNetworkImage(
+                        imageUrl: comment.userAvatarUrl,
+                        errorWidget: (context, url, error) {
+                          return Container(
+                              color: Colors.grey[200],
+                              child: const Icon(Icons.error));
+                        },
+                        height: 40,
+                        width: 40,
+                        fit: BoxFit.cover)
+                    : Image.asset(
+                        AppAssets.defaultImage,
+                        height: 40,
+                        width: 40,
+                      ),
               ),
             ],
           ),
