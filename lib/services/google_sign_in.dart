@@ -18,7 +18,6 @@ class GoogleSignInProvider extends ChangeNotifier {
   Future googleLogin(context) async {
     final googleUser = await googleSignIn.signIn();
     if (googleUser == null) return;
-    _user = googleUser;
 
     final googleAuth = await googleUser.authentication;
 
@@ -26,19 +25,6 @@ class GoogleSignInProvider extends ChangeNotifier {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken
     );
-
-    try{
-      
-      await FirebaseAuth.instance.signInWithCredential(credential);
-  
-      Navigator.push(
-            context, MaterialPageRoute(builder: ((context) => MainScreen())));
-    } on FirebaseAuthException catch(error) {
-      
-    }
-
-
-    
-    notifyListeners();
-  } 
+    await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 }

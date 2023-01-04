@@ -35,13 +35,13 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: AppColors.primaryTextColor,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: () {},
+        //   icon: Icon(
+        //     Icons.arrow_back_ios_new,
+        //     color: AppColors.primaryTextColor,
+        //   ),
+        // ),
         centerTitle: true,
         title: Text(
           "Chats",
@@ -61,8 +61,8 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: 34,
                 child: TextFormField(
-                  onEditingComplete: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ProfilePage())),
+                  // onEditingComplete: () => Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => ProfilePage())),
                   style: AppStyles.searchText,
                   decoration: InputDecoration(
                     hintText: 'Type something...',

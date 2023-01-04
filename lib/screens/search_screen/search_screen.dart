@@ -1,16 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/user_model.dart';
-import 'package:it008_social_media/screens/home_screen/search_bar_widget.dart';
+import 'package:it008_social_media/screens/profile/my_profile_page.dart';
+import 'package:it008_social_media/screens/profile/profile_page.dart';
+import 'package:it008_social_media/widgets/search_bar_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
+import 'package:provider/provider.dart';
+
+import '../../change_notifies/user_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -38,6 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -78,40 +81,75 @@ class _SearchScreenState extends State<SearchScreen> {
                           padding: const EdgeInsets.only(
                               left: Dimensions.defaultHorizontalMargin,
                               bottom: Dimensions.smallVerticalMargin),
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: searchResult[index].avatarImageUrl!,
-                                  placeholder: (context, url) =>
-                                      Container(color: Colors.grey[200]),
-                                  errorWidget: (context, url, error) {
-                                    return Container(
-                                        color: Colors.grey[200],
-                                        child: Image.asset(
-                                            AppAssets.defaultImage));
-                                    // return Container(color: Colors.red);
-                                  },
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (searchResult[index].id ==
+                                  userProvider.getUser?.id) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => MyProfilePage(
+                                        uid: userProvider.getUser?.id ?? ""),
+                                  ),
+                                );
+                              } else {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfilePage(
+                                      uid: searchResult[index].id ?? "",
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                ClipOval(
+                                  child: searchResult[index].avatarImageUrl !=
+                                              null &&
+                                          searchResult[index].avatarImageUrl !=
+                                              ""
+                                      ? CachedNetworkImage(
+                                          imageUrl: searchResult[index]
+                                              .avatarImageUrl!,
+                                          placeholder: (context, url) =>
+                                              Container(
+                                                  color: Colors.grey[200]),
+                                          // errorWidget: (context, url, error) {
+                                          //   return Container(
+                                          //       color: Colors.grey[200],
+                                          //       child: Image.asset(
+                                          //           AppAssets.defaultImage));
+                                          //   // return Container(color: Colors.red);
+                                          // },
+                                          width: 40,
+                                          height: 40,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          color: Colors.grey[200],
+                                          child: Image.asset(
+                                            AppAssets.defaultImage,
+                                            width: 40,
+                                            height: 40,
+                                          )),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(searchResult[index].fullName ?? "No name",
-                                  style: AppStyles.searchResultStyle),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      searchResult.remove(searchResult[index]);
-                                    });
-                                  },
-                                  icon: SvgPicture.asset(AppAssets.icClose,
-                                      height: 10,
-                                      color: AppColors.primaryMainColor
-                                          .withOpacity(0.5))),
-                            ],
+                                const SizedBox(width: 10),
+                                Text(searchResult[index].fullName ?? "No name",
+                                    style: AppStyles.searchResultStyle),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        searchResult
+                                            .remove(searchResult[index]);
+                                      });
+                                    },
+                                    icon: SvgPicture.asset(AppAssets.icClose,
+                                        height: 10,
+                                        color: AppColors.primaryMainColor
+                                            .withOpacity(0.5))),
+                              ],
+                            ),
                           ),
                         );
                       }),

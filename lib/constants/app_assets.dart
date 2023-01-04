@@ -29,12 +29,28 @@ class AppAssets {
   static const icSlideLeft = '$iconPath/slide-left.png';
   static const icMore = '$iconPath/horizontal-more.svg';
 
+  static const icVoice = '$iconPath/voice-outline.svg';
+  static const icAudio = '$iconPath/audio.svg';
+  static const icActiveVoice = '$iconPath/voice-bold.svg';
+  static const icEmptyBackgroundButton =
+      '$iconPath/empty-background-button.svg';
+  static const icBackward15Second = '$iconPath/backward-15-seconds.svg';
+  static const icForward15Second = '$iconPath/forward-15-seconds.svg';
+  static const icPlay = '$iconPath/play.svg';
+  static const icPause = '$iconPath/pause.svg';
+
   // image
   static const warningSign = '$imagePath/warning-sign.svg';
   static const imageFailed = '$imagePath/image_failed.svg';
   static const defaultImage = '$imagePath/default_avatar.jpg';
   static const emptyNotification = '$imagePath/my_notifications.svg';
   static const emptyPost = '$imagePath/no-post.svg';
+  static const emptyImage = '$imagePath/empty-image.png';
+  static const greenPodcastBackground =
+      '$imagePath/green-podcast-background.png';
+  static const bluePodcastBackground = '$imagePath/blue-podcast-background.png';
+  static const redPodcastBackground = '$imagePath/red-podcast-background.png';
+  static const pinkPodcastBackground = '$imagePath/pink-podcast-background.png';
 
   // example
   // static const magnifierIcon = '$iconPath/magnifying-glass.png';

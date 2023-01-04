@@ -5,16 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
-import 'package:it008_social_media/screens/profile/widget/my_discription_label.dart';
+import 'package:it008_social_media/screens/profile/widget/podcast_tab.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/edit_profile_button.dart';
-import 'package:it008_social_media/screens/profile/widget/follow_widget.dart';
-import 'package:it008_social_media/screens/profile/widget/posts_label.dart';
-import 'package:it008_social_media/screens/profile/widget/user_infomation_widget.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 
 import '../../constants/app_assets.dart';
 import '../../services/utils.dart';
+import '../sign_in_screen/sign_in.dart';
 import 'widget/follow_infomation_widget.dart';
 
 class MyProfilePage extends StatefulWidget {
@@ -26,6 +24,8 @@ class MyProfilePage extends StatefulWidget {
   State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
+enum Tab { post, podcast }
+
 class _MyProfilePageState extends State<MyProfilePage> {
   var userData = {};
   int postLen = 0;
@@ -33,6 +33,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
+
+  Tab selectedTab = Tab.post;
 
   @override
   void initState() {
@@ -45,7 +47,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
       isLoading = true;
     });
     try {
-      var userSnap = await FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
 
       // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
@@ -60,7 +65,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
       userData = userSnap.data()!;
       followers = userSnap.data()?['followers'].length ?? 0;
       following = userSnap.data()?['following'].length ?? 0;
-      isFollowing = userSnap.data()!['followers'].contains(FirebaseAuth.instance.currentUser!.uid.toString());
+      isFollowing = userSnap
+          .data()!['followers']
+          .contains(FirebaseAuth.instance.currentUser!.uid.toString());
       setState(() {});
     } catch (e) {
       // showSnackBar(
@@ -75,25 +82,26 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: IconButton(
-            onPressed: () {
-              print(postLen);
-              //Navigator.of(context).pop();
-            },
-            icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: AppColors.primaryTextColor,
-            ),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          //   icon: Icon(
+          //     Icons.arrow_back_ios_new,
+          //     color: AppColors.primaryTextColor,
+          //   ),
+          // ),
           centerTitle: true,
           title: Text(
             "My Profile",
-            style: AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
+            style:
+                AppStyles.postUserName.copyWith(fontSize: 18, height: 27 / 18),
           ),
         ),
         body: SingleChildScrollView(
@@ -114,9 +122,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             padding: const EdgeInsets.only(right: 16),
                             child: ClipOval(
                               child: Image.network(
-                                userData["avatarImageUrl"] != null &&  userData["avatarImageUrl"] != ""
-                                    ? userData["avatarImageUrl"] :"https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg"
-                                ,
+                                userData["avatarImageUrl"] != null &&
+                                        userData["avatarImageUrl"] != ""
+                                    ? userData["avatarImageUrl"]
+                                    : "https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg",
                                 width: 67,
                                 height: 67,
                                 fit: BoxFit.cover,
@@ -128,28 +137,45 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                userData['userName'] ?? "",
-                                style: AppStyles.postUserName.copyWith(fontSize: 18),
+                                userData['fullName'] ?? "",
+                                style: AppStyles.postUserName
+                                    .copyWith(fontSize: 18),
                               ),
                               Text(
-                                userData['address'] ?? "no address yet",
-                                style: AppStyles.postUserName.copyWith(fontSize: 12),
+                                userData['address'] ?? "No address yet",
+                                style: AppStyles.postUserName
+                                    .copyWith(fontSize: 12),
                               ),
                             ],
                           ),
                         ],
                       ),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.logout)),
+                      IconButton(onPressed: () async {
+                        await FirebaseAuth.instance.signOut().whenComplete(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignIn(),
+                            ),
+                          );
+                        });
+                      }, icon: Icon(Icons.logout)),
                     ],
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 29, right: 79, top: 12),
-                  child: Text(
-                    userData['about'] ?? "",
-                    style: AppStyles.postUploadTime.copyWith(fontSize: 12, height: 18 / 12),
-                    textAlign: TextAlign.start,
-                    maxLines: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        userData['about'] ?? "",
+                        style: AppStyles.postUploadTime
+                            .copyWith(fontSize: 12, height: 18 / 12),
+                        textAlign: TextAlign.start,
+                        maxLines: 2,
+                      ),
+                    ],
                   ),
                 ),
                 EditProfileButton(onTap: () {
@@ -157,8 +183,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => EditProfilePage(
-                        name: userData['fullName']??"",
-                        address: userData['address']??"no address yet",
+                        name: userData['fullName'] ?? "",
+                        address: userData['address'] ?? "no address yet",
                       ),
                     ),
                   );
@@ -196,19 +222,77 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(left: 29),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Posts',
-                        style: AppStyles.postUserName.copyWith(fontSize: 14, height: 21 / 14),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedTab = Tab.post;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              'Posts',
+                              style: AppStyles.postUserName.copyWith(
+                                  fontSize: 16,
+                                  height: 21 / 14,
+                                  color: selectedTab == Tab.post
+                                      ? AppColors.primaryMainColor
+                                      : AppColors.primaryTextColor),
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 2,
+                              width: size.width * 0.5 - 30,
+                              color: selectedTab == Tab.post
+                                  ? AppColors.primaryMainColor
+                                  : Colors.transparent,
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedTab = Tab.podcast;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            Text(
+                              'Podcasts',
+                              style: AppStyles.postUserName.copyWith(
+                                  fontSize: 16,
+                                  height: 21 / 14,
+                                  color: selectedTab == Tab.podcast
+                                      ? AppColors.primaryMainColor
+                                      : AppColors.primaryTextColor),
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 2,
+                              width: size.width * 0.5 - 30,
+                              color: selectedTab == Tab.podcast
+                                  ? AppColors.primaryMainColor
+                                  : Colors.transparent,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-                PostWidget(),
+                const SizedBox(height: 10),
+                selectedTab == Tab.post
+                    ? PostWidget(
+                        uid: widget.uid,
+                      )
+                    : PodcastTab(userId: widget.uid),
               ],
             ),
           ),

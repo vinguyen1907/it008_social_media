@@ -242,18 +242,28 @@ class _FullScreenStoryState extends State<FullScreenStory>
     );
   }
 
-  Padding _buildTile(BuildContext context, List<Story> storyGroup) {
+  _buildTile(BuildContext context, List<Story> storyGroup) {
+    // if (storyGroup.isEmpty) {
+    //   return const CircularProgressIndicator();
+    // }
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: Dimensions.defaultHorizontalMargin),
       child: Row(children: [
         ClipOval(
-            child: CachedNetworkImage(
-          imageUrl: storyGroup.first.userAvatarUrl,
-          height: 46,
-          width: 46,
-          fit: BoxFit.cover,
-        )),
+            child: storyGroup.first.userAvatarUrl != ""
+                ? CachedNetworkImage(
+                    imageUrl: storyGroup.first.userAvatarUrl,
+                    height: 46,
+                    width: 46,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    AppAssets.defaultImage,
+                    height: 46,
+                    width: 46,
+                    fit: BoxFit.cover,
+                  )),
         const SizedBox(width: 10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

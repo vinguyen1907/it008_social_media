@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/services/google_sign_in.dart';
 import '../../models/user_model.dart' as model;
 import '../../services/utils.dart';
@@ -10,6 +11,7 @@ import '../../widgets/loading_widget.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:validators/validators.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -27,9 +29,8 @@ class _SignUpState extends State<SignUp> {
 
   OutlineInputBorder _buildborder(Color color) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(color: color, width: 1) 
-    );
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderSide: BorderSide(color: color, width: 1));
   }
 
   bool _isLoading = false;
@@ -50,17 +51,22 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height_variable*0.167),
+                  SizedBox(height: height_variable * 0.167),
                   Center(
                     child: Text(
                       'Create your account',
-                      style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600, fontSize: height_variable*0.027),
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w600,
+                          fontSize: height_variable * 0.027),
                     ),
                   ),
-                  SizedBox(height: height_variable*0.038, width: width_variable*0.072),
+                  SizedBox(
+                      height: height_variable * 0.038,
+                      width: width_variable * 0.072),
                   TextFormField(
                     validator: (String? inputVal) {
-                      if (!emailRegex.hasMatch(inputVal.toString())) { 
+                      if (!emailRegex.hasMatch(inputVal.toString())) {
                         return 'Email format not match';
                       } else {
                         return null;
@@ -68,19 +74,26 @@ class _SignUpState extends State<SignUp> {
                     },
                     controller: _email,
                     decoration: InputDecoration(
-                      enabledBorder: _buildborder(Color(0xff006175)),
-                      errorBorder: _buildborder(Colors.red),
-                      focusedErrorBorder: _buildborder(Colors.red),
-                      focusedBorder: _buildborder(Colors.blue),
-                      disabledBorder: _buildborder(Color(0xff006175)),
-                      labelText: 'Email',
-                      labelStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                      hintText: 'something@gmail.com',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                      prefixIcon: Icon(Icons.email)                  
-                    ),
+                        enabledBorder: _buildborder(Color(0xff006175)),
+                        errorBorder: _buildborder(Colors.red),
+                        focusedErrorBorder: _buildborder(Colors.red),
+                        focusedBorder: _buildborder(Colors.blue),
+                        disabledBorder: _buildborder(Color(0xff006175)),
+                        labelText: 'Email',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        hintText: 'something@gmail.com',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        prefixIcon: Icon(Icons.email)),
                   ),
-                  SizedBox(height: height_variable*0.016, width: width_variable*0.072),
+                  SizedBox(
+                      height: height_variable * 0.016,
+                      width: width_variable * 0.072),
                   TextFormField(
                     controller: _pwd,
                     validator: (String? inputVal) {
@@ -88,108 +101,133 @@ class _SignUpState extends State<SignUp> {
                         return 'Password must be at least 6 characters';
                       } else {
                         return null;
-                      }     
+                      }
                     },
                     decoration: InputDecoration(
-                      enabledBorder: _buildborder(Color(0xff006175)),
-                      errorBorder: _buildborder(Colors.red),
-                      focusedErrorBorder: _buildborder(Colors.red),
-                      focusedBorder: _buildborder(Colors.blue),
-                      disabledBorder: _buildborder(Color(0xff006175)),
-                      labelText: 'Password',
-                      labelStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                      hintText: 'Password must have at least 6 characters',
-                      hintStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                      prefixIcon: Icon(Icons.lock),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _obscureText1 = !_obscureText1;
-                          });
-                        },
-                        child: Icon(_obscureText1 ? Icons.visibility : Icons.visibility_off ),
-                      )
-                    ),
+                        enabledBorder: _buildborder(Color(0xff006175)),
+                        errorBorder: _buildborder(Colors.red),
+                        focusedErrorBorder: _buildborder(Colors.red),
+                        focusedBorder: _buildborder(Colors.blue),
+                        disabledBorder: _buildborder(Color(0xff006175)),
+                        labelText: 'Password',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        hintText: 'Password must have at least 6 characters',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscureText1 = !_obscureText1;
+                            });
+                          },
+                          child: Icon(_obscureText1
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        )),
                     obscureText: _obscureText1,
                   ),
-                  SizedBox(height: height_variable*0.016, width: width_variable*0.072),
+                  SizedBox(
+                      height: height_variable * 0.016,
+                      width: width_variable * 0.072),
                   TextFormField(
-                        controller: _conformPwd,
-                        validator: (String? inputVal) {
-                          if (inputVal!.length < 6) {
-                            return 'Password must be at least 6 characters';
-                          }
-                          if (_pwd.text != _conformPwd.text) {
-                            return 'Those passwords did not match';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          enabledBorder: _buildborder(Color(0xff006175)),
-                          errorBorder: _buildborder(Colors.red),
-                          focusedErrorBorder: _buildborder(Colors.red),
-                          focusedBorder: _buildborder(Colors.blue),
-                          disabledBorder: _buildborder(Color(0xff006175)),
-                          labelText: 'Confirm password',
-                          labelStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                          hintText: 'Those passwords have to be the same',
-                          hintStyle: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w400, fontSize: 12),
-                          prefixIcon: Icon(Icons.lock),
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _obscureText2 = !_obscureText2;
-                              });
-                            },
-                            child: Icon(_obscureText2 ? Icons.visibility : Icons.visibility_off ),
-                          )
-                        ),
-                        obscureText: _obscureText2,
+                    controller: _conformPwd,
+                    validator: (String? inputVal) {
+                      if (inputVal!.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
+                      if (_pwd.text != _conformPwd.text) {
+                        return 'Those passwords did not match';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        enabledBorder: _buildborder(Color(0xff006175)),
+                        errorBorder: _buildborder(Colors.red),
+                        focusedErrorBorder: _buildborder(Colors.red),
+                        focusedBorder: _buildborder(Colors.blue),
+                        disabledBorder: _buildborder(Color(0xff006175)),
+                        labelText: 'Confirm password',
+                        labelStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        hintText: 'Those passwords have to be the same',
+                        hintStyle: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12),
+                        prefixIcon: Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscureText2 = !_obscureText2;
+                            });
+                          },
+                          child: Icon(_obscureText2
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        )),
+                    obscureText: _obscureText2,
                   ),
-                  SizedBox(height: height_variable*0.038, width: width_variable*0.072),
+                  SizedBox(
+                      height: height_variable * 0.038,
+                      width: width_variable * 0.072),
                   GestureDetector(
                     onTap: () {
                       _submitFormOnRegister();
                     },
                     child: Container(
-                          width: width_variable*0.856,
-                          height: height_variable*0.06,
-                          decoration: BoxDecoration(
-                            color: Color(0xff006175),
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Next',
-                              style: TextStyle(fontWeight: FontWeight.w600,fontFamily: 'Poppins', fontSize: 18, color: Colors.white),
-                            )
-                          ),
+                      width: width_variable * 0.856,
+                      height: height_variable * 0.06,
+                      decoration: BoxDecoration(
+                          color: Color(0xff006175),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                          child: Text(
+                        'Next',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Poppins',
+                            fontSize: 18,
+                            color: Colors.white),
+                      )),
                     ),
                   ),
-                  SizedBox(height: height_variable*0.059),
+                  SizedBox(height: height_variable * 0.059),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: width_variable*0.3,
-                          height: 1,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)
-                          ),
-                        ),
-                        SizedBox(width: 27),
-                        Text('or', style: TextStyle(fontWeight: FontWeight.w400,fontFamily: 'Poppins', fontSize: 12, color: Colors.black)),
-                        SizedBox(width: 27,),
-                        Container(
-                          width: width_variable*0.3,
-                          height: 1,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)
-                          ),
-                        )
-                      ],
+                    children: [
+                      Container(
+                        width: width_variable * 0.3,
+                        height: 1,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)),
+                      ),
+                      SizedBox(width: 27),
+                      Text('or',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                              color: Colors.black)),
+                      SizedBox(
+                        width: 27,
+                      ),
+                      Container(
+                        width: width_variable * 0.3,
+                        height: 1,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)),
+                      )
+                    ],
                   ),
-                  SizedBox(height: height_variable*0.06),
+                  SizedBox(height: height_variable * 0.06),
                   Container(
                      width: width_variable*0.856,
                       height: height_variable*0.06,
@@ -199,9 +237,8 @@ class _SignUpState extends State<SignUp> {
                     ),
                     child: GestureDetector(
                       onTap: () {
-                        final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-                        provider.googleLogin(context);
-                      },
+                        
+                        SubmitWithGoogle();                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -222,28 +259,35 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(height: height_variable*0.15),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account?',
-                          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 14)
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already have an account?',
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14)),
+                      SizedBox(width: 2),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => SignIn())));
+                        },
+                        child: Text(
+                          'Sign in',
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color(0xff006175)),
                         ),
-                        SizedBox(width: 2),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: ((context) => SignIn())));
-                          },
-                          child: Text(
-                            'Sign in',
-                            style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff006175)),
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
-
           ),
         ),
       ),
@@ -305,4 +349,34 @@ class _SignUpState extends State<SignUp> {
       }
     }
   }
+
+  void SubmitWithGoogle() async{
+      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+      await provider.googleLogin(context);
+      final User? user = authInstance.currentUser;
+      final _uid = user!.uid;
+
+        model.Users _user = model.Users(
+          id: _uid,
+          userName: '',
+          email: user.email,
+          gender: '',
+          dateOfBirth: '',
+          about: '',
+          avatarImageUrl: '',
+          fullName: '',
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
+        );
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_uid)
+            .set(_user.toJson() as Map<String, dynamic>);
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUp2())));
+  }
+
 }
+

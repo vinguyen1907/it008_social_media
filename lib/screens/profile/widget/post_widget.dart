@@ -6,15 +6,18 @@ import 'package:provider/provider.dart';
 import '../../../change_notifies/user_provider.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({Key? key}) : super(key: key);
+  final String uid;
+  const PostWidget({Key? key, required this.uid}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
     return Container(
       margin: EdgeInsets.only(left: 24, right: 24, top: 7),
       child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').where('userId', isEqualTo: userProvider.getUser!.id).snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('posts')
+              .where('userId', isEqualTo: uid)
+              .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

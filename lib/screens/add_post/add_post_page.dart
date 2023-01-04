@@ -68,15 +68,6 @@ class _AddPostPageState extends State<AddPostPage> {
             appBar: AppBar(
               elevation: 0,
               backgroundColor: Colors.transparent,
-              // leading: IconButton(
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              //   icon: const Icon(
-              //     Icons.arrow_back_ios_new,
-              //     color: AppColors.primaryTextColor,
-              //   ),
-              // ),
               centerTitle: true,
               title: Text(
                 "Post",
@@ -191,6 +182,12 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   _handleAddPost(UserProvider userProvider) async {
+    // if don't have image or don't have caption
+    if (_captionTextController.text.isEmpty || pickedImagePath == null) {
+      showSnackBar(context, 'You must add an image or caption.');
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });
