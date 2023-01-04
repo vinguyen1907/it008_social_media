@@ -7,6 +7,8 @@ import 'package:it008_social_media/widgets/loading_widget.dart';
 import '../../services/utils.dart';
 import '../../utils/firebase_consts.dart';
 import '../../utils/global_methods.dart';
+import 'package:provider/provider.dart'; 
+import 'package:it008_social_media/services/google_sign_in.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -227,7 +229,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   GestureDetector(
                     onTap: () {
-                  //Do nothing
+                      loginGoole();
                     },
                     child: Container(
                       width: width_variable * 0.856,
@@ -342,5 +344,19 @@ class _SignInState extends State<SignIn> {
         });
       }
     }
+  }
+
+  void loginGoole() async{
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    await provider.googleLogin(context);
+    if (!mounted) return;
+
+        // showDialog(
+        //     context: context,
+        //     builder: (context) => AlertDialog(
+        //           content: Text("Login Successful"),
+        //         ));
+
+    Navigator.of(context).pushNamed(MainScreen.id);
   }
 }

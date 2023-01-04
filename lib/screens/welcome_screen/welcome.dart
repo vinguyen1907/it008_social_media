@@ -39,7 +39,7 @@ class _WelcomeState extends State<Welcome> {
             left: width_variable*0.072,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => MainScreen())));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => const MainScreen())));
               },
               child: Container(
                 height: height_variable*0.06,

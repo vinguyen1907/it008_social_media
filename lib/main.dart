@@ -4,6 +4,7 @@ import 'package:it008_social_media/change_notifies/image_detector_provider.dart'
 
 import 'package:it008_social_media/screens/main_screen/main_screen.dart';
 import 'package:it008_social_media/screens/on_boarding/on_boarind_scroll.dart';
+import 'package:it008_social_media/services/google_sign_in.dart';
 import 'package:it008_social_media/services/router.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => ImageDetectionProvider(),
           ),
+          ChangeNotifierProvider(
+            create: ((context) => GoogleSignInProvider())
+          )
         ],
         builder: (context, child) {
           return MaterialApp(

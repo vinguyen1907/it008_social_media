@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:it008_social_media/screens/main_screen/main_screen.dart';
+import 'package:it008_social_media/services/google_sign_in.dart';
 import '../../models/user_model.dart' as model;
 import '../../services/utils.dart';
-import '../../utils/firebase_consts.dart';
 import '../../utils/firebase_consts.dart';
 import '../../utils/global_methods.dart';
 import '../../widgets/loading_widget.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:validators/validators.dart';
 
 class SignUp extends StatefulWidget {
@@ -228,31 +229,35 @@ class _SignUpState extends State<SignUp> {
                   ),
                   SizedBox(height: height_variable * 0.06),
                   Container(
-                      width: width_variable * 0.856,
-                      height: height_variable * 0.06,
-                      decoration: BoxDecoration(
-                          color: Color(0xfffaf6f4),
-                          borderRadius: BorderRadius.circular(10)),
+                     width: width_variable*0.856,
+                      height: height_variable*0.06,
+                    decoration: BoxDecoration(
+                      color: Color(0xfffaf6f4),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        
+                        SubmitWithGoogle();                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
-                              image: AssetImage('assets/images/goo.png'),
-                              height: height_variable * 0.031,
-                              width: height_variable * 0.031,
-                              color: null),
+                            image: AssetImage('assets/images/goo.png'),
+                            height: height_variable*0.031,
+                            width: height_variable*0.031,
+                            color: null
+                          ),
                           SizedBox(width: 15),
                           Text(
                             'Sign in with Google',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Poppins',
-                                fontSize: 14,
-                                color: Color(0xff006175)),
+                            style: TextStyle(fontWeight: FontWeight.w500,fontFamily: 'Poppins', fontSize: 14, color: Color(0xff006175)),
                           ),
                         ],
-                      )),
-                  SizedBox(height: height_variable * 0.15),
+                      ),
+                    )
+                  ),
+                  SizedBox(height: height_variable*0.15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -344,4 +349,34 @@ class _SignUpState extends State<SignUp> {
       }
     }
   }
+
+  void SubmitWithGoogle() async{
+      final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+      await provider.googleLogin(context);
+      final User? user = authInstance.currentUser;
+      final _uid = user!.uid;
+
+        model.Users _user = model.Users(
+          id: _uid,
+          userName: '',
+          email: user.email,
+          gender: '',
+          dateOfBirth: '',
+          about: '',
+          avatarImageUrl: '',
+          fullName: '',
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
+        );
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_uid)
+            .set(_user.toJson() as Map<String, dynamic>);
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUp2())));
+  }
+
 }
+
