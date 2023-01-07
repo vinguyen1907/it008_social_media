@@ -10,6 +10,7 @@ import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
 import 'change_notifies/user_provider.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
