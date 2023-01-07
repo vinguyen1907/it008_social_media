@@ -11,7 +11,7 @@ import '../../widgets/loading_widget.dart';
 import 'sign_up_2.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:validators/validators.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -354,9 +354,13 @@ class _SignUpState extends State<SignUp> {
       final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
       await provider.googleLogin(context);
       final User? user = authInstance.currentUser;
+      String? email = user?.email;
       final _uid = user!.uid;
-
-        model.Users _user = model.Users(
+      if (await checkIfEmailInUse(email)){
+        Navigator.of(context).pushNamed(MainScreen.id);
+      }
+      else {
+         model.Users _user = model.Users(
           id: _uid,
           userName: '',
           email: user.email,
@@ -376,7 +380,30 @@ class _SignUpState extends State<SignUp> {
             .doc(_uid)
             .set(_user.toJson() as Map<String, dynamic>);
         Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUp2())));
+      }
+       
   }
 
+  Future<bool> checkIfEmailInUse(String? emailAddress) async {
+  try {
+    String email = emailAddress!;
+    // Fetch sign-in methods for the email address
+    final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
+
+    // In case list is not empty
+    if (list.isNotEmpty) {
+      // Return true because there is an existing
+      // user using the email address
+      return true;
+    } else {
+      // Return false because email adress is not in use
+      return false;
+    }
+  } catch (error) {
+    // Handle error
+    // ...
+    return true;
+  }
+}
 }
 

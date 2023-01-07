@@ -9,6 +9,9 @@ import '../../utils/firebase_consts.dart';
 import '../../utils/global_methods.dart';
 import 'package:provider/provider.dart'; 
 import 'package:it008_social_media/services/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../models/user_model.dart' as model;
+import 'package:it008_social_media/screens/sign_up_screen/sign_up_2.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -348,15 +351,56 @@ class _SignInState extends State<SignIn> {
 
   void loginGoole() async{
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-    await provider.googleLogin(context);
-    if (!mounted) return;
+      await provider.googleLogin(context);
+      final User? user = authInstance.currentUser;
+      String? email = user?.email;
+      final _uid = user!.uid;
+      if (await checkIfEmailInUse(email)){
+        Navigator.of(context).pushNamed(MainScreen.id);
+      }
+      else {
+         model.Users _user = model.Users(
+          id: _uid,
+          userName: '',
+          email: user.email,
+          gender: '',
+          dateOfBirth: '',
+          about: '',
+          avatarImageUrl: '',
+          fullName: '',
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
+        );
 
-        // showDialog(
-        //     context: context,
-        //     builder: (context) => AlertDialog(
-        //           content: Text("Login Successful"),
-        //         ));
-
-    Navigator.of(context).pushNamed(MainScreen.id);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_uid)
+            .set(_user.toJson() as Map<String, dynamic>);
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUp2())));
+      }
   }
+   Future<bool> checkIfEmailInUse(String? emailAddress) async {
+  try {
+    String email = emailAddress!;
+    // Fetch sign-in methods for the email address
+    final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
+
+    // In case list is not empty
+    if (list.isNotEmpty) {
+      // Return true because there is an existing
+      // user using the email address
+      return true;
+    } else {
+      // Return false because email adress is not in use
+      return false;
+    }
+  } catch (error) {
+    // Handle error
+    // ...
+    return true;
+  }
+}
+
 }
