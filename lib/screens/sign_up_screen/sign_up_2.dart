@@ -321,8 +321,6 @@ class _SignUp2State extends State<SignUp2> {
           'dateOfBirth': date.toString(),
         });
 
-        Provider.of<UserProvider>(context, listen: false).refreshUser();
-
         Navigator.push(
             context, MaterialPageRoute(builder: ((context) => Welcome())));
       } on FirebaseException catch (error) {
