@@ -228,7 +228,8 @@ class _AddNewPodcastScreenState extends State<AddNewPodcastScreen> {
       isLoading = true;
     });
     // 1. create doc to get doc id
-    final podcastDoc = podcastsRef.doc(user!.uid).collection("podcasts").doc();
+    final podcastDoc =
+        podcastsRef.doc(userProvider.getUser!.id!).collection("podcasts").doc();
 
     // 2.1.  upload image to firebase storage
     String? imageUrl;
@@ -268,7 +269,7 @@ class _AddNewPodcastScreenState extends State<AddNewPodcastScreen> {
         uploadTime: Timestamp.now(),
         userName: userProvider.getUser!.fullName!);
     podcastDoc.set(newPodcast.toJson());
-    podcastsRef.doc(user!.uid).set({
+    podcastsRef.doc(userProvider.getUser!.id).set({
       'userId': userProvider.getUser!.id!,
       'userName': userProvider.getUser!.fullName!,
       'userAvatarUrl': userProvider.getUser!.avatarImageUrl!,

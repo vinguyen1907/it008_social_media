@@ -17,7 +17,7 @@ class PodcastTab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 7),
       child: FutureBuilder(
-        future: PodcastService.getMyPodcast(userId),
+        future: PodcastService.getMyPodcast(context, userId),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             final List<Podcast> podcasts = snapshot.data as List<Podcast>;

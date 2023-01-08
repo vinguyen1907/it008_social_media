@@ -3,12 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
+import 'package:it008_social_media/fullscreen_story/fullscreen_story.dart';
 import 'package:it008_social_media/models/story_model.dart';
+import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/home_screen/widgets/select_image_bottom_sheet.dart';
 import 'package:it008_social_media/screens/home_screen/widgets/story_item_widget.dart';
 import 'package:it008_social_media/services/story_service.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
-import 'package:it008_social_media/widgets/fullscreen_story.dart';
 import 'package:provider/provider.dart';
 
 class Stories extends StatefulWidget {
@@ -27,7 +28,7 @@ class _StoriesState extends State<Stories> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final Users user = Provider.of<UserProvider>(context).getUser!;
 
     return ListView(scrollDirection: Axis.horizontal, children: [
       // add story button
@@ -44,7 +45,7 @@ class _StoriesState extends State<Stories> {
             },
             child: StoryItem(
               size: size,
-              imageUrl: userProvider.getUser!.avatarImageUrl ?? '',
+              imageUrl: user.avatarImageUrl ?? '',
               hasBorder: true,
             ),
           )),
@@ -52,7 +53,7 @@ class _StoriesState extends State<Stories> {
       // my stories
       StreamBuilder<QuerySnapshot>(
           stream: storiesRef
-              .doc(user!.uid)
+              .doc(user.id)
               .collection('stories')
               .where('createdTime',
                   isGreaterThan: Timestamp.fromDate(
@@ -91,13 +92,13 @@ class _StoriesState extends State<Stories> {
                         ),
                       ),
                   openBuilder: (context, action) {
-                    pageController = PageController(
-                        // initialPage: index
-                        );
+                    pageController = PageController();
+
+                    List<List<Story>> allStories = [myStories, ...stories]
+                        .where((story) => story.isNotEmpty)
+                        .toList();
                     return FullScreenStory(
-                      stories: stories[0].isNotEmpty
-                          ? [myStories, ...stories]
-                          : [myStories],
+                      stories: allStories,
                       initialPage: 0,
                     );
                   });
@@ -132,10 +133,11 @@ class _StoriesState extends State<Stories> {
                             ),
                         openBuilder: (context, action) {
                           pageController = PageController(initialPage: index);
+                          List<List<Story>> allStories = [myStories, ...stories]
+                              .where((story) => story.isNotEmpty)
+                              .toList();
                           return FullScreenStory(
-                            stories: stories[0].isNotEmpty
-                                ? [myStories, ...stories]
-                                : [myStories],
+                            stories: allStories,
                             initialPage: index + 1,
                           );
                         });
@@ -148,6 +150,6 @@ class _StoriesState extends State<Stories> {
   }
 
   Future<void> getStories() async {
-    stories = await StoryService.getStoriesFromOtherPeople();
+    stories = await StoryService.getStoriesFromOtherPeople(context);
   }
 }

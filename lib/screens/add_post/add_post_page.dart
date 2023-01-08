@@ -12,6 +12,7 @@ import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/enum/notification_type.dart';
 import 'package:it008_social_media/models/notification_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
+import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/add_post/add_post_button.dart';
 import 'package:it008_social_media/screens/edit_profile/widget/text_form_field.dart';
 import 'package:it008_social_media/services/utils.dart';
@@ -182,6 +183,9 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   _handleAddPost(UserProvider userProvider) async {
+    final Users user =
+        Provider.of<UserProvider>(context, listen: false).getUser!;
+
     // if don't have image or don't have caption
     if (_captionTextController.text.isEmpty || pickedImagePath == null) {
       showSnackBar(context, 'You must add an image or caption.');
@@ -210,7 +214,7 @@ class _AddPostPageState extends State<AddPostPage> {
     // 3. upload post to firestore
     Post newPost = Post(
         id: postDoc.id,
-        userId: user!.uid,
+        userId: user.id!,
         userName: userProvider.getUser!.fullName ?? "No user name",
         userAvatarUrl: userProvider.getUser!.avatarImageUrl ?? "",
         uploadTime: Timestamp.now(),
@@ -237,7 +241,7 @@ class _AddPostPageState extends State<AddPostPage> {
     // Add notification to followers
     // 1. get list followers
     List<String> followersId = [];
-    followRef.where('followingId', isEqualTo: user!.uid).get().then((snapshot) {
+    followRef.where('followingId', isEqualTo: user.id!).get().then((snapshot) {
       snapshot.docs.forEach((doc) {
         followersId.add(doc['followerId']);
       });
