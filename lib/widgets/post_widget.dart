@@ -10,6 +10,7 @@ import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/enum/notification_type.dart';
 import 'package:it008_social_media/models/notification_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
+import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_screen.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/utils/global_methods.dart';
@@ -39,14 +40,14 @@ class _PostWidgetState extends State<PostWidget> {
   void initState() {
     super.initState();
     // post = widget.post;
-    isLiked = widget.post.likedUserIdList.contains(user!.uid);
+    // isLiked = widget.post.likedUserIdList.contains(user.id!);
     likeQuantity = widget.post.likedUserIdList.length;
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final Users user = Provider.of<UserProvider>(context).getUser!;
 
     return GestureDetector(
       onTap: () {
@@ -107,7 +108,7 @@ class _PostWidgetState extends State<PostWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _buildLike(userProvider),
+                  _buildLike(user),
                   const SizedBox(width: 10),
                   _buildComment(),
                 ],
@@ -141,8 +142,7 @@ class _PostWidgetState extends State<PostWidget> {
         }));
   }
 
-  StreamBuilder<DocumentSnapshot<Object?>> _buildLike(
-      UserProvider userProvider) {
+  StreamBuilder<DocumentSnapshot<Object?>> _buildLike(Users user) {
     return StreamBuilder<DocumentSnapshot>(
         stream: postsRef.doc(widget.post.id).snapshots(),
         builder: ((context, snapshot) {
@@ -155,12 +155,12 @@ class _PostWidgetState extends State<PostWidget> {
           } else if (snapshot.hasData) {
             final Post post =
                 Post.fromJson(snapshot.data!.data()! as Map<String, dynamic>);
-            isLiked = post.likedUserIdList.contains(user!.uid);
+            isLiked = post.likedUserIdList.contains(user.id!);
 
             return Row(
               children: [
                 GestureDetector(
-                  onTap: () => _handleLike(userProvider),
+                  onTap: () => _handleLike(user),
                   child: SvgPicture.asset(
                       isLiked ? AppAssets.icLikedHeart : AppAssets.icHeart,
                       width: 18,
@@ -178,29 +178,29 @@ class _PostWidgetState extends State<PostWidget> {
         }));
   }
 
-  void _handleLike(UserProvider userProvider) {
+  void _handleLike(Users user) {
     // update post in firestore
     List<String> newLikedList =
         List<String>.from(widget.post.likedUserIdList); // copy list
     if (!isLiked) {
-      newLikedList.add(user!.uid);
+      newLikedList.add(user.id!);
     } else {
-      newLikedList.remove(user!.uid);
+      newLikedList.remove(user.id!);
     }
     widget.post.likedUserIdList = newLikedList;
     postsRef.doc(widget.post.id).update({'likedUserIdList': newLikedList});
 
     // add notification if it is not own post
-    if (!isLiked && widget.post.userId != user!.uid) {
+    if (!isLiked && widget.post.userId != user.id!) {
       final notiDoc = notificationsRef
           .doc(widget.post.userId)
           .collection("notifications")
           .doc();
       final NotificationModel noti = NotificationModel(
           id: notiDoc.id,
-          fromUserId: userProvider.getUser!.id!,
-          fromUserName: userProvider.getUser!.fullName!,
-          fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
+          fromUserId: user.id!,
+          fromUserName: user.fullName!,
+          fromUserAvatarUrl: user.avatarImageUrl!,
           toUserId: widget.post.userId,
           postId: widget.post.id,
           notificationType: NotificationType.like.toString(),

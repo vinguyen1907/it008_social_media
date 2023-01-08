@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
@@ -10,10 +11,12 @@ import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/models/enum/notification_type.dart';
 import 'package:it008_social_media/models/notification_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
+import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_screen.dart';
 import 'package:it008_social_media/screens/notification_screen/widgets/notification_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/utils/global_methods.dart';
+import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -23,6 +26,8 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final Users user = Provider.of<UserProvider>(context).getUser!;
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -61,7 +66,7 @@ class NotificationScreen extends StatelessWidget {
             // ),
             StreamBuilder<QuerySnapshot>(
                 stream: notificationsRef
-                    .doc(user!.uid)
+                    .doc(user.id)
                     .collection('notifications')
                     .orderBy('createdTime', descending: true)
                     .snapshots(),
@@ -117,7 +122,7 @@ class NotificationScreen extends StatelessWidget {
                               flex: 1,
                               onPressed: (context) {
                                 notificationsRef
-                                    .doc(user!.uid)
+                                    .doc(user.id)
                                     .collection('notifications')
                                     .doc(document.id)
                                     .delete();

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
-import 'package:it008_social_media/models/enum/podcast_background_colors.dart';
 import 'package:it008_social_media/models/podcast_album.dart';
 import 'package:it008_social_media/models/podcast_model.dart';
 import 'package:it008_social_media/screens/play_podcast_screen/play_podcast_screen.dart';
@@ -10,9 +8,8 @@ import 'package:it008_social_media/screens/podcast_page/widgets/add_new_podcast_
 import 'package:it008_social_media/screens/podcast_page/widgets/podcast_album_card_widget.dart';
 import 'package:it008_social_media/screens/podcast_page/widgets/podcast_item_widget.dart';
 import 'package:it008_social_media/screens/show_all_podcast/show_all_podcast.dart';
+import 'package:it008_social_media/services/podcast_service.dart';
 import 'package:it008_social_media/services/router.dart';
-import 'package:it008_social_media/services/user_service.dart';
-import 'package:it008_social_media/utils/firebase_consts.dart';
 
 class PodcastPage extends StatelessWidget {
   const PodcastPage({super.key});
@@ -77,7 +74,7 @@ class PodcastPage extends StatelessWidget {
                 const Text('Following Podcasts', style: AppStyles.headerTitle),
                 const SizedBox(height: 10),
                 FutureBuilder<List<PodcastAlbum>>(
-                    future: getFollowingList(),
+                    future: getFollowingList(context),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final List<PodcastAlbum> albumList = snapshot.data!;
@@ -111,31 +108,13 @@ class PodcastPage extends StatelessWidget {
   }
 
   Future<List<Podcast>> getNewestPodcasts() async {
-    final allPodcastUser = await podcastsRef.get();
-    final List<Podcast> podcasts = [];
-
-    for (var doc in allPodcastUser.docs) {
-      final ref = await podcastsRef
-          .doc(doc.id)
-          .collection('podcasts')
-          .orderBy('uploadTime', descending: true)
-          .limit(1)
-          .get();
-      podcasts.add(Podcast.fromJson(ref.docs.first.data()));
-    }
-
+    final List<Podcast> podcasts = await PodcastService().getNewestPodcasts();
     return podcasts;
   }
 
-  Future<List<PodcastAlbum>> getFollowingList() async {
-    final List followingPeople =
-        await UserService.getFollowingPeople(user!.uid);
-
-    final allAlbum =
-        await podcastsRef.where('userId', whereIn: followingPeople).get();
-
-    return allAlbum.docs.map((doc) {
-      return PodcastAlbum.fromJson(doc.data() as Map<String, dynamic>);
-    }).toList();
+  Future<List<PodcastAlbum>> getFollowingList(BuildContext context) async {
+    List<PodcastAlbum> albumList =
+        await PodcastService().getFollowingPodcastAlbum(context);
+    return albumList;
   }
 }

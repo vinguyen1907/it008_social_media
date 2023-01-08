@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 final FirebaseAuth authInstance = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-final User? user = authInstance.currentUser;
-final uid = user!.uid;
+// final User? user = authInstance.currentUser;
+// final uid = user!.uid;
 
 // collection ref
 final CollectionReference usersRef = firestore.collection('users');

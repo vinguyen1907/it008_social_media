@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
@@ -10,9 +9,9 @@ import 'package:it008_social_media/models/comment_model.dart';
 import 'package:it008_social_media/models/enum/notification_type.dart';
 import 'package:it008_social_media/models/notification_model.dart';
 import 'package:it008_social_media/models/post_model.dart';
+import 'package:it008_social_media/models/user_model.dart';
 import 'package:it008_social_media/screens/comment_screen/comment_widget.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
-import 'package:it008_social_media/widgets/header.dart';
 import 'package:it008_social_media/widgets/input_and_send.dart';
 import 'package:it008_social_media/widgets/post_widget.dart';
 import 'package:provider/provider.dart';
@@ -180,6 +179,9 @@ class _CommentScreenState extends State<CommentScreen> {
   }
 
   void _handleComment(UserProvider userProvider) {
+    final Users user =
+        Provider.of<UserProvider>(context, listen: false).getUser!;
+
     // push comment to Firebase
     if (controller.text != "") {
       final doc = postsRef.doc(widget.post.id).collection('comments').doc();
@@ -203,7 +205,7 @@ class _CommentScreenState extends State<CommentScreen> {
     }
 
     // add notification if it is not own post
-    if (user!.uid != widget.post.userId) {
+    if (user.id != widget.post.userId) {
       final notiDoc = notificationsRef
           .doc(widget.post.userId)
           .collection('notifications')
