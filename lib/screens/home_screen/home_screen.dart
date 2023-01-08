@@ -26,18 +26,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin<HomeScreen> {
-  bool isKeepAlive = true;
-  @override
-  bool get wantKeepAlive => isKeepAlive;
-
+class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
-
   final ScrollController _scrollController = ScrollController();
   List<Post> posts = [];
   late bool isEndOfPostsList;
-  late PageController pageController;
+  // late PageController pageController;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -55,17 +49,17 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void dispose() {
+    super.dispose();
     _scrollController.dispose();
     _searchController.dispose();
-    pageController.dispose();
-    super.dispose();
+    // pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     final Size size = MediaQuery.of(context).size;
     Users user = Provider.of<UserProvider>(context).getUser!;
+    print(user.toJson());
 
     return Scaffold(
         body: LoadingManager(
