@@ -309,7 +309,7 @@ class _SignInState extends State<SignIn> {
         //           content: Text("Login Successful"),
         //         ));
 
-        AuthService().getUserData(context);
+        // AuthService().getUserData(context);
 
         Navigator.of(context).pushNamed(MainScreen.id).then((value) {
           setState(() {});
