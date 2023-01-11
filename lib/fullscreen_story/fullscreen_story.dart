@@ -2,12 +2,11 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:it008_social_media/constants/app_assets.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
+import 'package:it008_social_media/fullscreen_story/widgets/instruction.dart';
+import 'package:it008_social_media/fullscreen_story/widgets/tile.dart';
 import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/utils/global_methods.dart';
 
@@ -38,6 +37,7 @@ class _FullScreenStoryState extends State<FullScreenStory>
   @override
   void initState() {
     super.initState();
+    totalCurrentIndex = widget.initialPage;
 
     totalPageController = PageController(initialPage: widget.initialPage);
 
@@ -152,7 +152,7 @@ class _FullScreenStoryState extends State<FullScreenStory>
                         itemBuilder: (context, index) => ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: CachedNetworkImage(
-                            imageUrl: storyGroup[index].imageUrl ?? "https://images.ctfassets.net/lh3zuq09vnm2/yBDals8aU8RWtb0xLnPkI/19b391bda8f43e16e64d40b55561e5cd/How_tracking_user_behavior_on_your_website_can_improve_customer_experience.png",
+                            imageUrl: storyGroup[index].imageUrl,
                             placeholder: ((context, url) => const Center(
                                   child: CircularProgressIndicator(
                                       color: Colors.white),
@@ -166,41 +166,13 @@ class _FullScreenStoryState extends State<FullScreenStory>
                         ),
                       ),
                     ),
-                    _buildInstruction(size, widget.stories[totalCurrentIndex]),
+                    StoryInstruction(
+                        currentIndex: currentIndex,
+                        groupLength: storyGroup.length,
+                        size: size)
                   ],
                 ),
               ),
-
-              // bottom bar
-              // Container(
-              //   width: size.width,
-              //   height: size.height * 0.05,
-              //   margin: const EdgeInsets.only(
-              //     top: Dimensions.smallVerticalMargin,
-              //     bottom: Dimensions.smallVerticalMargin,
-              //   ),
-              //   padding:
-              //       const EdgeInsets.only(right: Dimensions.defaultMargin),
-              //   child: Row(children: [
-              //     IconButton(
-              //       iconSize: 25,
-              //       onPressed: () {},
-              //       icon: SvgPicture.asset(
-              //         AppAssets.icHeart,
-              //         color: Colors.white,
-              //         height: 25,
-              //       ),
-              //     ),
-              //     InputAndSendWidget(
-              //         size: size,
-              //         hintText: "Send message",
-              //         borderColor: Colors.white,
-              //         hintColor: Colors.white,
-              //         textColor: Colors.white,
-              //         controller: messageTextController,
-              //         onPressed: () {})
-              //   ]),
-              // )
             ],
           ),
 
@@ -234,140 +206,15 @@ class _FullScreenStoryState extends State<FullScreenStory>
                 ),
               ),
 
-              _buildTile(context, widget.stories[totalCurrentIndex])
+              StoryTile(
+                  imageUrl: storyGroup.first.userAvatarUrl,
+                  name: storyGroup.first.userName,
+                  time: GlobalMethods.getPeriodTimeToNow(
+                      storyGroup[currentIndex].createdTime.toDate()))
             ],
           ),
         ],
       ),
     );
-  }
-
-  _buildTile(BuildContext context, List<Story> storyGroup) {
-    // if (storyGroup.isEmpty) {
-    //   return const CircularProgressIndicator();
-    // }
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: Dimensions.defaultHorizontalMargin),
-      child: Row(children: [
-        ClipOval(
-            child: storyGroup.first.userAvatarUrl != ""
-                ? CachedNetworkImage(
-                    imageUrl: storyGroup.first.userAvatarUrl,
-                    height: 46,
-                    width: 46,
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    AppAssets.defaultImage,
-                    height: 46,
-                    width: 46,
-                    fit: BoxFit.cover,
-                  )),
-        const SizedBox(width: 10),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              storyGroup.first.userName,
-              style: AppStyles.postUserName.copyWith(
-                color: Colors.white,
-                shadows: <Shadow>[
-                  const Shadow(
-                    offset: Offset(2, 2),
-                    blurRadius: 3.0,
-                    color: Colors.black87,
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              GlobalMethods.getPeriodTimeToNow(
-                  storyGroup[currentIndex].createdTime.toDate()),
-              style: AppStyles.postUploadTime.copyWith(
-                color: Colors.white,
-                shadows: <Shadow>[
-                  const Shadow(
-                    offset: Offset(2, 2),
-                    blurRadius: 3.0,
-                    color: Colors.black87,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const Spacer(),
-        // close button
-        IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            padding: const EdgeInsets.all(0),
-            icon: SvgPicture.asset(AppAssets.icClose, color: Colors.white))
-      ]),
-    );
-  }
-
-  Widget _buildInstruction(Size size, List<Story> storyGroup) {
-    if (currentIndex == 0 && storyGroup.length > 1) {
-      return Positioned(
-          bottom: 10,
-          child: Container(
-            width: size.width,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(AppAssets.icTap,
-                        height: 30, color: Colors.grey[200]),
-                    const SizedBox(height: 5),
-                    Text('Previous',
-                        style: TextStyle(
-                            color: Colors.grey[200],
-                            fontFamily: 'Poppins',
-                            fontSize: 12)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Image.asset(AppAssets.icTap,
-                        height: 30, color: Colors.grey[200]),
-                    const SizedBox(height: 5),
-                    Text('Next',
-                        style: TextStyle(
-                            color: Colors.grey[200],
-                            fontFamily: 'Poppins',
-                            fontSize: 12)),
-                  ],
-                ),
-              ],
-            ),
-          ));
-    } else if (currentIndex == storyGroup.length - 1) {
-      return Positioned(
-        bottom: 10,
-        right: 10,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Image.asset(AppAssets.icSlideLeft,
-                height: 30, color: Colors.grey[200]),
-            const SizedBox(height: 5),
-            Text('Slide left to next story',
-                style: TextStyle(
-                    color: Colors.grey[200],
-                    fontFamily: 'Poppins',
-                    fontSize: 12)),
-          ],
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 }

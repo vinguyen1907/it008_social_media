@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
 import 'package:it008_social_media/screens/edit_profile/edit_prodfile_page.dart';
@@ -9,6 +10,7 @@ import 'package:it008_social_media/screens/profile/widget/podcast_tab.dart';
 import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/screens/profile/widget/edit_profile_button.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_assets.dart';
 import '../../services/utils.dart';
@@ -155,6 +157,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
                             await FirebaseAuth.instance
                                 .signOut()
                                 .whenComplete(() {
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .clearUser();
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

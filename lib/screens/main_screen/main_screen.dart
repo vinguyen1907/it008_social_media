@@ -28,35 +28,28 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      loadUserData();
-    });
+    loadUserData();
   }
 
   loadUserData() async {
     UserProvider _userProvider =
         Provider.of<UserProvider>(context, listen: false);
     await _userProvider.refreshUser();
-
-    // setState(() {
-    //   isLoading = false;
-    // });
   }
 
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
     // Scaffold(),
-    HomeScreen(),
-    AddPostPage(),
-    PodcastPage(),
-    ChatPage(),
+    const HomeScreen(),
+    const AddPostPage(),
+    const PodcastPage(),
+    const ChatPage(),
     MyProfilePage(uid: FirebaseAuth.instance.currentUser!.uid.toString()),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      _pageController.jumpToPage(index);
     });
   }
 
@@ -75,12 +68,8 @@ class _MainScreenState extends State<MainScreen> {
             body: Center(
                 child: SpinKitSquareCircle(color: AppColors.primaryMainColor)))
         : Scaffold(
-            body: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              onPageChanged: (index) {
-                _onItemTapped(index);
-              },
+            body: IndexedStack(
+              index: _selectedIndex,
               children: _widgetOptions,
             ),
             bottomNavigationBar: BottomNavigationBar(

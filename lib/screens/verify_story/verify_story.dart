@@ -1,15 +1,11 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:it008_social_media/change_notifies/user_provider.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
-import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/services/story_service.dart';
-import 'package:it008_social_media/services/user_service.dart';
-import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:it008_social_media/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -132,6 +128,7 @@ class _VerifyStoryScreenState extends State<VerifyStoryScreen> {
     });
 
     await StoryService.uploadStory(
+        context,
         widget.imagePath,
         userProvider.getUser!.fullName,
         userProvider.getUser!.avatarImageUrl,

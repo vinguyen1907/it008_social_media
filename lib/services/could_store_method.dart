@@ -6,8 +6,11 @@ import '../models/user_model.dart' as models;
 class CloudStoreDataManagement {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Future<models.Users> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
+  Future<models.Users?> getUserDetails() async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      return null;
+    }
 
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(currentUser.uid).get();
