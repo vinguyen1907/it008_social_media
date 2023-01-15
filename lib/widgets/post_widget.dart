@@ -204,7 +204,8 @@ class _PostWidgetState extends State<PostWidget> {
           toUserId: widget.post.userId,
           postId: widget.post.id,
           notificationType: NotificationType.like.toString(),
-          createdTime: Timestamp.now());
+          createdTime: Timestamp.now(),
+          isSeen: false);
       notiDoc.set(noti.toJson());
     }
 
