@@ -59,40 +59,29 @@ class _HomeScreenSearchBarState extends State<HomeScreenSearchBar> {
                       .collection("notifications")
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Something went wrong');
-                    }
+                    if (snapshot.hasData) {
+                      int count = snapshot.data!.docs
+                          .where((element) => !NotificationModel.fromJson(
+                                  element.data() as Map<String, dynamic>)
+                              .isSeen)
+                          .length;
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
-                    }
-
-                    int count = snapshot.data!.docs
-                        .where((element) => !NotificationModel.fromJson(
-                                element.data() as Map<String, dynamic>)
-                            .isSeen)
-                        .length;
-                    if (count > 0) {
-                      return Badge(
-                        badgeContent: Text("$count"),
-                        position: BadgePosition.topEnd(top: -12, end: 5),
-                        child: IconButton(
-                            padding: const EdgeInsets.all(0.0),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, NotificationScreen.id);
-                            },
-                            icon: SvgPicture.asset(AppAssets.icNotification,
-                                width: 18, fit: BoxFit.cover)),
-                      );
+                      if (count > 0) {
+                        return Badge(
+                          badgeContent: Padding(
+                            padding: const EdgeInsets.all(1.5),
+                            child: Text("$count",
+                                style: const TextStyle(
+                                    fontSize: 12, color: Colors.white)),
+                          ),
+                          position: BadgePosition.topEnd(top: -12, end: 5),
+                          child: const NotificationButton(),
+                        );
+                      } else {
+                        return const NotificationButton();
+                      }
                     } else {
-                      return IconButton(
-                          padding: const EdgeInsets.all(0.0),
-                          onPressed: () {
-                            Navigator.pushNamed(context, NotificationScreen.id);
-                          },
-                          icon: SvgPicture.asset(AppAssets.icNotification,
-                              width: 18, fit: BoxFit.cover));
+                      return const NotificationButton();
                     }
                   }),
             ],
@@ -101,11 +90,21 @@ class _HomeScreenSearchBarState extends State<HomeScreenSearchBar> {
       ),
     );
   }
+}
 
-  // Stream<int> getNotificationCount() {
-  //   final snapshot =
-  //       notificationsRef.doc(user.id).collection("notifications").snapshots();
-  //   snapshot
-  //       .map((notification) => NotificationModel.fromJson(notification.docs));
-  // }
+class NotificationButton extends StatelessWidget {
+  const NotificationButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () {
+          Navigator.pushNamed(context, NotificationScreen.id);
+        },
+        icon: SvgPicture.asset(AppAssets.icNotification,
+            width: 18, fit: BoxFit.cover));
+  }
 }
