@@ -29,6 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    search("");
   }
 
   @override
@@ -64,7 +65,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     SearchBar(
                       controller: _searchController,
                       autofocus: true,
-                      onChanged: (keyword) => search(keyword),
+                      onChanged: (keyword) async {
+                        await search(keyword.trim());
+                      },
                     ),
                   ])),
             ),
@@ -160,19 +163,19 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> search(String keyword) async {
-    setState(() {
-      searchResult.clear();
-    });
+    searchResult.clear();
     final snapshot = await usersRef.get();
+    List<Users> result = [];
     snapshot.docs.forEach((doc) {
       if ((doc.data() as Map<String, dynamic>)['fullName']
           .toString()
           .toLowerCase()
           .contains(keyword.toLowerCase().trim())) {
-        setState(() {
-          searchResult.add(Users.fromJson(doc.data() as Map<String, dynamic>));
-        });
+        result.add(Users.fromJson(doc.data() as Map<String, dynamic>));
       }
+    });
+    setState(() {
+      searchResult = result;
     });
   }
 }
