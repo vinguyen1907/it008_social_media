@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:it008_social_media/screens/sign_in_screen/sign_in.dart';
 import 'package:it008_social_media/screens/sign_up_screen/sign_up.dart';
 import 'package:it008_social_media/screens/welcome_screen/welcome_back.dart';
+
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
@@ -12,6 +14,27 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  final TextEditingController _email = TextEditingController();
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  Future pwreset() async {
+    try{
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text.trim());
+      showDialog(context: context, builder: (context) {
+        return AlertDialog(content: Text('Please check your email.'));
+      });
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      showDialog(context: context, builder: (context) {
+        return AlertDialog(content: Text(e.message.toString()));
+      });
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +78,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 border: Border.all(color: Color(0xff006175))
               ),
               child: TextField(
+                controller: _email,
                 decoration: InputDecoration(
                   border: InputBorder.none
                 ),
@@ -66,7 +90,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             left: 27,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => WelcomeBack())));
+                pwreset();
               },
               child: Container(
                 height: 49,

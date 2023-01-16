@@ -337,9 +337,10 @@ class _SignInState extends State<SignIn> {
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     await provider.googleLogin(context);
     final User? user = authInstance.currentUser;
-    String? email = user?.email;
+    var email = user!.email;
     final _uid = user!.uid;
-    if (await checkIfEmailInUse(email)) {
+    var methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email!);
+    if (methods.contains('google.com'))  {
       Navigator.of(context).pushNamed(MainScreen.id);
     } else {
       model.Users _user = model.Users(
