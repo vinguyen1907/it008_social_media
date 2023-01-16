@@ -211,15 +211,15 @@ class _CommentScreenState extends State<CommentScreen> {
           .collection('notifications')
           .doc();
       NotificationModel notification = NotificationModel(
-        id: notiDoc.id,
-        fromUserId: userProvider.getUser!.id!,
-        fromUserName: userProvider.getUser!.fullName!,
-        fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
-        toUserId: widget.post.userId,
-        notificationType: NotificationType.comment.toString(),
-        postId: widget.post.id,
-        createdTime: Timestamp.now(),
-      );
+          id: notiDoc.id,
+          fromUserId: userProvider.getUser!.id!,
+          fromUserName: userProvider.getUser!.fullName!,
+          fromUserAvatarUrl: userProvider.getUser!.avatarImageUrl!,
+          toUserId: widget.post.userId,
+          notificationType: NotificationType.comment.toString(),
+          postId: widget.post.id,
+          createdTime: Timestamp.now(),
+          isSeen: false);
       notiDoc.set(notification.toJson());
     }
 

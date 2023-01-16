@@ -12,6 +12,7 @@ class NotificationModel {
   String? postId;
   String notificationType;
   Timestamp createdTime;
+  bool isSeen;
 
   NotificationModel({
     required this.id,
@@ -22,6 +23,7 @@ class NotificationModel {
     this.postId,
     required this.notificationType,
     required this.createdTime,
+    required this.isSeen,
   });
 
   Map<String, dynamic> toJson() {
@@ -34,6 +36,7 @@ class NotificationModel {
       'postId': postId,
       'notificationType': notificationType,
       'createdTime': createdTime,
+      "isSeen": isSeen,
     };
   }
 
@@ -47,6 +50,7 @@ class NotificationModel {
       postId: map['postId'] != null ? map['postId'] as String : null,
       notificationType: map['notificationType'] as String,
       createdTime: map['createdTime'] as Timestamp,
+      isSeen: map['isSeen'] ?? false,
     );
   }
 }

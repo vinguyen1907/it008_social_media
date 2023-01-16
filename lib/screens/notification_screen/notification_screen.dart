@@ -138,11 +138,13 @@ class NotificationScreen extends StatelessWidget {
                           onTap: () =>
                               _onNotificationTap(notification, context),
                           child: Container(
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.only(
-                                bottom: 20,
-                                left: Dimensions.defaultHorizontalMargin,
-                                right: Dimensions.defaultHorizontalMargin),
+                            color: notification.isSeen
+                                ? Colors.transparent
+                                : Colors.grey[200],
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: Dimensions.defaultHorizontalMargin,
+                            ),
                             child: NotificationWidget(
                                 name: notification.fromUserName,
                                 actionDescription: description,
@@ -169,6 +171,15 @@ class NotificationScreen extends StatelessWidget {
               arguments: Post.fromJson(post.data() as Map<String, dynamic>)));
     }
     // TODO: Handle following situation
+
+    // set isSeen = true
+    final Users user =
+        Provider.of<UserProvider>(context, listen: false).getUser!;
+    notificationsRef
+        .doc(user.id)
+        .collection("notifications")
+        .doc(notification.id)
+        .update({"isSeen": true});
   }
 
   String _getDescription(NotificationModel notification) {
