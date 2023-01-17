@@ -356,10 +356,6 @@ class _SignUpState extends State<SignUp> {
       final User? user = authInstance.currentUser;
       String? email = user?.email;
       final _uid = user!.uid;
-      if (await checkIfEmailInUse(email)){
-        Navigator.of(context).pushNamed(MainScreen.id);
-      }
-      else {
          model.Users _user = model.Users(
           id: _uid,
           userName: '',
@@ -379,8 +375,8 @@ class _SignUpState extends State<SignUp> {
             .collection('users')
             .doc(_uid)
             .set(_user.toJson() as Map<String, dynamic>);
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => const SignUp2())));
-      }
+        Navigator.of(context).pushNamed(MainScreen.id);
+
        
   }
 
