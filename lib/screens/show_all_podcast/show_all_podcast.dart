@@ -51,10 +51,13 @@ class ShowAllPodcastScreen extends StatelessWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
+                        mainAxisSpacing: 5,
+                        childAspectRatio: 0.89,
                       ),
                       itemCount: podcasts.length,
                       itemBuilder: (context, index) {
                         return PodcastItemWidget(
+                          maxLines: 2,
                           podcast: podcasts[index],
                           imageSize:
                               Size(size.width / 2 - 30, size.width / 2 - 30),

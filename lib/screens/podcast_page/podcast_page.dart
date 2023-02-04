@@ -44,28 +44,26 @@ class PodcastPage extends StatelessWidget {
                     future: getNewestPodcasts(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        return SizedBox(
-                          height: size.width / 4 + 36,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return PodcastItemWidget(
-                                    podcast: snapshot.data![index],
-                                    maxLines: 2,
-                                    imageSize:
-                                        Size(size.width / 4, size.width / 4),
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, PlayPodcastScreen.id,
-                                          arguments: PlayPodcastArguments(
-                                              podcast: snapshot.data![index],
-                                              authorName:
-                                                  'The Present Writer'));
-                                    });
-                              }),
-                        );
+                        return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  snapshot.data!.length,
+                                  (index) => PodcastItemWidget(
+                                      podcast: snapshot.data![index],
+                                      maxLines: 2,
+                                      imageSize:
+                                          Size(size.width / 4, size.width / 4),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, PlayPodcastScreen.id,
+                                            arguments: PlayPodcastArguments(
+                                                podcast: snapshot.data![index],
+                                                authorName:
+                                                    'The Present Writer'));
+                                      })),
+                            ));
                       } else {
                         return Container();
                       }
