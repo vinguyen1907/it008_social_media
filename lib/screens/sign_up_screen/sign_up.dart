@@ -363,8 +363,8 @@ class _SignUpState extends State<SignUp> {
           gender: '',
           dateOfBirth: '',
           about: '',
-          avatarImageUrl: '',
-          fullName: '',
+          avatarImageUrl: user.photoURL,
+          fullName: user.displayName,
           following: [],
           followers: [],
           address: "",
@@ -380,26 +380,5 @@ class _SignUpState extends State<SignUp> {
        
   }
 
-  Future<bool> checkIfEmailInUse(String? emailAddress) async {
-  try {
-    String email = emailAddress!;
-    // Fetch sign-in methods for the email address
-    final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailAddress);
-
-    // In case list is not empty
-    if (list.isNotEmpty) {
-      // Return true because there is an existing
-      // user using the email address
-      return true;
-    } else {
-      // Return false because email adress is not in use
-      return false;
-    }
-  } catch (error) {
-    // Handle error
-    // ...
-    return true;
-  }
-}
 }
 

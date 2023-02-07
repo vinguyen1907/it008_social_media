@@ -28,7 +28,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         return AlertDialog(content: Text('Please check your email.'));
       });
     } on FirebaseAuthException catch (e) {
-      print(e);
       showDialog(context: context, builder: (context) {
         return AlertDialog(content: Text(e.message.toString()));
       });

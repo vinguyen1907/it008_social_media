@@ -335,36 +335,31 @@ class _SignInState extends State<SignIn> {
 
   void loginGoole() async {
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
-    await provider.googleLogin(context);
-    final User? user = authInstance.currentUser;
-    var email = user!.email;
-    final _uid = user!.uid;
-    var methods = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email!);
-    if (methods.contains('google.com'))  {
-      Navigator.of(context).pushNamed(MainScreen.id);
-    } else {
-      model.Users _user = model.Users(
-        id: _uid,
-        userName: '',
-        email: user.email,
-        gender: '',
-        dateOfBirth: '',
-        about: '',
-        avatarImageUrl: '',
-        fullName: '',
-        following: [],
-        followers: [],
-        address: "",
-        phone: "",
-      );
+      await provider.googleLogin(context);
+      final User? user = authInstance.currentUser;
+      String? email = user?.email;
+      final _uid = user!.uid;
+         model.Users _user = model.Users(
+          id: _uid,
+          userName: '',
+          email: user.email,
+          gender: '',
+          dateOfBirth: '',
+          about: '',
+          avatarImageUrl: user.photoURL,
+          fullName: user.displayName,
+          following: [],
+          followers: [],
+          address: "",
+          phone: "",
+        );
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(_uid)
-          .set(_user.toJson() as Map<String, dynamic>);
-      Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => const SignUp2())));
-    }
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(_uid)
+            .set(_user.toJson() as Map<String, dynamic>);
+        Navigator.of(context).pushNamed(MainScreen.id);
+    
   }
 
   Future<bool> checkIfEmailInUse(String? emailAddress) async {
