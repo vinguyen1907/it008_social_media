@@ -10,6 +10,7 @@ import 'package:it008_social_media/screens/profile/widget/post_widget.dart';
 import 'package:it008_social_media/services/could_store_method.dart';
 import 'package:it008_social_media/utils/firebase_consts.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/subjects.dart';
 import '../../change_notifies/user_provider.dart';
 import '../../services/auth_service.dart';
 import '../../services/utils.dart';
@@ -32,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
   int postLen = 0;
   int followers = 0;
   int following = 0;
-  bool isFollowing = false;
   bool isLoading = false;
   String id = "";
 
@@ -57,9 +57,9 @@ class _ProfilePageState extends State<ProfilePage> {
         userData = value.data()!;
         followers = value.data()?['followers'].length ?? 0;
         following = value.data()?['following'].length ?? 0;
-        isFollowing = value
+        isFollowing.add(value
             .data()?['followers']
-            .contains(FirebaseAuth.instance.currentUser?.uid.toString());
+            .contains(FirebaseAuth.instance.currentUser?.uid.toString()));
         setState(() {});
       });
 
@@ -92,6 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return "$user2$user1";
     }
   }
+  BehaviorSubject<bool> isFollowing = BehaviorSubject.seeded(false);
 
   @override
   Widget build(BuildContext context) {
@@ -196,64 +197,65 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        MessageButton(
-                          onPress: (() {
-                            String roomId = '';
-                            roomId = chatRoomId(
-                              userProvider.getUser!.id ?? "",
-                              userData['id'],
-                            );
-                            if (roomId != '') {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => ChatRoomPage(
-                                    uid: userData['id'] ?? "",
-                                    contactname: userData['userName'],
-                                    contactphotoURl:
-                                        userData["avatarImageUrl"] ?? "",
-                                    messagesId: roomId,
+                    StreamBuilder<bool>(
+                      stream: isFollowing,
+                      builder: (context, snapshot) {
+                        return Row(
+                          children: [
+                            MessageButton(
+                              onPress: (() {
+                                String roomId = '';
+                                roomId = chatRoomId(
+                                  userProvider.getUser!.id ?? "",
+                                  userData['id'],
+                                );
+                                if (roomId != '') {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ChatRoomPage(
+                                        uid: userData['id'] ?? "",
+                                        contactname: userData['userName'],
+                                        contactphotoURl:
+                                            userData["avatarImageUrl"] ?? "",
+                                        messagesId: roomId,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }),
+                            ),
+                            snapshot.data??false
+                                ? FollowButton(
+                                    title: "UnFollow",
+                                    onPress: () async {
+                                      CloudStoreDataManagement()
+                                          .followUser(
+                                        userProvider.getUser?.id ?? "",
+                                        userData['id'],
+                                      )
+                                          .then((value) {
+                                        isFollowing.add(false);
+                                        followers--;
+                                      });
+                                    },
+                                  )
+                                : FollowButton(
+                                    title: "Follow",
+                                    onPress: () async {
+                                      CloudStoreDataManagement()
+                                          .followUser(
+                                        userProvider.getUser?.id ?? "",
+                                        userData['id'],
+                                      )
+                                          .then((value) {
+                                        isFollowing.add(true);
+                                        followers++;
+                                      });
+                                    },
                                   ),
-                                ),
-                              );
-                            }
-                          }),
-                        ),
-                        isFollowing
-                            ? FollowButton(
-                                title: "UnFollow",
-                                onPress: () async {
-                                  CloudStoreDataManagement()
-                                      .followUser(
-                                    userProvider.getUser?.id ?? "",
-                                    userData['id'],
-                                  )
-                                      .then((value) {
-                                    setState(() {
-                                      isFollowing = false;
-                                      followers--;
-                                    });
-                                  });
-                                },
-                              )
-                            : FollowButton(
-                                title: "Follow",
-                                onPress: () async {
-                                  CloudStoreDataManagement()
-                                      .followUser(
-                                    userProvider.getUser?.id ?? "",
-                                    userData['id'],
-                                  )
-                                      .then((value) {
-                                    setState(() {
-                                      isFollowing = true;
-                                      followers++;
-                                    });
-                                  });
-                                },
-                              ),
-                      ],
+                          ],
+                        );
+                      }
                     ),
                   ],
                 ),

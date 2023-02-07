@@ -257,7 +257,8 @@ class _AddPostPageState extends State<AddPostPage> {
             toUserId: id,
             postId: newPost.id,
             notificationType: NotificationType.addPost.toString(),
-            createdTime: Timestamp.now());
+            createdTime: Timestamp.now(),
+            isSeen: false);
         doc.set(notification.toJson());
       }
     });

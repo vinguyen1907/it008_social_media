@@ -9,6 +9,7 @@ import 'package:it008_social_media/fullscreen_story/widgets/instruction.dart';
 import 'package:it008_social_media/fullscreen_story/widgets/tile.dart';
 import 'package:it008_social_media/models/story_model.dart';
 import 'package:it008_social_media/utils/global_methods.dart';
+import 'package:path/path.dart';
 
 class FullScreenStory extends StatefulWidget {
   const FullScreenStory({
@@ -106,7 +107,8 @@ class _FullScreenStoryState extends State<FullScreenStory>
               // animationController.forward();
             }),
             children: List.generate(widget.stories.length, (index) {
-              return fullScreenStoryItem(size, context, widget.stories[index]);
+              return fullScreenStoryItem(
+                  size, context, widget.stories[totalCurrentIndex]);
             })),
       ),
     );
@@ -114,6 +116,10 @@ class _FullScreenStoryState extends State<FullScreenStory>
 
   GestureDetector fullScreenStoryItem(
       Size size, BuildContext context, List<Story> storyGroup) {
+    print("Length: ${storyGroup.length}");
+    print("Current: $currentIndex");
+    print(storyGroup[currentIndex].toJson());
+
     return GestureDetector(
       onTapDown: (details) async {
         final x = details.globalPosition.dx;
@@ -210,7 +216,7 @@ class _FullScreenStoryState extends State<FullScreenStory>
                   imageUrl: storyGroup.first.userAvatarUrl,
                   name: storyGroup.first.userName,
                   time: GlobalMethods.getPeriodTimeToNow(
-                      storyGroup[currentIndex].createdTime.toDate()))
+                      storyGroup[0].createdTime.toDate()))
             ],
           ),
         ],
