@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,14 +67,15 @@ class _HomeScreenSearchBarState extends State<HomeScreenSearchBar> {
                           .length;
 
                       if (count > 0) {
-                        return Badge(
+                        return badge.Badge(
                           badgeContent: Padding(
                             padding: const EdgeInsets.all(1.5),
                             child: Text("$count",
                                 style: const TextStyle(
                                     fontSize: 12, color: Colors.white)),
                           ),
-                          position: BadgePosition.topEnd(top: -12, end: 5),
+                          position:
+                              badge.BadgePosition.topEnd(top: -12, end: 5),
                           child: const NotificationButton(),
                         );
                       } else {

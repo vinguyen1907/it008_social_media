@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   List<Post> posts = [];
   late bool isEndOfPostsList;
-  // late PageController pageController;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -52,14 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     _scrollController.dispose();
     _searchController.dispose();
-    // pageController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     Users user = Provider.of<UserProvider>(context).getUser!;
-    print(user.toJson());
 
     return Scaffold(
         body: LoadingManager(
@@ -109,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
+  // Build widgets
   ListView _buildPostList(Size size, Users user) {
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
@@ -213,17 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
-  void updatePostCaption(int index, String newCaption) {
-    if (posts[index].caption != newCaption) {
-      setState(() {
-        posts[index].caption = newCaption;
-      });
-      postsRef.doc(posts[index].id).update({
-        'caption': newCaption,
-      });
-    }
-  }
-
   _handleDeletePost(BuildContext context, int index) {
     return showDialog(
         context: context,
@@ -270,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+  // Functions
   Future<void> getPostsList() async {
     isEndOfPostsList = false;
     List<Post> newPosts = await PostService.getPostsFromFB(context);
@@ -292,6 +280,17 @@ class _HomeScreenState extends State<HomeScreen> {
     if (oldLength != posts.length - 5) {
       setState(() {
         isEndOfPostsList = true;
+      });
+    }
+  }
+
+  void updatePostCaption(int index, String newCaption) {
+    if (posts[index].caption != newCaption) {
+      setState(() {
+        posts[index].caption = newCaption;
+      });
+      postsRef.doc(posts[index].id).update({
+        'caption': newCaption,
       });
     }
   }

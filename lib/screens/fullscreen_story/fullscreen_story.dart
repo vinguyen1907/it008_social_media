@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:it008_social_media/constants/app_colors.dart';
 import 'package:it008_social_media/constants/app_dimensions.dart';
 import 'package:it008_social_media/constants/app_styles.dart';
-import 'package:it008_social_media/fullscreen_story/widgets/instruction.dart';
-import 'package:it008_social_media/fullscreen_story/widgets/tile.dart';
 import 'package:it008_social_media/models/story_model.dart';
+import 'package:it008_social_media/screens/fullscreen_story/widgets/instruction.dart';
+import 'package:it008_social_media/screens/fullscreen_story/widgets/tile.dart';
 import 'package:it008_social_media/utils/global_methods.dart';
 import 'package:path/path.dart';
 
